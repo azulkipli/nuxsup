@@ -2,6 +2,48 @@
 definePageMeta({
   layout: 'auth'
 })
+
+const supabase = useSupabaseClient()
+const user = useSupabaseUser()
+const router = useRouter()
+
+const email = ref('')
+const password = ref('')
+const loading = ref(false)
+const errorMessage = ref('')
+
+// Redirect if already logged in
+watch(user, (newUser) => {
+  if (newUser) {
+    router.push('/')
+  }
+}, { immediate: true })
+
+const signIn = async () => {
+  if (!email.value || !password.value) {
+    errorMessage.value = 'Please fill in all fields'
+    return
+  }
+  
+  loading.value = true
+  errorMessage.value = ''
+  
+  try {
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email.value,
+      password: password.value,
+    })
+    
+    if (error) {
+      errorMessage.value = error.message
+    }
+    // Redirect handled by watcher
+  } catch (e: any) {
+    errorMessage.value = e.message || 'An error occurred'
+  } finally {
+    loading.value = false
+  }
+}
 </script>
 
 <template>
@@ -15,16 +57,23 @@ definePageMeta({
       <h2 class="text-2xl font-bold text-slate-900 mb-2">Welcome back</h2>
       <p class="text-slate-500 mb-8 text-sm">Please sign in to your account.</p>
 
-      <form @submit.prevent class="space-y-5">
+      <!-- Error Message -->
+      <div v-if="errorMessage" class="mb-4 p-3 bg-red-50 border border-red-100 rounded-lg">
+        <p class="text-sm text-red-600">{{ errorMessage }}</p>
+      </div>
+
+      <form @submit.prevent="signIn" class="space-y-5">
         <div>
           <label for="email" class="block text-sm font-medium text-slate-700 mb-1">Email address</label>
           <input 
+            v-model="email"
             type="email" 
             id="email" 
             name="email"
             class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none"
             placeholder="you@example.com"
             required
+            :disabled="loading"
           />
         </div>
 
@@ -34,31 +83,33 @@ definePageMeta({
             <a href="#" class="text-xs font-medium text-indigo-600 hover:text-indigo-800 transition-colors">Forgot password?</a>
           </div>
           <input 
+            v-model="password"
             type="password" 
             id="password" 
             name="password"
             class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none"
             placeholder="••••••••"
             required
+            :disabled="loading"
           />
-        </div>
-
-        <div class="flex items-center">
-          <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-          <label for="remember-me" class="ml-2 block text-sm text-slate-600">Remember me</label>
         </div>
 
         <button 
           type="submit" 
-          class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all shadow-indigo-200 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0"
+          class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all shadow-indigo-200 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+          :disabled="loading"
         >
-          Sign in
+          <svg v-if="loading" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          {{ loading ? 'Signing in...' : 'Sign in' }}
         </button>
       </form>
 
       <div class="mt-6 text-center text-sm text-slate-500">
         Don't have an account? 
-        <NuxtLink to="/#pricing" class="font-semibold text-indigo-600 hover:text-indigo-500 transition-colors">Sign up</NuxtLink>
+        <NuxtLink to="/register" class="font-semibold text-indigo-600 hover:text-indigo-500 transition-colors">Sign up</NuxtLink>
       </div>
 
       <div class="mt-8 border-t border-slate-100 pt-6 text-center">
