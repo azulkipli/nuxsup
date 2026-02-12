@@ -81,7 +81,7 @@ const signIn = async () => {
         <div>
           <div class="flex items-center justify-between mb-1">
             <label for="password" class="block text-sm font-medium text-slate-700">Password</label>
-            <a href="#" class="text-xs font-medium text-indigo-600 hover:text-indigo-800 transition-colors">Forgot password?</a>
+            <NuxtLink to="/forgot-password" class="text-xs font-medium text-indigo-600 hover:text-indigo-800 transition-colors">Forgot password?</NuxtLink>
           </div>
           <div class="relative">
             <input 

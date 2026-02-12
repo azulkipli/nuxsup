@@ -7,6 +7,9 @@ export default defineNuxtConfig({
   modules: ["@nuxtjs/supabase"],
   css: ["./app/assets/css/main.css"],
   vite: {
+    server:{
+        allowedHosts:["dev.nebengyu.web.id"]
+    },
     plugins: [tailwindcss() as any],
   },
   supabase: {
@@ -15,7 +18,7 @@ export default defineNuxtConfig({
       login: "/login",
       callback: "/confirm",
       include: undefined,
-      exclude: ["/", "/register", "/about"],
+      exclude: ["/", "/register", "/about", "/forgot-password", "/reset-password"],
       saveRedirectToCookie: true,
     },
   },
