@@ -1,5 +1,5 @@
 <template>
-  <div v-if="needRefresh" class="reload-prompt">
+  <div v-if="isVisible" class="reload-prompt">
     <div class="reload-prompt-content">
       <span class="reload-prompt-text">Update tersedia! 🎉</span>
       <div class="reload-prompt-actions">
@@ -18,9 +18,15 @@
 // Access $pwa from Nuxt app
 const { $pwa } = useNuxtApp()
 
+// Local state for controlling visibility
+const show = ref(true)
+
 // Reactive refs from $pwa
 const needRefresh = computed(() => $pwa?.needRefresh ?? false)
 const offlineReady = computed(() => $pwa?.offlineReady ?? false)
+
+// Combined visibility: show AND needRefresh
+const isVisible = computed(() => show.value && needRefresh.value)
 
 // Methods
 const updateServiceWorker = () => {
@@ -28,13 +34,20 @@ const updateServiceWorker = () => {
 }
 
 const closePrompt = () => {
-  $pwa?.closePrompt()
+  show.value = false
 }
 
 // Show console message when offline ready
 watch(offlineReady, (ready) => {
   if (ready) {
     console.log('App ready to work offline')
+  }
+})
+
+// Reset show state when new update is available
+watch(needRefresh, (refresh) => {
+  if (refresh) {
+    show.value = true
   }
 })
 </script>
