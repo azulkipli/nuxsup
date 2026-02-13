@@ -113,4 +113,11 @@ export default defineNuxtConfig({
       navigateFallbackAllowlist: [/^\/$/]
     }
   },
+  
+  runtimeConfig: {
+    public: {
+      pushVapidPublicKey: process.env.NUXT_PUBLIC_PUSH_VAPID_PUBLIC_KEY || ''
+    },
+    pushVapidPrivateKey: process.env.NUXT_PUSH_VAPID_PRIVATE_KEY || ''
+  },
 });
