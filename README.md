@@ -1,75 +1,53 @@
-# Nuxt Minimal Starter
+# Nuxsup
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Nuxt 4 application with Supabase authentication and PWA support.
 
-## Setup
+## Features
 
-Make sure to install dependencies:
+- 🔐 Supabase Authentication
+- 📱 Progressive Web App (PWA)
+- 🎨 TailwindCSS 4
+- ⚡ Nuxt 4
 
-```bash
-# npm
-npm install
+## PWA Features
 
-# pnpm
-pnpm install
+This app is a Progressive Web App with:
+- ✅ Offline-first caching
+- ✅ Installable on mobile and desktop
+- ✅ Push notifications support
+- ✅ Automatic updates with user control
 
-# yarn
-yarn install
+### Development
 
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+PWA is enabled in development mode. Service worker will be active at http://localhost:3000
 
 ```bash
-# npm
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+### Push Notifications Setup
 
-Build the application for production:
+1. Generate VAPID keys:
+   ```bash
+   npx web-push generate-vapid-keys
+   ```
+
+2. Add keys to `.env` (see `.env.example`)
+
+3. Use `usePushNotifications()` composable in components:
+   ```vue
+   <script setup>
+   const { isSubscribed, subscribe, unsubscribe } = usePushNotifications()
+   </script>
+   ```
+
+### Production Build
 
 ```bash
-# npm
 npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
 npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## Environment Variables
+
+See `.env.example` for required environment variables.
