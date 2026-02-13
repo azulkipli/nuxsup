@@ -6,6 +6,11 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ["@nuxtjs/supabase", "@vite-pwa/nuxt"],
   css: ["./app/assets/css/main.css"],
+  
+  experimental: {
+    payloadExtraction: false // Disable payload.json for SPA builds
+  },
+  
   vite: {
     server: {
       allowedHosts: ["dev.nebengyu.web.id"]
@@ -49,6 +54,12 @@ export default defineNuxtConfig({
     workbox: {
       cleanupOutdatedCaches: true,
       globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
+      globIgnores: [
+        '**/node_modules/**/*',
+        'sw.js',
+        'workbox-*.js',
+        '**/_payload.json'
+      ],
       navigateFallback: '/',
       navigateFallbackDenylist: [/^\/api/],
       
