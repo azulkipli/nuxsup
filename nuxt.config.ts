@@ -4,6 +4,14 @@ export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   ssr: false,
   devtools: { enabled: true },
+
+  app: {
+    head: {
+      viewport: 'width=device-width, initial-scale=1',
+      charset: 'utf-8',
+    }
+  },
+
   modules: ["@nuxtjs/supabase", "@vite-pwa/nuxt"],
   css: ["./app/assets/css/main.css"],
   
@@ -33,7 +41,7 @@ export default defineNuxtConfig({
       theme_color: '#1e293b',
       background_color: '#f8fafc',
       display: 'standalone',
-      orientation: 'portrait',
+      orientation: 'any',
       scope: '/',
       start_url: '/',
       icons: [
@@ -46,7 +54,7 @@ export default defineNuxtConfig({
           src: '/pwa-512x512.png',
           sizes: '512x512',
           type: 'image/png',
-          purpose: 'any'
+          purpose: 'any maskable'
         }
       ]
     },
