@@ -50,7 +50,7 @@ export default defineNuxtConfig({
       cleanupOutdatedCaches: true,
       globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
       navigateFallback: '/',
-      navigateFallbackDenylist: [/^\/api/, /^\/auth\/callback/],
+      navigateFallbackDenylist: [/^\/api/],
       
       runtimeCaching: [
         // Supabase Auth - NetworkFirst
@@ -111,11 +111,6 @@ export default defineNuxtConfig({
       enabled: true,
       type: 'classic',
       navigateFallbackAllowlist: [/^\/$/]
-    },
-    
-    client: {
-      installPrompt: true,
-      periodicSyncForUpdates: 3600
     }
   },
 });
