@@ -1,6 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
-  layout: 'default'
+  layout: 'default',
+  middleware: 'auth'
 })
 
 const supabase = useSupabaseClient()
@@ -196,13 +197,6 @@ const changePassword = async () => {
     passwordLoading.value = false
   }
 }
-
-// Redirect if not logged in
-watchEffect(() => {
-  if (!user.value) {
-    router.push('/login')
-  }
-})
 </script>
 
 <template>

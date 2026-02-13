@@ -7,19 +7,13 @@ export default defineNuxtConfig({
   modules: ["@nuxtjs/supabase"],
   css: ["./app/assets/css/main.css"],
   vite: {
-    server:{
-        allowedHosts:["dev.nebengyu.web.id"]
+    server: {
+      allowedHosts: ["dev.nebengyu.web.id"]
     },
     plugins: [tailwindcss() as any],
   },
   supabase: {
     types: false, // disable database types
-    redirectOptions: {
-      login: "/login",
-      callback: "/confirm",
-      include: undefined,
-      exclude: ["/", "/register", "/about", "/forgot-password", "/reset-password"],
-      saveRedirectToCookie: true,
-    },
+    redirect: false,
   },
 });

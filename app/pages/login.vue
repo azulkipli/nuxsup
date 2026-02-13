@@ -14,11 +14,12 @@ const errorMessage = ref('')
 const showPassword = ref(false)
 
 // Redirect if already logged in
-watch(user, (newUser) => {
-  if (newUser) {
-    router.push('/')
-  }
-}, { immediate: true })
+// watch(user, (newUser) => {
+//   console.log('newUser:', newUser)
+//   if (newUser) {
+//     router.push('/')
+//   }
+// }, { immediate: true })
 
 const signIn = async () => {
   if (!email.value || !password.value) {
