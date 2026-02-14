@@ -2,7 +2,9 @@
 import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
-  ssr: false,
+
+  // ssr: false,
+
   devtools: { enabled: true },
 
   app: {
@@ -14,11 +16,11 @@ export default defineNuxtConfig({
 
   modules: ["@nuxtjs/supabase", "@vite-pwa/nuxt"],
   css: ["./app/assets/css/main.css"],
-  
+
   experimental: {
     payloadExtraction: false // Disable payload.json for SPA builds
   },
-  
+
   vite: {
     server: {
       allowedHosts: ["dev.nebengyu.web.id"]
@@ -29,11 +31,11 @@ export default defineNuxtConfig({
     types: false, // disable database types
     redirect: false,
   },
-  
+
   pwa: {
     registerType: 'prompt',
     strategies: 'generateSW',
-    
+
     manifest: {
       name: 'Nuxsup',
       short_name: 'Nuxsup',
@@ -58,7 +60,7 @@ export default defineNuxtConfig({
         }
       ]
     },
-    
+
     workbox: {
       cleanupOutdatedCaches: true,
       globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
@@ -70,7 +72,7 @@ export default defineNuxtConfig({
       ],
       navigateFallback: '/',
       navigateFallbackDenylist: [/^\/api/],
-      
+
       runtimeCaching: [
         // Supabase Auth - NetworkFirst
         {
@@ -125,14 +127,14 @@ export default defineNuxtConfig({
         }
       ]
     },
-    
+
     devOptions: {
       enabled: true,
       type: 'module',
       suppressWarnings: true
     }
   },
-  
+
   runtimeConfig: {
     public: {
       pushVapidPublicKey: process.env.NUXT_PUBLIC_PUSH_VAPID_PUBLIC_KEY || ''
