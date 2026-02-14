@@ -11,6 +11,7 @@ Implementasi Progressive Web App (PWA) pada aplikasi Nuxsup dengan fitur offline
 ## Architecture
 
 ### Technology Stack
+
 - **PWA Module:** @vite-pwa/nuxt (v0.21.0+)
 - **Strategy:** GenerateSW (auto-generated service worker)
 - **Register Type:** Prompt (user controls updates)
@@ -44,22 +45,26 @@ App dapat diakses offline dengan intelligent caching berdasarkan jenis data.
 ### 2. Supabase Endpoint Strategies
 
 **Auth Endpoints (`/auth/v1/*`)**
+
 - Strategy: NetworkFirst
 - Timeout: 3 seconds
 - Cache TTL: 5 minutes
 - Rationale: Auth must be fresh, fallback for slow connections
 
 **REST API Data (`/rest/v1/*`)**
+
 - Strategy: StaleWhileRevalidate
 - Cache TTL: 24 hours
 - Rationale: Show cached data instantly, update in background
 
 **Storage/Files (`/storage/v1/*`)**
+
 - Strategy: CacheFirst
 - Cache TTL: 30 days
 - Rationale: Files rarely change, prioritize cache for bandwidth
 
 **Realtime (`/realtime/v1/*`)**
+
 - Strategy: NetworkOnly
 - No caching
 - Rationale: Realtime requires active connection
@@ -67,6 +72,7 @@ App dapat diakses offline dengan intelligent caching berdasarkan jenis data.
 ### 3. Excluded Routes
 
 Routes not handled by service worker:
+
 - `/auth/callback` - OAuth callback flow
 - `/api/*` - Server-side API routes
 
@@ -75,6 +81,7 @@ Routes not handled by service worker:
 ### User-Controlled Updates
 
 **Flow:**
+
 1. Service worker detects new version
 2. Banner appears: "Update tersedia! 🎉"
 3. User chooses:
@@ -82,6 +89,7 @@ Routes not handled by service worker:
    - **Dismiss** → Update applied on next visit
 
 **Component: ReloadPrompt.vue**
+
 - Position: Fixed bottom-right
 - Style: Dark theme (bg-slate-800)
 - Mobile responsive
@@ -89,6 +97,7 @@ Routes not handled by service worker:
 - Uses `$pwa` composable from module
 
 **Integration:**
+
 - Placed in `app/app.vue` with `<ClientOnly>` wrapper
 - Avoids SSR hydration mismatch
 - Pure Vue 3 Composition API
@@ -98,24 +107,28 @@ Routes not handled by service worker:
 ### Architecture
 
 **Server-side (Nitro API):**
+
 - `POST /api/push/subscribe` - Store user subscription
 - `POST /api/push/send` - Trigger notification
 
 **Client-side:**
+
 - Permission request component/composable
 - VAPID key-based subscription
 - Notification click handler
 
 **Service Worker:**
+
 - Listen to `push` events
 - Display custom notifications
 - Navigate on click
 
 ### VAPID Keys Setup
 
-Generate with: `npx web-push generate-vapid-keys`
+Generate with: `bunx web-push generate-vapid-keys`
 
 Environment variables:
+
 ```env
 NUXT_PUBLIC_PUSH_VAPID_PUBLIC_KEY=<public_key>
 NUXT_PUSH_VAPID_PRIVATE_KEY=<private_key>
@@ -154,6 +167,7 @@ NUXT_PUSH_VAPID_PRIVATE_KEY=<private_key>
 ### Icons
 
 Generated from brand colors (slate theme):
+
 - 192x192 PNG - Standard Android
 - 512x512 PNG - Maskable for adaptive icons
 - 180x180 PNG - Apple touch icon

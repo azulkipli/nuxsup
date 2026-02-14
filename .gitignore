@@ -54,3 +54,6 @@ nohup.out
 
 pkg/
 src/
+
+# SSL certificates
+.cert/
