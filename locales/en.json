@@ -1,0 +1,46 @@
+{
+  "nav": {
+    "home": "Home",
+    "features": "Features",
+    "pricing": "Pricing",
+    "contact": "Contact"
+  },
+  "footer": {
+    "description": "Building the future of web development with Nuxt 4 and Tailwind CSS v4. Fast, scalable, and beautiful.",
+    "product": "Product",
+    "company": "Company",
+    "about": "About",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "help": "Help",
+    "copyright": "© 2026 Nuxsup. All rights reserved.",
+    "twitter": "Twitter",
+    "github": "GitHub",
+    "discord": "Discord"
+  },
+  "auth": {
+    "login": "Log in",
+    "logout": "Logout",
+    "signUp": "Sign up",
+    "backToHome": "Back to home",
+    "emailLabel": "Email address",
+    "passwordLabel": "Password",
+    "emailPlaceholder": "you@example.com",
+    "passwordPlaceholder": "••••••••",
+    "profile": "Profile"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success"
+  },
+  "pwa": {
+    "installTitle": "Install Nuxsup",
+    "installDescription": "Add to Home Screen for better experience",
+    "install": "Install",
+    "later": "Later",
+    "updateAvailable": "Update available! 🎉",
+    "reload": "Reload",
+    "dismiss": "Dismiss"
+  }
+}

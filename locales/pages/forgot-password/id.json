@@ -1,0 +1,11 @@
+{
+  "title": "Atur ulang kata sandi",
+  "subtitle": "Masukkan email Anda dan kami akan mengirimkan tautan reset.",
+  "sending": "Mengirim...",
+  "sendResetLink": "Kirim Tautan Reset",
+  "rememberPassword": "Ingat kata sandi Anda?",
+  "checkEmail": "Periksa email Anda",
+  "resetLinkSent": "Kami telah mengirim tautan reset kata sandi ke",
+  "clickResetLink": "Klik tautan di email Anda untuk mengatur kata sandi baru.",
+  "enterEmail": "Silakan masukkan alamat email Anda"
+}

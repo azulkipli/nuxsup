@@ -1,0 +1,10 @@
+{
+  "title": "Create an account",
+  "subtitle": "Enter your email to get started.",
+  "sending": "Sending...",
+  "continueWithEmail": "Continue with Email",
+  "hasAccount": "Already have an account?",
+  "checkEmail": "Check your email",
+  "confirmationSent": "We've sent a confirmation link to",
+  "clickLink": "Click the link in your email to complete registration and set your password."
+}

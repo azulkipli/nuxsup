@@ -3,6 +3,7 @@ definePageMeta({
   layout: 'auth'
 })
 
+const { $t } = useI18n()
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
 const router = useRouter()
@@ -32,17 +33,17 @@ const resetPassword = async () => {
   errorMessage.value = ''
 
   if (!password.value || !confirmPassword.value) {
-    errorMessage.value = 'Please fill in all fields'
+    errorMessage.value = String($t('fillAllFields'))
     return
   }
 
   if (password.value !== confirmPassword.value) {
-    errorMessage.value = 'Passwords do not match'
+    errorMessage.value = String($t('passwordsNoMatch'))
     return
   }
 
   if (password.value.length < 6) {
-    errorMessage.value = 'Password must be at least 6 characters'
+    errorMessage.value = String($t('passwordMinLength'))
     return
   }
 
@@ -52,7 +53,7 @@ const resetPassword = async () => {
     // Refresh session first to ensure it's still valid
     const { error: refreshError } = await supabase.auth.refreshSession()
     if (refreshError) {
-      errorMessage.value = 'Session expired. Please request a new reset link.'
+      errorMessage.value = String($t('sessionExpired'))
       loading.value = false
       return
     }
@@ -67,7 +68,7 @@ const resetPassword = async () => {
       await router.push('/')
     }
   } catch (e: any) {
-    errorMessage.value = e.message || 'Failed to update password'
+    errorMessage.value = e.message || $t('failedUpdate')
   } finally {
     loading.value = false
   }
@@ -91,7 +92,7 @@ const resetPassword = async () => {
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
           </div>
-          <p class="text-slate-500 text-sm">Processing your reset link...</p>
+          <p class="text-slate-500 text-sm">{{ $t('processing') }}</p>
         </div>
       </template>
 
@@ -103,8 +104,8 @@ const resetPassword = async () => {
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
           </div>
-          <h2 class="text-2xl font-bold text-slate-900 mb-2">Set new password</h2>
-          <p class="text-slate-500 text-sm">Enter your new password below.</p>
+          <h2 class="text-2xl font-bold text-slate-900 mb-2">{{ $t('title') }}</h2>
+          <p class="text-slate-500 text-sm">{{ $t('subtitle') }}</p>
         </div>
 
         <!-- Error Message -->
@@ -114,7 +115,7 @@ const resetPassword = async () => {
 
         <form @submit.prevent="resetPassword" class="space-y-5">
           <div>
-            <label for="password" class="block text-sm font-medium text-slate-700 mb-1">New Password</label>
+            <label for="password" class="block text-sm font-medium text-slate-700 mb-1">{{ $t('newPassword') }}</label>
             <div class="relative">
               <input
                 v-model="password"
@@ -140,7 +141,7 @@ const resetPassword = async () => {
           </div>
 
           <div>
-            <label for="confirmPassword" class="block text-sm font-medium text-slate-700 mb-1">Confirm Password</label>
+            <label for="confirmPassword" class="block text-sm font-medium text-slate-700 mb-1">{{ $t('confirmPassword') }}</label>
             <div class="relative">
               <input
                 v-model="confirmPassword"
@@ -174,18 +175,18 @@ const resetPassword = async () => {
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
-            {{ loading ? 'Updating...' : 'Update Password' }}
+            {{ loading ? $t('updating') : $t('updatePassword') }}
           </button>
         </form>
       </template>
 
       <div class="mt-8 border-t border-slate-100 pt-6 text-center">
-        <NuxtLink to="/" class="inline-flex items-center gap-1 text-sm text-slate-400 hover:text-slate-600 transition-colors group">
+        <i18n-link to="/" class="inline-flex items-center gap-1 text-sm text-slate-400 hover:text-slate-600 transition-colors group">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
-          Back to home
-        </NuxtLink>
+          {{ $t('auth.backToHome') }}
+        </i18n-link>
       </div>
     </div>
   </div>

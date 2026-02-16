@@ -1,0 +1,46 @@
+{
+  "nav": {
+    "home": "Beranda",
+    "features": "Fitur",
+    "pricing": "Harga",
+    "contact": "Kontak"
+  },
+  "footer": {
+    "description": "Membangun masa depan pengembangan web dengan Nuxt 4 dan Tailwind CSS v4. Cepat, skalabel, dan indah.",
+    "product": "Produk",
+    "company": "Perusahaan",
+    "about": "Tentang",
+    "privacy": "Privasi",
+    "terms": "Ketentuan",
+    "help": "Bantuan",
+    "copyright": "© 2026 Nuxsup. Hak cipta dilindungi.",
+    "twitter": "Twitter",
+    "github": "GitHub",
+    "discord": "Discord"
+  },
+  "auth": {
+    "login": "Masuk",
+    "logout": "Keluar",
+    "signUp": "Daftar",
+    "backToHome": "Kembali ke Beranda",
+    "emailLabel": "Alamat email",
+    "passwordLabel": "Kata sandi",
+    "emailPlaceholder": "anda@contoh.com",
+    "passwordPlaceholder": "••••••••",
+    "profile": "Profil"
+  },
+  "common": {
+    "loading": "Memuat...",
+    "error": "Terjadi kesalahan",
+    "success": "Berhasil"
+  },
+  "pwa": {
+    "installTitle": "Pasang Nuxsup",
+    "installDescription": "Tambahkan ke Layar Utama untuk pengalaman lebih baik",
+    "install": "Pasang",
+    "later": "Nanti",
+    "updateAvailable": "Pembaruan tersedia! 🎉",
+    "reload": "Muat Ulang",
+    "dismiss": "Tutup"
+  }
+}

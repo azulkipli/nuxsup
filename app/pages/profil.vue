@@ -4,6 +4,7 @@ definePageMeta({
   middleware: 'auth'
 })
 
+const { $t } = useI18n()
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
 const router = useRouter()
@@ -57,14 +58,14 @@ const handleFileSelect = (event: Event) => {
   // Validate file type
   const allowedTypes = ['image/jpeg', 'image/png']
   if (!allowedTypes.includes(file.type)) {
-    uploadError.value = 'Hanya file JPG dan PNG yang diizinkan'
+    uploadError.value = String($t('avatar.onlyJpgPng'))
     return
   }
   
   // Validate file size (max 2MB)
   const maxSize = 2 * 1024 * 1024
   if (file.size > maxSize) {
-    uploadError.value = 'Ukuran file maksimal 2MB'
+    uploadError.value = String($t('avatar.maxSize'))
     return
   }
   
@@ -131,7 +132,7 @@ const uploadAvatar = async () => {
     avatarUrl.value = publicUrl
     avatarPreview.value = null
     avatarFile.value = null
-    uploadSuccess.value = 'Avatar berhasil diperbarui!'
+    uploadSuccess.value = String($t('avatar.success'))
     
     // Clear success message after 3 seconds
     setTimeout(() => {
@@ -139,7 +140,7 @@ const uploadAvatar = async () => {
     }, 3000)
     
   } catch (e: any) {
-    uploadError.value = e.message || 'Gagal mengupload avatar'
+    uploadError.value = e.message || $t('avatar.failedUpload')
   } finally {
     uploadLoading.value = false
   }
@@ -152,17 +153,17 @@ const changePassword = async () => {
   
   // Validation
   if (!oldPassword.value || !newPassword.value || !confirmNewPassword.value) {
-    passwordError.value = 'Semua field harus diisi'
+    passwordError.value = String($t('password.fillAllFields'))
     return
   }
   
   if (newPassword.value !== confirmNewPassword.value) {
-    passwordError.value = 'Password baru tidak cocok'
+    passwordError.value = String($t('password.noMatch'))
     return
   }
   
   if (newPassword.value.length < 6) {
-    passwordError.value = 'Password minimal 6 karakter'
+    passwordError.value = String($t('password.minLength'))
     return
   }
   
@@ -176,7 +177,7 @@ const changePassword = async () => {
     })
     
     if (signInError) {
-      passwordError.value = 'Password lama tidak valid'
+      passwordError.value = String($t('password.oldInvalid'))
       return
     }
     
@@ -189,7 +190,7 @@ const changePassword = async () => {
       throw updateError
     }
     
-    passwordSuccess.value = 'Password berhasil diubah!'
+    passwordSuccess.value = String($t('password.success'))
     oldPassword.value = ''
     newPassword.value = ''
     confirmNewPassword.value = ''
@@ -200,7 +201,7 @@ const changePassword = async () => {
     }, 3000)
     
   } catch (e: any) {
-    passwordError.value = e.message || 'Gagal mengubah password'
+    passwordError.value = e.message || $t('password.failedChange')
   } finally {
     passwordLoading.value = false
   }
@@ -212,13 +213,13 @@ const changePassword = async () => {
     <div class="container mx-auto px-4 md:px-6 max-w-2xl">
       <!-- Page Header -->
       <div class="mb-8">
-        <h1 class="text-3xl font-bold text-slate-900">Profil Saya</h1>
-        <p class="text-slate-600 mt-2">Kelola informasi akun dan keamanan Anda</p>
+        <h1 class="text-3xl font-bold text-slate-900">{{ $t('title') }}</h1>
+        <p class="text-slate-600 mt-2">{{ $t('subtitle') }}</p>
       </div>
 
       <!-- Avatar Section -->
       <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mb-6">
-        <h2 class="text-lg font-semibold text-slate-900 mb-4">Foto Profil</h2>
+        <h2 class="text-lg font-semibold text-slate-900 mb-4">{{ $t('avatar.title') }}</h2>
         
         <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
           <!-- Current/Preview Avatar -->
@@ -242,7 +243,7 @@ const changePassword = async () => {
           <!-- Upload Controls -->
           <div class="w-full md:flex-1 text-center md:text-left">
             <p class="text-sm text-slate-600 mb-3">
-              Upload foto profil dalam format JPG atau PNG. Maksimal 2MB.
+              {{ $t('avatar.uploadHint') }}
             </p>
             
             <div class="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
@@ -250,7 +251,7 @@ const changePassword = async () => {
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-                Pilih Foto
+                {{ $t('avatar.selectPhoto') }}
                 <input
                   type="file"
                   accept="image/jpeg,image/png"
@@ -269,7 +270,7 @@ const changePassword = async () => {
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                   <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                {{ uploadLoading ? 'Mengupload...' : 'Simpan Foto' }}
+                {{ uploadLoading ? $t('avatar.uploading') : $t('avatar.savePhoto') }}
               </button>
             </div>
 
@@ -282,20 +283,20 @@ const changePassword = async () => {
 
       <!-- Account Info Section -->
       <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mb-6">
-        <h2 class="text-lg font-semibold text-slate-900 mb-4">Informasi Akun</h2>
+        <h2 class="text-lg font-semibold text-slate-900 mb-4">{{ $t('account.title') }}</h2>
         
         <div>
-          <label class="block text-sm font-medium text-slate-700 mb-1">Email</label>
+          <label class="block text-sm font-medium text-slate-700 mb-1">{{ $t('account.emailLabel') }}</label>
           <div class="px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-600">
             {{ userEmail }}
           </div>
-          <p class="text-xs text-slate-400 mt-1">Email tidak dapat diubah</p>
+          <p class="text-xs text-slate-400 mt-1">{{ $t('account.emailReadonly') }}</p>
         </div>
       </div>
 
       <!-- Password Change Section -->
       <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
-        <h2 class="text-lg font-semibold text-slate-900 mb-4">Ubah Password</h2>
+        <h2 class="text-lg font-semibold text-slate-900 mb-4">{{ $t('password.title') }}</h2>
         
         <!-- Messages -->
         <div v-if="passwordError" class="mb-4 p-3 bg-red-50 border border-red-100 rounded-lg">
@@ -308,7 +309,7 @@ const changePassword = async () => {
         <form @submit.prevent="changePassword" class="space-y-4">
           <div>
             <label for="oldPassword" class="block text-sm font-medium text-slate-700 mb-1">
-              Password Lama
+              {{ $t('password.oldPassword') }}
             </label>
             <div class="relative">
               <input
@@ -316,7 +317,7 @@ const changePassword = async () => {
                 :type="showOldPassword ? 'text' : 'password'"
                 id="oldPassword"
                 class="w-full px-4 py-2.5 pr-11 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none"
-                placeholder="Masukkan password lama"
+                :placeholder="String($t('password.oldPasswordPlaceholder'))"
                 :disabled="passwordLoading"
               />
               <button
@@ -333,7 +334,7 @@ const changePassword = async () => {
 
           <div>
             <label for="newPassword" class="block text-sm font-medium text-slate-700 mb-1">
-              Password Baru
+              {{ $t('password.newPassword') }}
             </label>
             <div class="relative">
               <input
@@ -341,7 +342,7 @@ const changePassword = async () => {
                 :type="showNewPassword ? 'text' : 'password'"
                 id="newPassword"
                 class="w-full px-4 py-2.5 pr-11 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none"
-                placeholder="Masukkan password baru"
+                :placeholder="String($t('password.newPasswordPlaceholder'))"
                 :disabled="passwordLoading"
                 minlength="6"
               />
@@ -359,7 +360,7 @@ const changePassword = async () => {
 
           <div>
             <label for="confirmNewPassword" class="block text-sm font-medium text-slate-700 mb-1">
-              Konfirmasi Password Baru
+              {{ $t('password.confirmPassword') }}
             </label>
             <div class="relative">
               <input
@@ -367,7 +368,7 @@ const changePassword = async () => {
                 :type="showConfirmPassword ? 'text' : 'password'"
                 id="confirmNewPassword"
                 class="w-full px-4 py-2.5 pr-11 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none"
-                placeholder="Konfirmasi password baru"
+                :placeholder="String($t('password.confirmPasswordPlaceholder'))"
                 :disabled="passwordLoading"
                 minlength="6"
               />
@@ -393,7 +394,7 @@ const changePassword = async () => {
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              {{ passwordLoading ? 'Menyimpan...' : 'Ubah Password' }}
+              {{ passwordLoading ? $t('password.saving') : $t('password.changePassword') }}
             </button>
           </div>
         </form>
@@ -401,15 +402,15 @@ const changePassword = async () => {
 
       <!-- Back Link -->
       <div class="mt-8 text-center">
-        <NuxtLink
+        <i18n-link
           to="/"
           class="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 transition-colors px-4 py-2 rounded-lg hover:bg-slate-100 md:hover:bg-transparent md:p-0"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
-          Kembali ke Beranda
-        </NuxtLink>
+          {{ $t('backToHome') }}
+        </i18n-link>
       </div>
     </div>
   </div>

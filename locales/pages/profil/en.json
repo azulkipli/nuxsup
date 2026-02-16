@@ -1,0 +1,38 @@
+{
+  "title": "My Profile",
+  "subtitle": "Manage your account information and security",
+  "avatar": {
+    "title": "Profile Photo",
+    "uploadHint": "Upload a profile photo in JPG or PNG format. Maximum 2MB.",
+    "selectPhoto": "Select Photo",
+    "uploading": "Uploading...",
+    "savePhoto": "Save Photo",
+    "success": "Avatar updated successfully!",
+    "failedUpload": "Failed to upload avatar",
+    "onlyJpgPng": "Only JPG and PNG files are allowed",
+    "maxSize": "Maximum file size is 2MB"
+  },
+  "account": {
+    "title": "Account Information",
+    "emailLabel": "Email",
+    "emailReadonly": "Email cannot be changed"
+  },
+  "password": {
+    "title": "Change Password",
+    "oldPassword": "Old Password",
+    "oldPasswordPlaceholder": "Enter old password",
+    "newPassword": "New Password",
+    "newPasswordPlaceholder": "Enter new password",
+    "confirmPassword": "Confirm New Password",
+    "confirmPasswordPlaceholder": "Confirm new password",
+    "saving": "Saving...",
+    "changePassword": "Change Password",
+    "success": "Password changed successfully!",
+    "fillAllFields": "All fields are required",
+    "noMatch": "New passwords do not match",
+    "minLength": "Password must be at least 6 characters",
+    "oldInvalid": "Old password is invalid",
+    "failedChange": "Failed to change password"
+  },
+  "backToHome": "Back to Home"
+}

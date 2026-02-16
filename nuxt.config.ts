@@ -14,12 +14,27 @@ export default defineNuxtConfig({
     }
   },
 
-  modules: ["@nuxtjs/supabase", "@vite-pwa/nuxt", "@nuxtjs/color-mode"],
+  modules: ["@nuxtjs/supabase", "@vite-pwa/nuxt", "@nuxtjs/color-mode", "nuxt-i18n-micro"],
 
   colorMode: {
     classSuffix: '',
     preference: 'system',
     fallback: 'light',
+  },
+
+  i18n: {
+    locales: [
+      { code: 'id', iso: 'id-ID', dir: 'ltr' },
+      { code: 'en', iso: 'en-US', dir: 'ltr' }
+    ],
+    defaultLocale: 'id',
+    translationDir: 'locales',
+    strategy: 'prefix_except_default',
+    meta: true,
+    autoDetectLanguage: false,
+    disablePageLocales: false,
+    fallbackLocale: 'id',
+    localeCookie: 'user-locale'
   },
   css: ["./app/assets/css/main.css"],
 

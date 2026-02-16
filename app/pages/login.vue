@@ -3,6 +3,7 @@ definePageMeta({
   layout: 'auth'
 })
 
+const { $t } = useI18n()
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
 const router = useRouter()
@@ -16,7 +17,7 @@ const showPassword = ref(false)
 
 const signIn = async () => {
   if (!email.value || !password.value) {
-    errorMessage.value = 'Please fill in all fields'
+    errorMessage.value = String($t('fillAllFields'))
     return
   }
   
@@ -35,7 +36,7 @@ const signIn = async () => {
       await router.push('/')
     }
   } catch (e: any) {
-    errorMessage.value = e.message || 'An error occurred'
+    errorMessage.value = e.message || $t('common.error')
   } finally {
     loading.value = false
   }
@@ -50,8 +51,8 @@ const signIn = async () => {
     </div>
 
     <div class="relative z-10">
-      <h2 class="text-2xl font-bold text-slate-900 mb-2">Welcome back</h2>
-      <p class="text-slate-500 mb-8 text-sm">Please sign in to your account.</p>
+      <h2 class="text-2xl font-bold text-slate-900 mb-2">{{ $t('title') }}</h2>
+      <p class="text-slate-500 mb-8 text-sm">{{ $t('subtitle') }}</p>
 
       <!-- Error Message -->
       <div v-if="errorMessage" class="mb-4 p-3 bg-red-50 border border-red-100 rounded-lg">
@@ -60,7 +61,7 @@ const signIn = async () => {
 
       <form @submit.prevent="signIn" class="space-y-5">
         <div>
-          <label for="email" class="block text-sm font-medium text-slate-700 mb-1">Email address</label>
+          <label for="email" class="block text-sm font-medium text-slate-700 mb-1">{{ $t('auth.emailLabel') }}</label>
           <input 
             v-model="email"
             type="email" 
@@ -75,8 +76,8 @@ const signIn = async () => {
 
         <div>
           <div class="flex items-center justify-between mb-1">
-            <label for="password" class="block text-sm font-medium text-slate-700">Password</label>
-            <NuxtLink to="/forgot-password" class="text-xs font-medium text-indigo-600 hover:text-indigo-800 transition-colors">Forgot password?</NuxtLink>
+            <label for="password" class="block text-sm font-medium text-slate-700">{{ $t('auth.passwordLabel') }}</label>
+            <i18n-link to="/forgot-password" class="text-xs font-medium text-indigo-600 hover:text-indigo-800 transition-colors">{{ $t('forgotPassword') }}</i18n-link>
           </div>
           <div class="relative">
             <input 
@@ -110,22 +111,22 @@ const signIn = async () => {
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
-          {{ loading ? 'Signing in...' : 'Sign in' }}
+          {{ loading ? $t('signingIn') : $t('signIn') }}
         </button>
       </form>
 
       <div class="mt-6 text-center text-sm text-slate-500">
-        Don't have an account? 
-        <NuxtLink to="/register" class="font-semibold text-indigo-600 hover:text-indigo-500 transition-colors">Sign up</NuxtLink>
+        {{ $t('noAccount') }} 
+        <i18n-link to="/register" class="font-semibold text-indigo-600 hover:text-indigo-500 transition-colors">{{ $t('auth.signUp') }}</i18n-link>
       </div>
 
       <div class="mt-8 border-t border-slate-100 pt-6 text-center">
-        <NuxtLink to="/" class="inline-flex items-center gap-1 text-sm text-slate-400 hover:text-slate-600 transition-colors group">
+        <i18n-link to="/" class="inline-flex items-center gap-1 text-sm text-slate-400 hover:text-slate-600 transition-colors group">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
-          Back to home
-        </NuxtLink>
+          {{ $t('auth.backToHome') }}
+        </i18n-link>
       </div>
     </div>
   </div>

@@ -14,7 +14,7 @@ console.log("user:", user.value);
         class="container mx-auto px-4 md:px-6 h-16 flex items-center justify-between"
       >
         <!-- Logo -->
-        <NuxtLink to="/" class="flex items-center gap-2 group">
+        <i18n-link to="/" class="flex items-center gap-2 group">
           <div
             class="bg-indigo-600 text-white w-8 h-8 rounded-lg flex items-center justify-center font-bold text-lg shadow-md group-hover:scale-105 transition-transform duration-300"
           >
@@ -24,52 +24,53 @@ console.log("user:", user.value);
             class="font-bold text-xl tracking-tight text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors"
             >Nuxsup</span
           >
-        </NuxtLink>
+        </i18n-link>
 
         <!-- Desktop Navigation -->
         <ul class="hidden md:flex items-center gap-8">
           <li>
-            <NuxtLink
+            <i18n-link
               to="/#hero"
               class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
-              >Home</NuxtLink
+              >{{ $t('nav.home') }}</i18n-link
             >
           </li>
           <li>
-            <NuxtLink
+            <i18n-link
               to="/#features"
               class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
-              >Features</NuxtLink
+              >{{ $t('nav.features') }}</i18n-link
             >
           </li>
           <li>
-            <NuxtLink
+            <i18n-link
               to="/#pricing"
               class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
-              >Pricing</NuxtLink
+              >{{ $t('nav.pricing') }}</i18n-link
             >
           </li>
           <li>
-            <NuxtLink
+            <i18n-link
               to="/#contact"
               class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
-              >Contact</NuxtLink
+              >{{ $t('nav.contact') }}</i18n-link
             >
           </li>
         </ul>
 
         <!-- Action Buttons -->
         <div class="flex items-center gap-2">
+          <LanguageSwitcher />
           <ColorModeToggle />
           <!-- Show UserAvatar if logged in, otherwise show Login button -->
           <UserAvatar v-if="user" />
-          <NuxtLink
+          <i18n-link
             v-else
             to="/login"
             class="px-5 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 active:bg-indigo-800 transition-all shadow-md shadow-indigo-200 dark:shadow-indigo-900/30 hover:shadow-lg hover:-translate-y-0.5"
           >
-            Log in
-          </NuxtLink>
+            {{ $t('auth.login') }}
+          </i18n-link>
         </div>
       </nav>
     </header>
@@ -91,51 +92,50 @@ console.log("user:", user.value);
               <span class="font-bold text-lg text-white">Nuxsup</span>
             </div>
             <p class="text-sm max-w-xs text-slate-400 leading-relaxed">
-              Building the future of web development with Nuxt 4 and Tailwind
-              CSS v4. Fast, scalable, and beautiful.
+              {{ $t('footer.description') }}
             </p>
           </div>
           <div>
-            <h4 class="font-semibold text-white mb-4">Product</h4>
+            <h4 class="font-semibold text-white mb-4">{{ $t('footer.product') }}</h4>
             <ul class="space-y-2 text-sm">
               <li>
-                <NuxtLink
+                <i18n-link
                   to="/#features"
                   class="hover:text-white transition-colors"
-                  >Features</NuxtLink
+                  >{{ $t('nav.features') }}</i18n-link
                 >
               </li>
               <li>
-                <NuxtLink
+                <i18n-link
                   to="/#pricing"
                   class="hover:text-white transition-colors"
-                  >Pricing</NuxtLink
+                  >{{ $t('nav.pricing') }}</i18n-link
                 >
               </li>
               <li>
-                <NuxtLink to="/about" class="hover:text-white transition-colors"
-                  >About</NuxtLink
+                <i18n-link to="/about" class="hover:text-white transition-colors"
+                  >{{ $t('footer.about') }}</i18n-link
                 >
               </li>
             </ul>
           </div>
           <div>
-            <h4 class="font-semibold text-white mb-4">Company</h4>
+            <h4 class="font-semibold text-white mb-4">{{ $t('footer.company') }}</h4>
             <ul class="space-y-2 text-sm">
               <li>
-                <NuxtLink
+                <i18n-link
                   to="/#contact"
                   class="hover:text-white transition-colors"
-                  >Contact</NuxtLink
+                  >{{ $t('nav.contact') }}</i18n-link
                 >
               </li>
               <li>
                 <a href="#" class="hover:text-white transition-colors"
-                  >Privacy</a
+                  >{{ $t('footer.privacy') }}</a
                 >
               </li>
               <li>
-                <a href="#" class="hover:text-white transition-colors">Terms</a>
+                <a href="#" class="hover:text-white transition-colors">{{ $t('footer.terms') }}</a>
               </li>
             </ul>
           </div>
@@ -143,11 +143,11 @@ console.log("user:", user.value);
         <div
           class="border-t border-slate-800 dark:border-slate-700 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs"
         >
-          <p>&copy; 2026 Nuxsup. All rights reserved.</p>
+          <p>{{ $t('footer.copyright') }}</p>
           <div class="flex gap-4">
-            <a href="#" class="hover:text-white transition-colors">Twitter</a>
-            <a href="#" class="hover:text-white transition-colors">GitHub</a>
-            <a href="#" class="hover:text-white transition-colors">Discord</a>
+            <a href="#" class="hover:text-white transition-colors">{{ $t('footer.twitter') }}</a>
+            <a href="#" class="hover:text-white transition-colors">{{ $t('footer.github') }}</a>
+            <a href="#" class="hover:text-white transition-colors">{{ $t('footer.discord') }}</a>
           </div>
         </div>
       </div>

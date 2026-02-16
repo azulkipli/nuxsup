@@ -1,0 +1,13 @@
+{
+  "confirming": "Confirming your email...",
+  "emailConfirmed": "Email confirmed!",
+  "setPasswordDesc": "Now set your password to complete registration.",
+  "password": "Password",
+  "confirmPassword": "Confirm Password",
+  "settingUp": "Setting up...",
+  "completeRegistration": "Complete Registration",
+  "fillAllFields": "Please fill in all fields",
+  "passwordsNoMatch": "Passwords do not match",
+  "passwordMinLength": "Password must be at least 6 characters",
+  "sessionExpired": "Session expired. Please register again."
+}

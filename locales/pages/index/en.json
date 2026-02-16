@@ -1,0 +1,60 @@
+{
+  "hero": {
+    "badge": "v1.0 Now Available",
+    "title1": "Build faster with",
+    "title2": "Nuxt 4 & Tailwind v4",
+    "description": "The ultimate starter kit for modern web development. Crafted with precision for developers who care about performance and aesthetics.",
+    "getStarted": "Get Started",
+    "learnMore": "Learn More"
+  },
+  "features": {
+    "title": "Everything you need",
+    "description": "A comprehensive suite of tools designed to accelerate your workflow and deliver exceptional user experiences.",
+    "items": [
+      {
+        "title": "Lightning Fast",
+        "description": "Powered by Nuxt 4 and Vite, experience instant HMR and optimized production builds."
+      },
+      {
+        "title": "Tailwind CSS v4",
+        "description": "The latest engine, zero-runtime, and simplified configuration for rapid UI development."
+      },
+      {
+        "title": "TypeScript Ready",
+        "description": "Full type safety out of the box. Write robust, maintainable code with confidence."
+      }
+    ]
+  },
+  "pricing": {
+    "title": "Simple, transparent pricing",
+    "description": "Choose the perfect plan for your needs. No hidden fees.",
+    "mostPopular": "Most Popular",
+    "perMonth": "/month",
+    "choose": "Choose",
+    "plans": [
+      {
+        "name": "Starter",
+        "price": "$0",
+        "features": ["1 Project", "Basic Analytics", "Community Support"]
+      },
+      {
+        "name": "Pro",
+        "price": "$29",
+        "features": ["Unlimited Projects", "Advanced Analytics", "Priority Support", "Custom Domain"]
+      },
+      {
+        "name": "Enterprise",
+        "price": "Custom",
+        "features": ["Dedicated Instance", "SLA", "24/7 Support", "Audit Logs"]
+      }
+    ]
+  },
+  "contact": {
+    "title": "Ready to start your project?",
+    "description": "Join thousands of developers building the future of the web. Get in touch with us today.",
+    "emailSrOnly": "Email address",
+    "emailPlaceholder": "Enter your email",
+    "cta": "Get Started Now",
+    "disclaimer": "No credit card required. Cancel anytime."
+  }
+}

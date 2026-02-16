@@ -1,0 +1,14 @@
+{
+  "title": "Set new password",
+  "subtitle": "Enter your new password below.",
+  "newPassword": "New Password",
+  "confirmPassword": "Confirm Password",
+  "updating": "Updating...",
+  "updatePassword": "Update Password",
+  "processing": "Processing your reset link...",
+  "fillAllFields": "Please fill in all fields",
+  "passwordsNoMatch": "Passwords do not match",
+  "passwordMinLength": "Password must be at least 6 characters",
+  "sessionExpired": "Session expired. Please request a new reset link.",
+  "failedUpdate": "Failed to update password"
+}

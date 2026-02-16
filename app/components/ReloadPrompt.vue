@@ -1,13 +1,13 @@
 <template>
   <div v-if="isVisible" class="reload-prompt">
     <div class="reload-prompt-content">
-      <span class="reload-prompt-text">Update tersedia! 🎉</span>
+      <span class="reload-prompt-text">{{ $t('pwa.updateAvailable') }}</span>
       <div class="reload-prompt-actions">
         <button @click="updateServiceWorker()" class="reload-btn">
-          Reload
+          {{ $t('pwa.reload') }}
         </button>
         <button @click="closePrompt()" class="dismiss-btn">
-          Dismiss
+          {{ $t('pwa.dismiss') }}
         </button>
       </div>
     </div>

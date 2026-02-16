@@ -1,0 +1,60 @@
+{
+  "hero": {
+    "badge": "v1.0 Sekarang Tersedia",
+    "title1": "Bangun lebih cepat dengan",
+    "title2": "Nuxt 4 & Tailwind v4",
+    "description": "Starter kit terbaik untuk pengembangan web modern. Dirancang dengan presisi untuk developer yang peduli dengan performa dan estetika.",
+    "getStarted": "Mulai Sekarang",
+    "learnMore": "Pelajari Lebih"
+  },
+  "features": {
+    "title": "Semua yang Anda butuhkan",
+    "description": "Rangkaian alat komprehensif yang dirancang untuk mempercepat alur kerja Anda dan memberikan pengalaman pengguna yang luar biasa.",
+    "items": [
+      {
+        "title": "Sangat Cepat",
+        "description": "Didukung oleh Nuxt 4 dan Vite, rasakan HMR instan dan build produksi yang dioptimalkan."
+      },
+      {
+        "title": "Tailwind CSS v4",
+        "description": "Engine terbaru, tanpa runtime, dan konfigurasi yang disederhanakan untuk pengembangan UI yang cepat."
+      },
+      {
+        "title": "Siap TypeScript",
+        "description": "Keamanan tipe penuh langsung dari kotak. Tulis kode yang kuat dan mudah dipelihara dengan percaya diri."
+      }
+    ]
+  },
+  "pricing": {
+    "title": "Harga sederhana dan transparan",
+    "description": "Pilih paket sempurna untuk kebutuhan Anda. Tanpa biaya tersembunyi.",
+    "mostPopular": "Paling Populer",
+    "perMonth": "/bulan",
+    "choose": "Pilih",
+    "plans": [
+      {
+        "name": "Starter",
+        "price": "$0",
+        "features": ["1 Proyek", "Analitik Dasar", "Dukungan Komunitas"]
+      },
+      {
+        "name": "Pro",
+        "price": "$29",
+        "features": ["Proyek Tak Terbatas", "Analitik Lanjutan", "Dukungan Prioritas", "Domain Kustom"]
+      },
+      {
+        "name": "Enterprise",
+        "price": "Kustom",
+        "features": ["Instansi Khusus", "SLA", "Dukungan 24/7", "Log Audit"]
+      }
+    ]
+  },
+  "contact": {
+    "title": "Siap memulai proyek Anda?",
+    "description": "Bergabung dengan ribuan developer yang membangun masa depan web. Hubungi kami hari ini.",
+    "emailSrOnly": "Alamat email",
+    "emailPlaceholder": "Masukkan email Anda",
+    "cta": "Mulai Sekarang",
+    "disclaimer": "Tidak perlu kartu kredit. Batalkan kapan saja."
+  }
+}

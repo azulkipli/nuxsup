@@ -1,0 +1,14 @@
+{
+  "title": "Atur kata sandi baru",
+  "subtitle": "Masukkan kata sandi baru Anda di bawah.",
+  "newPassword": "Kata Sandi Baru",
+  "confirmPassword": "Konfirmasi Kata Sandi",
+  "updating": "Memperbarui...",
+  "updatePassword": "Perbarui Kata Sandi",
+  "processing": "Memproses tautan reset Anda...",
+  "fillAllFields": "Harap isi semua kolom",
+  "passwordsNoMatch": "Kata sandi tidak cocok",
+  "passwordMinLength": "Kata sandi minimal 6 karakter",
+  "sessionExpired": "Sesi kedaluwarsa. Silakan minta tautan reset baru.",
+  "failedUpdate": "Gagal memperbarui kata sandi"
+}

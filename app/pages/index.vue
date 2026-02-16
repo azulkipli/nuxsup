@@ -1,50 +1,24 @@
 <script setup lang="ts">
-const features = [
-    {
-        title: "Lightning Fast",
-        description:
-            "Powered by Nuxt 4q and Vite, experience instant HMR and optimized production builds.",
-        icon: "⚡",
-    },
-    {
-        title: "Tailwind CSS v4",
-        description:
-            "The latest engine, zero-runtime, and simplified configuration for rapid UI development.",
-        icon: "🎨",
-    },
-    {
-        title: "TypeScript Ready",
-        description:
-            "Full type safety out of the box. Write robust, maintainable code with confidence.",
-        icon: "🛡️",
-    },
-];
+const { $t } = useI18n()
 
-const pricing = [
-    {
-        name: "Starter",
-        price: "$0",
-        features: ["1 Project", "Basic Analytics", "Community Support"],
-        highlight: false,
-    },
-    {
-        name: "Pro",
-        price: "$29",
-        features: [
-            "Unlimited Projects",
-            "Advanced Analytics",
-            "Priority Support",
-            "Custom Domain",
-        ],
-        highlight: true,
-    },
-    {
-        name: "Enterprise",
-        price: "Custom",
-        features: ["Dedicated Instance", "SLA", "24/7 Support", "Audit Logs"],
-        highlight: false,
-    },
-];
+const features = computed(() => {
+  const items = $t('features.items') as unknown as any[]
+  if (!Array.isArray(items)) return []
+  return items.map((item: any, i: number) => ({
+    ...item,
+    icon: ['⚡', '🎨', '🛡️'][i]
+  }))
+})
+
+const pricing = computed(() => {
+  const plans = $t('pricing.plans') as unknown as any[]
+  if (!Array.isArray(plans)) return []
+  return plans.map((plan: any, i: number) => ({
+    ...plan,
+    highlight: i === 1,
+    showPerMonth: i !== 2
+  }))
+})
 </script>
 
 <template>
@@ -76,42 +50,40 @@ const pricing = [
                     <span
                         class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"
                     ></span>
-                    v1.0 Now Available
+                    {{ $t('hero.badge') }}
                 </div>
 
                 <h1
                     class="text-4xl md:text-6xl/tight font-extrabold text-slate-900 dark:text-white tracking-tight mb-6 animate-fade-in-up delay-100"
                 >
-                    Build faster with <br class="hidden md:block" />
+                    {{ $t('hero.title1') }} <br class="hidden md:block" />
                     <span
                         class="bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent"
-                        >Nuxt 4 & Tailwind v4</span
+                        >{{ $t('hero.title2') }}</span
                     >
                 </h1>
 
                 <p
                     class="text-lg md:text-xl text-slate-600 dark:text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed animate-fade-in-up delay-200"
                 >
-                    The ultimate starter kit for modern web development. crafted
-                    with precision for developers who care about performance and
-                    aesthetics.
+                    {{ $t('hero.description') }}
                 </p>
 
                 <div
                     class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up delay-300"
                 >
-                    <NuxtLink
+                    <i18n-link
                         to="/#pricing"
                         class="w-full sm:w-auto px-8 py-3.5 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30 hover:shadow-xl hover:-translate-y-1"
                     >
-                        Get Started
-                    </NuxtLink>
-                    <NuxtLink
+                        {{ $t('hero.getStarted') }}
+                    </i18n-link>
+                    <i18n-link
                         to="/#features"
                         class="w-full sm:w-auto px-8 py-3.5 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all shadow-sm hover:shadow-md"
                     >
-                        Learn More
-                    </NuxtLink>
+                        {{ $t('hero.learnMore') }}
+                    </i18n-link>
                 </div>
             </div>
         </section>
@@ -123,11 +95,10 @@ const pricing = [
                     <h2
                         class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4"
                     >
-                        Everything you need
+                        {{ $t('features.title') }}
                     </h2>
                     <p class="text-lg text-slate-600 dark:text-slate-400">
-                        A comprehensive suite of tools designed to accelerate
-                        your workflow and deliver exceptional user experiences.
+                        {{ $t('features.description') }}
                     </p>
                 </div>
 
@@ -163,10 +134,10 @@ const pricing = [
                     <h2
                         class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4"
                     >
-                        Simple, transparent pricing
+                        {{ $t('pricing.title') }}
                     </h2>
                     <p class="text-lg text-slate-600 dark:text-slate-400">
-                        Choose the perfect plan for your needs. No hidden fees.
+                        {{ $t('pricing.description') }}
                     </p>
                 </div>
 
@@ -187,7 +158,7 @@ const pricing = [
                             v-if="plan.highlight"
                             class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-indigo-600 text-white text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-full shadow-md"
                         >
-                            Most Popular
+                            {{ $t('pricing.mostPopular') }}
                         </div>
 
                         <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">
@@ -199,9 +170,9 @@ const pricing = [
                                 >{{ plan.price }}</span
                             >
                             <span
-                                v-if="plan.price !== 'Custom'"
+                                v-if="plan.showPerMonth"
                                 class="text-slate-500 dark:text-slate-400"
-                                >/month</span
+                                >{{ $t('pricing.perMonth') }}</span
                             >
                         </div>
 
@@ -236,7 +207,7 @@ const pricing = [
                                     : 'bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-600',
                             ]"
                         >
-                            Choose {{ plan.name }}
+                            {{ $t('pricing.choose') }} {{ plan.name }}
                         </button>
                     </div>
                 </div>
@@ -263,13 +234,12 @@ const pricing = [
                         <h2
                             class="text-3xl md:text-4xl font-bold text-white mb-6"
                         >
-                            Ready to start your project?
+                            {{ $t('contact.title') }}
                         </h2>
                         <p
                             class="text-indigo-100 text-lg mb-10 max-w-2xl mx-auto"
                         >
-                            Join thousands of developers building the future of
-                            the web. Get in touch with us today.
+                            {{ $t('contact.description') }}
                         </p>
 
                         <form
@@ -277,12 +247,12 @@ const pricing = [
                         >
                             <div>
                                 <label for="email" class="sr-only"
-                                    >Email address</label
+                                    >{{ $t('contact.emailSrOnly') }}</label
                                 >
                                 <input
                                     type="email"
                                     id="email"
-                                    placeholder="Enter your email"
+                                    :placeholder="String($t('contact.emailPlaceholder'))"
                                     class="w-full px-4 py-3 bg-white/90 dark:bg-white/80 border-0 rounded-lg text-slate-900 placeholder-slate-500 focus:ring-2 focus:ring-indigo-400 focus:outline-none transition-shadow"
                                 />
                             </div>
@@ -290,12 +260,12 @@ const pricing = [
                                 type="button"
                                 class="w-full py-3 bg-white text-indigo-900 font-bold rounded-lg hover:bg-indigo-50 transition-colors shadow-lg"
                             >
-                                Get Started Now
+                                {{ $t('contact.cta') }}
                             </button>
                             <p
                                 class="text-center text-xs text-indigo-200/80 mt-4"
                             >
-                                No credit card required. Cancel anytime.
+                                {{ $t('contact.disclaimer') }}
                             </p>
                         </form>
                     </div>

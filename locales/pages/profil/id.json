@@ -1,0 +1,38 @@
+{
+  "title": "Profil Saya",
+  "subtitle": "Kelola informasi akun dan keamanan Anda",
+  "avatar": {
+    "title": "Foto Profil",
+    "uploadHint": "Upload foto profil dalam format JPG atau PNG. Maksimal 2MB.",
+    "selectPhoto": "Pilih Foto",
+    "uploading": "Mengupload...",
+    "savePhoto": "Simpan Foto",
+    "success": "Avatar berhasil diperbarui!",
+    "failedUpload": "Gagal mengupload avatar",
+    "onlyJpgPng": "Hanya file JPG dan PNG yang diizinkan",
+    "maxSize": "Ukuran file maksimal 2MB"
+  },
+  "account": {
+    "title": "Informasi Akun",
+    "emailLabel": "Email",
+    "emailReadonly": "Email tidak dapat diubah"
+  },
+  "password": {
+    "title": "Ubah Kata Sandi",
+    "oldPassword": "Kata Sandi Lama",
+    "oldPasswordPlaceholder": "Masukkan kata sandi lama",
+    "newPassword": "Kata Sandi Baru",
+    "newPasswordPlaceholder": "Masukkan kata sandi baru",
+    "confirmPassword": "Konfirmasi Kata Sandi Baru",
+    "confirmPasswordPlaceholder": "Konfirmasi kata sandi baru",
+    "saving": "Menyimpan...",
+    "changePassword": "Ubah Kata Sandi",
+    "success": "Kata sandi berhasil diubah!",
+    "fillAllFields": "Semua field harus diisi",
+    "noMatch": "Kata sandi baru tidak cocok",
+    "minLength": "Kata sandi minimal 6 karakter",
+    "oldInvalid": "Kata sandi lama tidak valid",
+    "failedChange": "Gagal mengubah kata sandi"
+  },
+  "backToHome": "Kembali ke Beranda"
+}

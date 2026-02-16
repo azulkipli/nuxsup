@@ -1,0 +1,11 @@
+{
+  "title": "Reset your password",
+  "subtitle": "Enter your email and we'll send you a reset link.",
+  "sending": "Sending...",
+  "sendResetLink": "Send Reset Link",
+  "rememberPassword": "Remember your password?",
+  "checkEmail": "Check your email",
+  "resetLinkSent": "We've sent a password reset link to",
+  "clickResetLink": "Click the link in your email to set a new password.",
+  "enterEmail": "Please enter your email address"
+}

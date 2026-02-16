@@ -1,12 +1,14 @@
 <template>
   <section id="pageAbout">
-    <h1 class="text-3xl font-bold underline">About</h1>
+    <h1 class="text-3xl font-bold underline">{{ $t('title') }}</h1>
     <p>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.
+      {{ $t('description') }}
     </p>
   </section>
 </template>
 
-<script lang="ts" setup></script>
+<script setup lang="ts">
+const { $t } = useI18n()
+</script>
 
 <style></style>

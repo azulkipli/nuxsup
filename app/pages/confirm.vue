@@ -3,6 +3,7 @@ definePageMeta({
   layout: 'auth'
 })
 
+const { $t } = useI18n()
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
 const router = useRouter()
@@ -34,17 +35,17 @@ watch(user, (newUser) => {
 
 const setPassword = async () => {
   if (!password.value || !confirmPassword.value) {
-    errorMessage.value = 'Please fill in all fields'
+    errorMessage.value = String($t('fillAllFields'))
     return
   }
   
   if (password.value !== confirmPassword.value) {
-    errorMessage.value = 'Passwords do not match'
+    errorMessage.value = String($t('passwordsNoMatch'))
     return
   }
   
   if (password.value.length < 6) {
-    errorMessage.value = 'Password must be at least 6 characters'
+    errorMessage.value = String($t('passwordMinLength'))
     return
   }
   
@@ -56,7 +57,7 @@ const setPassword = async () => {
     // OTP/magic link sessions can become stale quickly
     const { error: refreshError } = await supabase.auth.refreshSession()
     if (refreshError) {
-      errorMessage.value = 'Session expired. Please register again.'
+      errorMessage.value = String($t('sessionExpired'))
       loading.value = false
       return
     }
@@ -72,7 +73,7 @@ const setPassword = async () => {
       await router.push('/')
     }
   } catch (e: any) {
-    errorMessage.value = e.message || 'An error occurred'
+    errorMessage.value = e.message || $t('common.error')
   } finally {
     loading.value = false
   }
@@ -96,7 +97,7 @@ const setPassword = async () => {
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
           </div>
-          <p class="text-slate-500 text-sm">Confirming your email...</p>
+          <p class="text-slate-500 text-sm">{{ $t('confirming') }}</p>
         </div>
       </template>
 
@@ -108,8 +109,8 @@ const setPassword = async () => {
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h2 class="text-2xl font-bold text-slate-900 mb-2">Email confirmed!</h2>
-          <p class="text-slate-500 text-sm">Now set your password to complete registration.</p>
+          <h2 class="text-2xl font-bold text-slate-900 mb-2">{{ $t('emailConfirmed') }}</h2>
+          <p class="text-slate-500 text-sm">{{ $t('setPasswordDesc') }}</p>
         </div>
 
         <!-- Error Message -->
@@ -119,7 +120,7 @@ const setPassword = async () => {
 
         <form @submit.prevent="setPassword" class="space-y-5">
           <div>
-            <label for="password" class="block text-sm font-medium text-slate-700 mb-1">Password</label>
+            <label for="password" class="block text-sm font-medium text-slate-700 mb-1">{{ $t('password') }}</label>
             <input 
               v-model="password"
               type="password" 
@@ -134,7 +135,7 @@ const setPassword = async () => {
           </div>
 
           <div>
-            <label for="confirmPassword" class="block text-sm font-medium text-slate-700 mb-1">Confirm Password</label>
+            <label for="confirmPassword" class="block text-sm font-medium text-slate-700 mb-1">{{ $t('confirmPassword') }}</label>
             <input 
               v-model="confirmPassword"
               type="password" 
@@ -157,18 +158,18 @@ const setPassword = async () => {
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
-            {{ loading ? 'Setting up...' : 'Complete Registration' }}
+            {{ loading ? $t('settingUp') : $t('completeRegistration') }}
           </button>
         </form>
       </template>
 
       <div class="mt-8 border-t border-slate-100 pt-6 text-center">
-        <NuxtLink to="/" class="inline-flex items-center gap-1 text-sm text-slate-400 hover:text-slate-600 transition-colors group">
+        <i18n-link to="/" class="inline-flex items-center gap-1 text-sm text-slate-400 hover:text-slate-600 transition-colors group">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
-          Back to home
-        </NuxtLink>
+          {{ $t('auth.backToHome') }}
+        </i18n-link>
       </div>
     </div>
   </div>

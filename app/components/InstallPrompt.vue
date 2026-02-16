@@ -4,16 +4,16 @@
       <div class="flex items-start gap-3">
         <span class="text-[32px] leading-none">📱</span>
         <div>
-          <p class="font-semibold text-base mb-1">Install Nuxsup</p>
-          <p class="text-[13px] opacity-90">Add to Home Screen for better experience</p>
+          <p class="font-semibold text-base mb-1">{{ $t('pwa.installTitle') }}</p>
+          <p class="text-[13px] opacity-90">{{ $t('pwa.installDescription') }}</p>
         </div>
       </div>
       <div class="flex gap-2 sm:min-w-[200px]">
         <button @click="install" class="flex-1 py-2.5 px-4 rounded-lg font-semibold text-sm transition-all duration-200 bg-white text-[#667eea] hover:bg-gray-100 hover:-translate-y-px">
-          Install
+          {{ $t('pwa.install') }}
         </button>
         <button @click="dismiss" class="flex-1 py-2.5 px-4 rounded-lg font-semibold text-sm transition-all duration-200 bg-white/20 text-white border border-white/30 hover:bg-white/30">
-          Later
+          {{ $t('pwa.later') }}
         </button>
       </div>
     </div>

@@ -1,0 +1,13 @@
+{
+  "confirming": "Mengkonfirmasi email Anda...",
+  "emailConfirmed": "Email terkonfirmasi!",
+  "setPasswordDesc": "Sekarang atur kata sandi Anda untuk menyelesaikan pendaftaran.",
+  "password": "Kata Sandi",
+  "confirmPassword": "Konfirmasi Kata Sandi",
+  "settingUp": "Menyiapkan...",
+  "completeRegistration": "Selesaikan Pendaftaran",
+  "fillAllFields": "Harap isi semua kolom",
+  "passwordsNoMatch": "Kata sandi tidak cocok",
+  "passwordMinLength": "Kata sandi minimal 6 karakter",
+  "sessionExpired": "Sesi kedaluwarsa. Silakan daftar ulang."
+}
