@@ -5,10 +5,10 @@ console.log("user:", user.value);
 
 <template>
   <div
-    class="flex flex-col min-h-screen text-slate-800 bg-white selection:bg-indigo-100 selection:text-indigo-900"
+    class="flex flex-col min-h-screen text-slate-800 dark:text-slate-200 bg-white dark:bg-slate-900 selection:bg-indigo-100 selection:text-indigo-900 dark:selection:bg-indigo-900/50 dark:selection:text-indigo-200 transition-colors duration-300"
   >
     <header
-      class="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-slate-200/60 shadow-sm transition-all duration-300"
+      class="sticky top-0 z-50 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/60 dark:border-slate-700/60 shadow-sm transition-all duration-300"
     >
       <nav
         class="container mx-auto px-4 md:px-6 h-16 flex items-center justify-between"
@@ -21,7 +21,7 @@ console.log("user:", user.value);
             N
           </div>
           <span
-            class="font-bold text-xl tracking-tight text-slate-900 group-hover:text-indigo-600 transition-colors"
+            class="font-bold text-xl tracking-tight text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors"
             >Nuxsup</span
           >
         </NuxtLink>
@@ -31,41 +31,42 @@ console.log("user:", user.value);
           <li>
             <NuxtLink
               to="/#hero"
-              class="text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors"
+              class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
               >Home</NuxtLink
             >
           </li>
           <li>
             <NuxtLink
               to="/#features"
-              class="text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors"
+              class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
               >Features</NuxtLink
             >
           </li>
           <li>
             <NuxtLink
               to="/#pricing"
-              class="text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors"
+              class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
               >Pricing</NuxtLink
             >
           </li>
           <li>
             <NuxtLink
               to="/#contact"
-              class="text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors"
+              class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
               >Contact</NuxtLink
             >
           </li>
         </ul>
 
-        <!-- Action Button -->
-        <div class="flex items-center gap-4">
+        <!-- Action Buttons -->
+        <div class="flex items-center gap-2">
+          <ColorModeToggle />
           <!-- Show UserAvatar if logged in, otherwise show Login button -->
           <UserAvatar v-if="user" />
           <NuxtLink
             v-else
             to="/login"
-            class="px-5 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 active:bg-indigo-800 transition-all shadow-md shadow-indigo-200 hover:shadow-lg hover:-translate-y-0.5"
+            class="px-5 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 active:bg-indigo-800 transition-all shadow-md shadow-indigo-200 dark:shadow-indigo-900/30 hover:shadow-lg hover:-translate-y-0.5"
           >
             Log in
           </NuxtLink>
@@ -77,7 +78,7 @@ console.log("user:", user.value);
       <slot />
     </main>
 
-    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+    <footer class="bg-slate-900 dark:bg-slate-950 text-slate-400 py-12 border-t border-slate-800 dark:border-slate-700">
       <div class="container mx-auto px-4 md:px-6">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div class="col-span-1 md:col-span-2">
@@ -140,9 +141,9 @@ console.log("user:", user.value);
           </div>
         </div>
         <div
-          class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs"
+          class="border-t border-slate-800 dark:border-slate-700 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs"
         >
-          <p>© 2026 Nuxsup. All rights reserved.</p>
+          <p>&copy; 2026 Nuxsup. All rights reserved.</p>
           <div class="flex gap-4">
             <a href="#" class="hover:text-white transition-colors">Twitter</a>
             <a href="#" class="hover:text-white transition-colors">GitHub</a>

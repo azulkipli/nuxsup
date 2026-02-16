@@ -12,17 +12,19 @@
   "dependencies": {
     "@nuxt/eslint": "1.14.0",
     "@nuxt/hints": "1.0.0-alpha.6",
+    "@nuxtjs/color-mode": "^4.0.0",
     "@nuxtjs/supabase": "2.0.3",
     "@tailwindcss/vite": "^4.1.18",
     "nuxt": "^4.3.1",
+    "nuxt-i18n-micro": "^3.9.0",
     "tailwindcss": "^4.1.18",
     "vue": "^3.5.27",
     "vue-router": "^4.6.4",
     "web-push": "^3.6.7"
   },
   "devDependencies": {
-    "tailwindcss-debug-screens": "^3.0.1",
     "@types/web-push": "^3.6.4",
-    "@vite-pwa/nuxt": "^1.1.1"
+    "@vite-pwa/nuxt": "^1.1.1",
+    "tailwindcss-debug-screens": "^3.0.1"
   }
 }

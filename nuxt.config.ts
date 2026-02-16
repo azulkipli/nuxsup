@@ -14,7 +14,13 @@ export default defineNuxtConfig({
     }
   },
 
-  modules: ["@nuxtjs/supabase", "@vite-pwa/nuxt"],
+  modules: ["@nuxtjs/supabase", "@vite-pwa/nuxt", "@nuxtjs/color-mode"],
+
+  colorMode: {
+    classSuffix: '',
+    preference: 'system',
+    fallback: 'light',
+  },
   css: ["./app/assets/css/main.css"],
 
   experimental: {
