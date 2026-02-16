@@ -7,8 +7,8 @@ const dropdownRef = ref<HTMLElement | null>(null)
 const currentLocale = computed(() => $getLocale())
 
 const localeNames: Record<string, { name: string; flag: string }> = {
-  id: { name: 'Indonesia', flag: '🇮🇩' },
-  en: { name: 'English', flag: '🇬🇧' }
+  id: { name: 'ID', flag: '🇮🇩' },
+  en: { name: 'EN', flag: '🇬🇧' }
 }
 
 const currentLocaleInfo = computed(() => {
