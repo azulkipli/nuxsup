@@ -56,7 +56,7 @@ const resetPassword = async () => {
     if (error) {
       errorMessage.value = error.message
     } else {
-      await router.push('/login')
+      await router.push('/')
     }
   } catch (e: any) {
     errorMessage.value = e.message || 'Failed to update password'
