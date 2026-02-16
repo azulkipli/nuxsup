@@ -49,6 +49,14 @@ const resetPassword = async () => {
   loading.value = true
 
   try {
+    // Refresh session first to ensure it's still valid
+    const { error: refreshError } = await supabase.auth.refreshSession()
+    if (refreshError) {
+      errorMessage.value = 'Session expired. Please request a new reset link.'
+      loading.value = false
+      return
+    }
+
     const { error } = await supabase.auth.updateUser({
       password: password.value
     })

@@ -37,15 +37,13 @@ const handleClickOutside = (event: MouseEvent) => {
 
 const goToProfile = () => {
   closeDropdown()
-  // router.push('/profil')
   navigateTo('/profil')
 }
 
 const logout = async () => {
   closeDropdown()
   await supabase.auth.signOut()
-  // router.push('/')
-  navigateTo('/')
+  await navigateTo('/')
 } 
 
 onMounted(() => {

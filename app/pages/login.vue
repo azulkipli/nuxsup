@@ -13,13 +13,6 @@ const loading = ref(false)
 const errorMessage = ref('')
 const showPassword = ref(false)
 
-// Redirect if already logged in
-// watch(user, (newUser) => {
-//   console.log('newUser:', newUser)
-//   if (newUser) {
-//     router.push('/')
-//   }
-// }, { immediate: true })
 
 const signIn = async () => {
   if (!email.value || !password.value) {
@@ -38,8 +31,9 @@ const signIn = async () => {
     
     if (error) {
       errorMessage.value = error.message
+    }else{
+      await router.push('/')
     }
-    // Redirect handled by watcher
   } catch (e: any) {
     errorMessage.value = e.message || 'An error occurred'
   } finally {

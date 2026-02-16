@@ -52,6 +52,15 @@ const setPassword = async () => {
   errorMessage.value = ''
   
   try {
+    // Refresh session first to ensure it's still valid
+    // OTP/magic link sessions can become stale quickly
+    const { error: refreshError } = await supabase.auth.refreshSession()
+    if (refreshError) {
+      errorMessage.value = 'Session expired. Please register again.'
+      loading.value = false
+      return
+    }
+
     const { error } = await supabase.auth.updateUser({
       password: password.value
     })

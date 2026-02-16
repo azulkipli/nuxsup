@@ -77,21 +77,10 @@ export default defineNuxtConfig({
       navigateFallbackDenylist: [/^\/api/],
 
       runtimeCaching: [
-        // Supabase Auth - NetworkFirst
+        // Supabase Auth - NetworkOnly (NEVER cache auth requests)
         {
           urlPattern: /\/auth\/v1\/.*/,
-          handler: 'NetworkFirst',
-          options: {
-            cacheName: 'sb-auth',
-            networkTimeoutSeconds: 3,
-            expiration: {
-              maxEntries: 50,
-              maxAgeSeconds: 300
-            },
-            cacheableResponse: {
-              statuses: [0, 200]
-            }
-          }
+          handler: 'NetworkOnly',
         },
         // Supabase REST API - StaleWhileRevalidate
         {
