@@ -25,6 +25,9 @@ export default defineNuxtConfig({
     server: {
       allowedHosts: ["dev.nebengyu.web.id"]
     },
+    build: {
+      sourcemap: false,
+    },
     plugins: [tailwindcss() as any],
   },
   supabase: {
@@ -137,6 +140,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
+      appDebug: process.env.APP_DEBUG || 'off',
       pushVapidPublicKey: process.env.NUXT_PUBLIC_PUSH_VAPID_PUBLIC_KEY || ''
     },
     pushVapidPrivateKey: process.env.NUXT_PUSH_VAPID_PRIVATE_KEY || ''
