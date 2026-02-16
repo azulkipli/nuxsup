@@ -89,12 +89,20 @@ const uploadAvatar = async () => {
   
   try {
     const fileExt = avatarFile.value.name.split('.').pop()
-    const fileName = `${user.value.id}-${Date.now()}.${fileExt}`
+    const filePath = `${user.value.sub}/avatar-${Date.now()}.${fileExt}`
     
-    // Upload to Supabase Storage (fileName only, bucket is already 'avatars')
+    // Delete old avatar if exists (ignore errors)
+    if (avatarUrl.value) {
+      const oldPath = avatarUrl.value.split('/avatars/').pop()
+      if (oldPath) {
+        await supabase.storage.from('avatars').remove([decodeURIComponent(oldPath)])
+      }
+    }
+    
+    // Upload to Supabase Storage (user_id/filename)
     const { error: uploadErr } = await supabase.storage
       .from('avatars')
-      .upload(fileName, avatarFile.value, {
+      .upload(filePath, avatarFile.value, {
         cacheControl: '3600',
         upsert: true
       })
@@ -106,7 +114,7 @@ const uploadAvatar = async () => {
     // Get public URL
     const { data: { publicUrl } } = supabase.storage
       .from('avatars')
-      .getPublicUrl(fileName)
+      .getPublicUrl(filePath)
     
     // Update user metadata
     const { error: updateErr } = await supabase.auth.updateUser({
