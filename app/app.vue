@@ -6,8 +6,8 @@ useHead({
   bodyAttrs: {
     class: import.meta.env.APP_DEBUG === 'on' ? 'debug-screens no-scrollbar' : 'no-scrollbar',
   },
-  titleTemplate: (param: string) => {
-    return param ? `${param} - Nuxsup` : ''
+  titleTemplate: (param?: string) => {
+    return param ? `${param} - Nuxsup` : 'Nuxsup'
   },
 })
 

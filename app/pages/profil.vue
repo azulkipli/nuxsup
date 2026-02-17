@@ -7,25 +7,25 @@ definePageMeta({
 const { $t } = useI18n()
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
+const toast = useToast()
 
 // Avatar Upload State
 const avatarUrl = ref<string | null>(null)
 const avatarFile = ref<File | null>(null)
 const avatarPreview = ref<string | null>(null)
 const uploadLoading = ref(false)
-const uploadError = ref('')
-const uploadSuccess = ref('')
 
 // Password Change State
 const oldPassword = ref('')
 const newPassword = ref('')
 const confirmNewPassword = ref('')
 const passwordLoading = ref(false)
-const passwordError = ref('')
-const passwordSuccess = ref('')
 const showOldPassword = ref(false)
 const showNewPassword = ref(false)
 const showConfirmPassword = ref(false)
+
+// Template refs
+const fileInput = ref<HTMLInputElement | null>(null)
 
 // Load current avatar
 onMounted(() => {
@@ -61,18 +61,25 @@ const handleFileSelect = (event: Event) => {
   // Validate file type
   const allowedTypes = ['image/jpeg', 'image/png']
   if (!allowedTypes.includes(file.type)) {
-    uploadError.value = String($t('avatar.onlyJpgPng'))
+    toast.add({
+      title: String($t('common.error')),
+      description: String($t('avatar.onlyJpgPng')),
+      color: 'error',
+    })
     return
   }
 
   // Validate file size (max 2MB)
   const maxSize = 2 * 1024 * 1024
   if (file.size > maxSize) {
-    uploadError.value = String($t('avatar.maxSize'))
+    toast.add({
+      title: String($t('common.error')),
+      description: String($t('avatar.maxSize')),
+      color: 'error',
+    })
     return
   }
 
-  uploadError.value = ''
   avatarFile.value = file
 
   // Create preview
@@ -88,8 +95,6 @@ const uploadAvatar = async () => {
   if (!avatarFile.value || !user.value) return
 
   uploadLoading.value = true
-  uploadError.value = ''
-  uploadSuccess.value = ''
 
   try {
     const fileExt = avatarFile.value.name.split('.').pop()
@@ -135,14 +140,18 @@ const uploadAvatar = async () => {
     avatarUrl.value = publicUrl
     avatarPreview.value = null
     avatarFile.value = null
-    uploadSuccess.value = String($t('avatar.success'))
 
-    // Clear success message after 3 seconds
-    setTimeout(() => {
-      uploadSuccess.value = ''
-    }, 3000)
+    toast.add({
+      title: String($t('common.success')),
+      description: String($t('avatar.success')),
+      color: 'success',
+    })
   } catch (e: unknown) {
-    uploadError.value = e instanceof Error ? e.message : String($t('avatar.failedUpload'))
+    toast.add({
+      title: String($t('common.error')),
+      description: e instanceof Error ? e.message : String($t('avatar.failedUpload')),
+      color: 'error',
+    })
   } finally {
     uploadLoading.value = false
   }
@@ -150,22 +159,31 @@ const uploadAvatar = async () => {
 
 // Change password
 const changePassword = async () => {
-  passwordError.value = ''
-  passwordSuccess.value = ''
-
   // Validation
   if (!oldPassword.value || !newPassword.value || !confirmNewPassword.value) {
-    passwordError.value = String($t('password.fillAllFields'))
+    toast.add({
+      title: String($t('common.error')),
+      description: String($t('password.fillAllFields')),
+      color: 'error',
+    })
     return
   }
 
   if (newPassword.value !== confirmNewPassword.value) {
-    passwordError.value = String($t('password.noMatch'))
+    toast.add({
+      title: String($t('common.error')),
+      description: String($t('password.noMatch')),
+      color: 'error',
+    })
     return
   }
 
   if (newPassword.value.length < 6) {
-    passwordError.value = String($t('password.minLength'))
+    toast.add({
+      title: String($t('common.error')),
+      description: String($t('password.minLength')),
+      color: 'error',
+    })
     return
   }
 
@@ -179,7 +197,11 @@ const changePassword = async () => {
     })
 
     if (signInError) {
-      passwordError.value = String($t('password.oldInvalid'))
+      toast.add({
+        title: String($t('common.error')),
+        description: String($t('password.oldInvalid')),
+        color: 'error',
+      })
       return
     }
 
@@ -192,17 +214,21 @@ const changePassword = async () => {
       throw updateError
     }
 
-    passwordSuccess.value = String($t('password.success'))
+    toast.add({
+      title: String($t('common.success')),
+      description: String($t('password.success')),
+      color: 'success',
+    })
+
     oldPassword.value = ''
     newPassword.value = ''
     confirmNewPassword.value = ''
-
-    // Clear success message after 3 seconds
-    setTimeout(() => {
-      passwordSuccess.value = ''
-    }, 3000)
   } catch (e: unknown) {
-    passwordError.value = e instanceof Error ? e.message : String($t('password.failedChange'))
+    toast.add({
+      title: String($t('common.error')),
+      description: e instanceof Error ? e.message : String($t('password.failedChange')),
+      color: 'error',
+    })
   } finally {
     passwordLoading.value = false
   }
@@ -214,250 +240,181 @@ const changePassword = async () => {
     <div class="container mx-auto px-4 md:px-6 max-w-2xl">
       <!-- Page Header -->
       <div class="mb-8">
-        <h1 class="text-3xl font-bold text-slate-900">{{ $t('title') }}</h1>
-        <p class="text-slate-600 mt-2">{{ $t('subtitle') }}</p>
+        <h1 class="text-3xl font-bold text-slate-900 dark:text-white">{{ $t('title') }}</h1>
+        <p class="text-slate-600 dark:text-slate-400 mt-2">{{ $t('subtitle') }}</p>
       </div>
 
       <!-- Avatar Section -->
-      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mb-6">
-        <h2 class="text-lg font-semibold text-slate-900 mb-4">{{ $t('avatar.title') }}</h2>
+      <UCard class="mb-6 [&>div]:p-6">
+        <template #header>
+          <h2 class="text-lg font-semibold text-slate-900 dark:text-white">
+            {{ $t('avatar.title') }}
+          </h2>
+        </template>
 
         <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
           <!-- Current/Preview Avatar -->
           <div class="flex-shrink-0">
-            <div
-              class="w-24 h-24 rounded-full overflow-hidden border-4 border-slate-100 shadow-inner"
-            >
-              <img
-                v-if="avatarPreview || avatarUrl"
-                :src="avatarPreview || avatarUrl || ''"
-                alt="Avatar"
-                class="w-full h-full object-cover"
-              />
-              <div
-                v-else
-                class="w-full h-full bg-indigo-600 text-white flex items-center justify-center text-2xl font-bold"
-              >
-                {{ userInitials }}
-              </div>
-            </div>
+            <UAvatar
+              :src="avatarPreview || avatarUrl || undefined"
+              :alt="userEmail"
+              :fallback="userInitials"
+              size="3xl"
+              class="border-4 border-slate-100 dark:border-slate-700"
+            />
           </div>
 
           <!-- Upload Controls -->
           <div class="w-full md:flex-1 text-center md:text-left">
-            <p class="text-sm text-slate-600 mb-3">
+            <p class="text-sm text-slate-600 dark:text-slate-400 mb-3">
               {{ $t('avatar.uploadHint') }}
             </p>
 
             <div class="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
-              <label
-                class="cursor-pointer flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-3 md:py-2 text-sm font-medium text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+              <UButton
+                color="neutral"
+                variant="outline"
+                class="cursor-pointer"
+                @click="fileInput?.click()"
               >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                  />
-                </svg>
+                <UIcon name="i-lucide-image" class="w-5 h-5 mr-2" />
                 {{ $t('avatar.selectPhoto') }}
-                <input
-                  type="file"
-                  accept="image/jpeg,image/png"
-                  class="hidden"
-                  @change="handleFileSelect"
-                />
-              </label>
+              </UButton>
+              <input
+                ref="fileInput"
+                type="file"
+                accept="image/jpeg,image/png"
+                class="hidden"
+                @change="handleFileSelect"
+              />
 
-              <button
+              <UButton
                 v-if="avatarFile"
+                color="primary"
+                :loading="uploadLoading"
                 :disabled="uploadLoading"
-                class="flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-3 md:py-2 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50"
                 @click="uploadAvatar"
               >
-                <svg
-                  v-if="uploadLoading"
-                  class="animate-spin w-4 h-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    class="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    stroke-width="4"
-                  ></circle>
-                  <path
-                    class="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
                 {{ uploadLoading ? $t('avatar.uploading') : $t('avatar.savePhoto') }}
-              </button>
+              </UButton>
             </div>
-
-            <!-- Messages -->
-            <p v-if="uploadError" class="mt-3 text-sm text-red-600">{{ uploadError }}</p>
-            <p v-if="uploadSuccess" class="mt-3 text-sm text-green-600">{{ uploadSuccess }}</p>
           </div>
         </div>
-      </div>
+      </UCard>
 
       <!-- Account Info Section -->
-      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mb-6">
-        <h2 class="text-lg font-semibold text-slate-900 mb-4">{{ $t('account.title') }}</h2>
+      <UCard class="mb-6 [&>div]:p-6">
+        <template #header>
+          <h2 class="text-lg font-semibold text-slate-900 dark:text-white">
+            {{ $t('account.title') }}
+          </h2>
+        </template>
 
-        <div>
-          <label class="block text-sm font-medium text-slate-700 mb-1">{{
-            $t('account.emailLabel')
-          }}</label>
-          <div class="px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-600">
-            {{ userEmail }}
-          </div>
-          <p class="text-xs text-slate-400 mt-1">{{ $t('account.emailReadonly') }}</p>
-        </div>
-      </div>
+        <UFormGroup :label="$t('account.emailLabel')" name="email">
+          <UInput
+            :model-value="userEmail"
+            disabled
+            size="lg"
+            :ui="{ base: 'bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400' }"
+          />
+          <template #hint>
+            <p class="text-xs text-slate-400">{{ $t('account.emailReadonly') }}</p>
+          </template>
+        </UFormGroup>
+      </UCard>
 
       <!-- Password Change Section -->
-      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
-        <h2 class="text-lg font-semibold text-slate-900 mb-4">{{ $t('password.title') }}</h2>
+      <UCard [&>div]:p-6>
+        <template #header>
+          <h2 class="text-lg font-semibold text-slate-900 dark:text-white">
+            {{ $t('password.title') }}
+          </h2>
+        </template>
 
-        <!-- Messages -->
-        <div v-if="passwordError" class="mb-4 p-3 bg-red-50 border border-red-100 rounded-lg">
-          <p class="text-sm text-red-600">{{ passwordError }}</p>
-        </div>
-        <div v-if="passwordSuccess" class="mb-4 p-3 bg-green-50 border border-green-100 rounded-lg">
-          <p class="text-sm text-green-600">{{ passwordSuccess }}</p>
-        </div>
+        <UForm class="space-y-4" @submit="changePassword">
+          <UFormGroup :label="$t('password.oldPassword')" name="oldPassword">
+            <UInput
+              v-model="oldPassword"
+              :type="showOldPassword ? 'text' : 'password'"
+              :placeholder="String($t('password.oldPasswordPlaceholder'))"
+              size="lg"
+              :disabled="passwordLoading"
+              autocomplete="current-password"
+            >
+              <template #trailing>
+                <UButton
+                  color="neutral"
+                  variant="link"
+                  size="sm"
+                  :icon="showOldPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+                  @click="showOldPassword = !showOldPassword"
+                />
+              </template>
+            </UInput>
+          </UFormGroup>
 
-        <form class="space-y-4" @submit.prevent="changePassword">
-          <div>
-            <label for="oldPassword" class="block text-sm font-medium text-slate-700 mb-1">
-              {{ $t('password.oldPassword') }}
-            </label>
-            <div class="relative">
-              <input
-                id="oldPassword"
-                v-model="oldPassword"
-                :type="showOldPassword ? 'text' : 'password'"
-                class="w-full px-4 py-2.5 pr-11 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none"
-                :placeholder="String($t('password.oldPasswordPlaceholder'))"
-                :disabled="passwordLoading"
-              />
-              <button
-                type="button"
-                class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
-                tabindex="-1"
-                @click="showOldPassword = !showOldPassword"
-              >
-                <IconsEyeVisible v-if="showOldPassword" class="w-5 h-5" />
-                <IconsEyeHidden v-else class="w-5 h-5" />
-              </button>
-            </div>
-          </div>
+          <UFormGroup :label="$t('password.newPassword')" name="newPassword">
+            <UInput
+              v-model="newPassword"
+              :type="showNewPassword ? 'text' : 'password'"
+              :placeholder="String($t('password.newPasswordPlaceholder'))"
+              size="lg"
+              :disabled="passwordLoading"
+              autocomplete="new-password"
+            >
+              <template #trailing>
+                <UButton
+                  color="neutral"
+                  variant="link"
+                  size="sm"
+                  :icon="showNewPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+                  @click="showNewPassword = !showNewPassword"
+                />
+              </template>
+            </UInput>
+          </UFormGroup>
 
-          <div>
-            <label for="newPassword" class="block text-sm font-medium text-slate-700 mb-1">
-              {{ $t('password.newPassword') }}
-            </label>
-            <div class="relative">
-              <input
-                id="newPassword"
-                v-model="newPassword"
-                :type="showNewPassword ? 'text' : 'password'"
-                class="w-full px-4 py-2.5 pr-11 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none"
-                :placeholder="String($t('password.newPasswordPlaceholder'))"
-                :disabled="passwordLoading"
-                minlength="6"
-              />
-              <button
-                type="button"
-                class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
-                tabindex="-1"
-                @click="showNewPassword = !showNewPassword"
-              >
-                <IconsEyeVisible v-if="showNewPassword" class="w-5 h-5" />
-                <IconsEyeHidden v-else class="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-
-          <div>
-            <label for="confirmNewPassword" class="block text-sm font-medium text-slate-700 mb-1">
-              {{ $t('password.confirmPassword') }}
-            </label>
-            <div class="relative">
-              <input
-                id="confirmNewPassword"
-                v-model="confirmNewPassword"
-                :type="showConfirmPassword ? 'text' : 'password'"
-                class="w-full px-4 py-2.5 pr-11 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none"
-                :placeholder="String($t('password.confirmPasswordPlaceholder'))"
-                :disabled="passwordLoading"
-                minlength="6"
-              />
-              <button
-                type="button"
-                class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
-                tabindex="-1"
-                @click="showConfirmPassword = !showConfirmPassword"
-              >
-                <IconsEyeVisible v-if="showConfirmPassword" class="w-5 h-5" />
-                <IconsEyeHidden v-else class="w-5 h-5" />
-              </button>
-            </div>
-          </div>
+          <UFormGroup :label="$t('password.confirmPassword')" name="confirmNewPassword">
+            <UInput
+              v-model="confirmNewPassword"
+              :type="showConfirmPassword ? 'text' : 'password'"
+              :placeholder="String($t('password.confirmPasswordPlaceholder'))"
+              size="lg"
+              :disabled="passwordLoading"
+              autocomplete="new-password"
+            >
+              <template #trailing>
+                <UButton
+                  color="neutral"
+                  variant="link"
+                  size="sm"
+                  :icon="showConfirmPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+                  @click="showConfirmPassword = !showConfirmPassword"
+                />
+              </template>
+            </UInput>
+          </UFormGroup>
 
           <div class="pt-2">
-            <button
+            <UButton
               type="submit"
+              color="primary"
+              :loading="passwordLoading"
               :disabled="passwordLoading"
-              class="flex w-full sm:w-auto justify-center items-center gap-2 px-6 py-3 md:py-2.5 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-all shadow-md shadow-indigo-200 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <svg
-                v-if="passwordLoading"
-                class="animate-spin w-4 h-4"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  class="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  stroke-width="4"
-                ></circle>
-                <path
-                  class="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
               {{ passwordLoading ? $t('password.saving') : $t('password.changePassword') }}
-            </button>
+            </UButton>
           </div>
-        </form>
-      </div>
+        </UForm>
+      </UCard>
 
       <!-- Back Link -->
       <div class="mt-8 text-center">
         <i18n-link
           to="/"
-          class="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 transition-colors px-4 py-2 rounded-lg hover:bg-slate-100 md:hover:bg-transparent md:p-0"
+          class="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 transition-colors"
         >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M10 19l-7-7m0 0l7-7m-7 7h18"
-            />
-          </svg>
+          <UIcon name="i-lucide-arrow-left" class="w-4 h-4" />
           {{ $t('backToHome') }}
         </i18n-link>
       </div>
