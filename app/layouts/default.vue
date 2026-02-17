@@ -85,7 +85,7 @@ const footerLinks = computed(() => ({
             </p>
           </div>
           <div>
-            <h4 class="font-semibold text-white mb-4">{{ $t('footer.product') }}</h4>
+            <h2 class="font-semibold text-white mb-4 text-base">{{ $t('footer.product') }}</h2>
             <ul class="space-y-2 text-sm">
               <li v-for="link in footerLinks.product" :key="link.to">
                 <i18n-link :to="link.to" class="hover:text-white transition-colors">
@@ -95,7 +95,7 @@ const footerLinks = computed(() => ({
             </ul>
           </div>
           <div>
-            <h4 class="font-semibold text-white mb-4">{{ $t('footer.company') }}</h4>
+            <h2 class="font-semibold text-white mb-4 text-base">{{ $t('footer.company') }}</h2>
             <ul class="space-y-2 text-sm">
               <li v-for="link in footerLinks.company" :key="link.to">
                 <i18n-link :to="link.to" class="hover:text-white transition-colors">

@@ -1,4 +1,7 @@
 {
+  "meta": {
+    "description": "Nuxsup - Modern web development platform built with Nuxt 4. Fast, scalable, and easy to use. Join thousands of developers today."
+  },
   "nav": {
     "home": "Home",
     "features": "Features",

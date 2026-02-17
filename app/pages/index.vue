@@ -206,7 +206,7 @@ const onContactSubmit = () => {
                 <UButton color="neutral" variant="solid" size="lg" block @click="onContactSubmit">
                   {{ $t('contact.cta') }}
                 </UButton>
-                <p class="text-center text-xs text-indigo-200/80 mt-4">
+                <p class="text-center text-xs text-white/90 mt-4">
                   {{ $t('contact.disclaimer') }}
                 </p>
               </UForm>

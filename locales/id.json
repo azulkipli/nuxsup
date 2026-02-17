@@ -1,4 +1,7 @@
 {
+  "meta": {
+    "description": "Nuxsup - Platform pengembangan web modern dengan Nuxt 4. Cepat, skalabel, dan mudah digunakan. Bergabung dengan ribuan developer sekarang."
+  },
   "nav": {
     "home": "Beranda",
     "features": "Fitur",

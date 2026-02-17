@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const { $t } = useI18n()
+
 useHead({
   htmlAttrs: {
     class: 'no-scrollbar',
@@ -9,6 +11,11 @@ useHead({
   titleTemplate: (param?: string) => {
     return param ? `${param} - Nuxsup` : 'Nuxsup'
   },
+  meta: [
+    { name: 'description', content: $t('meta.description') as string },
+    { name: 'og:description', content: $t('meta.description') as string },
+    { name: 'twitter:description', content: $t('meta.description') as string },
+  ],
 })
 
 // Dynamic imports for non-critical PWA components
