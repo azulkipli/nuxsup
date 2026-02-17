@@ -310,7 +310,7 @@ const changePassword = async () => {
           </h2>
         </template>
 
-        <UFormGroup :label="$t('account.emailLabel')" name="email">
+        <UFormField :label="$t('account.emailLabel')" name="email">
           <UInput
             :model-value="userEmail"
             disabled
@@ -320,7 +320,7 @@ const changePassword = async () => {
           <template #hint>
             <p class="text-xs text-slate-400">{{ $t('account.emailReadonly') }}</p>
           </template>
-        </UFormGroup>
+        </UFormField>
       </UCard>
 
       <!-- Password Change Section -->
@@ -332,7 +332,7 @@ const changePassword = async () => {
         </template>
 
         <UForm class="space-y-4" @submit="changePassword">
-          <UFormGroup :label="$t('password.oldPassword')" name="oldPassword">
+          <UFormField :label="$t('password.oldPassword')" name="oldPassword">
             <UInput
               v-model="oldPassword"
               :type="showOldPassword ? 'text' : 'password'"
@@ -351,9 +351,9 @@ const changePassword = async () => {
                 />
               </template>
             </UInput>
-          </UFormGroup>
+          </UFormField>
 
-          <UFormGroup :label="$t('password.newPassword')" name="newPassword">
+          <UFormField :label="$t('password.newPassword')" name="newPassword">
             <UInput
               v-model="newPassword"
               :type="showNewPassword ? 'text' : 'password'"
@@ -372,9 +372,9 @@ const changePassword = async () => {
                 />
               </template>
             </UInput>
-          </UFormGroup>
+          </UFormField>
 
-          <UFormGroup :label="$t('password.confirmPassword')" name="confirmNewPassword">
+          <UFormField :label="$t('password.confirmPassword')" name="confirmNewPassword">
             <UInput
               v-model="confirmNewPassword"
               :type="showConfirmPassword ? 'text' : 'password'"
@@ -393,7 +393,7 @@ const changePassword = async () => {
                 />
               </template>
             </UInput>
-          </UFormGroup>
+          </UFormField>
 
           <div class="pt-2">
             <UButton

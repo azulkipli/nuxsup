@@ -55,7 +55,7 @@ const signIn = async () => {
 <template>
   <UiAuthCard :title="String($t('title'))" :description="String($t('subtitle'))">
     <UForm class="space-y-5" @submit="signIn">
-      <UFormGroup :label="String($t('auth.emailLabel'))" name="email">
+      <UFormField :label="String($t('auth.emailLabel'))" name="email">
         <UInput
           v-model="email"
           type="email"
@@ -65,9 +65,9 @@ const signIn = async () => {
           :disabled="loading"
           autocomplete="email"
         />
-      </UFormGroup>
+      </UFormField>
 
-      <UFormGroup :label="String($t('auth.passwordLabel'))" name="password">
+      <UFormField :label="String($t('auth.passwordLabel'))" name="password">
         <template #hint>
           <i18n-link
             to="/forgot-password"
@@ -95,7 +95,7 @@ const signIn = async () => {
             />
           </template>
         </UInput>
-      </UFormGroup>
+      </UFormField>
 
       <UButton type="submit" color="primary" size="lg" block :loading="loading" :disabled="loading">
         {{ loading ? $t('signingIn') : $t('signIn') }}

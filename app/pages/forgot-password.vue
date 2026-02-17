@@ -82,7 +82,7 @@ const resetPassword = async () => {
 
     <template v-if="!success">
       <UForm class="space-y-5" @submit="resetPassword">
-        <UFormGroup :label="$t('auth.emailLabel')" name="email">
+        <UFormField :label="$t('auth.emailLabel')" name="email">
           <UInput
             v-model="email"
             type="email"
@@ -92,7 +92,7 @@ const resetPassword = async () => {
             :disabled="loading"
             autocomplete="email"
           />
-        </UFormGroup>
+        </UFormField>
 
         <UButton
           type="submit"

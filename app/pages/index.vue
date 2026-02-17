@@ -192,7 +192,7 @@ const onContactSubmit = () => {
               class="max-w-md mx-auto text-left bg-white/10 backdrop-blur-sm border-white/10 ring-1 ring-white/10 rounded-2xl [&>div]:p-6"
             >
               <UForm class="space-y-4">
-                <UFormGroup :label="$t('contact.emailSrOnly')" name="email" class="sr-only" />
+                <UFormField :label="$t('contact.emailSrOnly')" name="email" class="sr-only" />
                 <UInput
                   type="email"
                   :placeholder="String($t('contact.emailPlaceholder'))"

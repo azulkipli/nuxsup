@@ -136,7 +136,7 @@ const setPassword = async () => {
       </div>
 
       <UForm class="space-y-5" @submit="setPassword">
-        <UFormGroup :label="$t('password')" name="password">
+        <UFormField :label="$t('password')" name="password">
           <UInput
             v-model="password"
             type="password"
@@ -146,9 +146,9 @@ const setPassword = async () => {
             :disabled="loading"
             autocomplete="new-password"
           />
-        </UFormGroup>
+        </UFormField>
 
-        <UFormGroup :label="$t('confirmPassword')" name="confirmPassword">
+        <UFormField :label="$t('confirmPassword')" name="confirmPassword">
           <UInput
             v-model="confirmPassword"
             type="password"
@@ -158,7 +158,7 @@ const setPassword = async () => {
             :disabled="loading"
             autocomplete="new-password"
           />
-        </UFormGroup>
+        </UFormField>
 
         <UButton
           type="submit"

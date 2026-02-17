@@ -124,7 +124,7 @@ const resetPassword = async () => {
       </div>
 
       <UForm class="space-y-5" @submit="resetPassword">
-        <UFormGroup :label="$t('newPassword')" name="password">
+        <UFormField :label="$t('newPassword')" name="password">
           <UInput
             v-model="password"
             :type="showPassword ? 'text' : 'password'"
@@ -144,9 +144,9 @@ const resetPassword = async () => {
               />
             </template>
           </UInput>
-        </UFormGroup>
+        </UFormField>
 
-        <UFormGroup :label="$t('confirmPassword')" name="confirmPassword">
+        <UFormField :label="$t('confirmPassword')" name="confirmPassword">
           <UInput
             v-model="confirmPassword"
             :type="showConfirmPassword ? 'text' : 'password'"
@@ -166,7 +166,7 @@ const resetPassword = async () => {
               />
             </template>
           </UInput>
-        </UFormGroup>
+        </UFormField>
 
         <UButton
           type="submit"
