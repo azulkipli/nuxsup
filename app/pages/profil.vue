@@ -7,7 +7,6 @@ definePageMeta({
 const { $t } = useI18n()
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
-const router = useRouter()
 
 // Avatar Upload State
 const avatarUrl = ref<string | null>(null)
@@ -142,8 +141,8 @@ const uploadAvatar = async () => {
     setTimeout(() => {
       uploadSuccess.value = ''
     }, 3000)
-  } catch (e: any) {
-    uploadError.value = e.message || $t('avatar.failedUpload')
+  } catch (e: unknown) {
+    uploadError.value = e instanceof Error ? e.message : String($t('avatar.failedUpload'))
   } finally {
     uploadLoading.value = false
   }
@@ -202,8 +201,8 @@ const changePassword = async () => {
     setTimeout(() => {
       passwordSuccess.value = ''
     }, 3000)
-  } catch (e: any) {
-    passwordError.value = e.message || $t('password.failedChange')
+  } catch (e: unknown) {
+    passwordError.value = e instanceof Error ? e.message : String($t('password.failedChange'))
   } finally {
     passwordLoading.value = false
   }

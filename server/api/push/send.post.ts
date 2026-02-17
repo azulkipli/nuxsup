@@ -29,7 +29,7 @@ export default defineEventHandler(async event => {
       JSON.stringify({ title, body })
     )
     return { success: true }
-  } catch (error) {
+  } catch {
     throw createError({
       statusCode: 500,
       message: 'Failed to send notification',

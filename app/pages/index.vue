@@ -1,19 +1,30 @@
 <script setup lang="ts">
 const { $t } = useI18n()
 
+interface FeatureItem {
+  title: string
+  description: string
+}
+
+interface PlanItem {
+  name: string
+  price: string
+  features: string[]
+}
+
 const features = computed(() => {
-  const items = $t('features.items') as unknown as any[]
+  const items = $t('features.items') as unknown as FeatureItem[]
   if (!Array.isArray(items)) return []
-  return items.map((item: any, i: number) => ({
+  return items.map((item: FeatureItem, i: number) => ({
     ...item,
     icon: ['⚡', '🎨', '🛡️'][i],
   }))
 })
 
 const pricing = computed(() => {
-  const plans = $t('pricing.plans') as unknown as any[]
+  const plans = $t('pricing.plans') as unknown as PlanItem[]
   if (!Array.isArray(plans)) return []
-  return plans.map((plan: any, i: number) => ({
+  return plans.map((plan: PlanItem, i: number) => ({
     ...plan,
     highlight: i === 1,
     showPerMonth: i !== 2,

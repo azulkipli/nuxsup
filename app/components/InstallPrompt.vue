@@ -32,14 +32,20 @@
 </template>
 
 <script setup lang="ts">
+// Type for the beforeinstallprompt event
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => void
+  userChoice: Promise<{ outcome: string }>
+}
+
+let deferredPrompt: BeforeInstallPromptEvent | null = null
 const showInstallPrompt = ref(false)
-let deferredPrompt: any = null
 
 // Listen for beforeinstallprompt event
 onMounted(() => {
   if (typeof window === 'undefined') return
 
-  window.addEventListener('beforeinstallprompt', (e: any) => {
+  window.addEventListener('beforeinstallprompt', (e: BeforeInstallPromptEvent) => {
     // Prevent the mini-infobar from appearing on mobile
     e.preventDefault()
     // Stash the event so it can be triggered later

@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import tailwindcss from '@tailwindcss/vite'
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
 
@@ -62,6 +63,7 @@ export default defineNuxtConfig({
     build: {
       sourcemap: false,
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     plugins: [tailwindcss() as any],
   },
   supabase: {

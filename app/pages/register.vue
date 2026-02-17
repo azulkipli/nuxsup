@@ -5,7 +5,6 @@ definePageMeta({
 
 const { $t } = useI18n()
 const supabase = useSupabaseClient()
-const config = useRuntimeConfig()
 
 const email = ref('')
 const loading = ref(false)
@@ -32,8 +31,8 @@ const signUp = async () => {
     } else {
       success.value = true
     }
-  } catch (e: any) {
-    errorMessage.value = e.message || $t('common.error')
+  } catch (e: unknown) {
+    errorMessage.value = e instanceof Error ? e.message : String($t('common.error'))
   } finally {
     loading.value = false
   }

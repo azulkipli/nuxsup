@@ -67,8 +67,8 @@ const resetPassword = async () => {
     } else {
       await router.push('/')
     }
-  } catch (e: any) {
-    errorMessage.value = e.message || $t('failedUpdate')
+  } catch (e: unknown) {
+    errorMessage.value = e instanceof Error ? e.message : String($t('failedUpdate'))
   } finally {
     loading.value = false
   }

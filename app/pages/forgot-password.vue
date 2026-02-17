@@ -43,8 +43,8 @@ const resetPassword = async () => {
     } else {
       success.value = true
     }
-  } catch (e: any) {
-    errorMessage.value = e.message || $t('common.error')
+  } catch (e: unknown) {
+    errorMessage.value = e instanceof Error ? e.message : String($t('common.error'))
   } finally {
     loading.value = false
   }

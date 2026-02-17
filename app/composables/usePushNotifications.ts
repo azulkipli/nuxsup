@@ -5,7 +5,7 @@ export const usePushNotifications = () => {
   const error = ref<string | null>(null)
   const subscriptionId = ref<string | null>(null)
 
-  const { $pwa } = useNuxtApp()
+  useNuxtApp() // initialize nuxt app context
   const config = useRuntimeConfig()
 
   // Check browser support
@@ -130,7 +130,7 @@ export const usePushNotifications = () => {
 // Helper function to convert VAPID key
 function urlBase64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
-  const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/')
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/')
 
   const rawData = window.atob(base64)
   const outputArray = new Uint8Array(rawData.length)

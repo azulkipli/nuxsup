@@ -6,12 +6,10 @@ useHead({
   bodyAttrs: {
     class: import.meta.env.APP_DEBUG === 'on' ? 'debug-screens no-scrollbar' : 'no-scrollbar',
   },
-  titleTemplate: (param: any) => {
+  titleTemplate: (param: string) => {
     return param ? `${param} - Nuxsup` : ''
   },
 })
-
-const desc = 'Nuxt Supabase template'
 
 // useServerSeoMeta({
 //   title: "Internal Dashboard",

@@ -5,7 +5,6 @@ definePageMeta({
 
 const { $t } = useI18n()
 const supabase = useSupabaseClient()
-const user = useSupabaseUser()
 const router = useRouter()
 
 const email = ref('')
@@ -34,8 +33,8 @@ const signIn = async () => {
     } else {
       await router.push('/')
     }
-  } catch (e: any) {
-    errorMessage.value = e.message || $t('common.error')
+  } catch (e: unknown) {
+    errorMessage.value = e instanceof Error ? e.message : String($t('common.error'))
   } finally {
     loading.value = false
   }

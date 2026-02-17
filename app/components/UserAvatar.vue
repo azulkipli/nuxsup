@@ -1,7 +1,6 @@
 <script setup lang="ts">
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
-const router = useRouter()
 
 const isOpen = ref(false)
 const dropdownRef = ref<HTMLElement | null>(null)
