@@ -310,7 +310,7 @@ const changePassword = async () => {
           </h2>
         </template>
 
-        <UFormField :label="$t('account.emailLabel')" name="email">
+        <UFormField :label="String($t('account.emailLabel'))" name="email">
           <UInput
             :model-value="userEmail"
             disabled
@@ -332,7 +332,7 @@ const changePassword = async () => {
         </template>
 
         <UForm class="space-y-4" @submit="changePassword">
-          <UFormField :label="$t('password.oldPassword')" name="oldPassword">
+          <UFormField :label="String($t('password.oldPassword'))" name="oldPassword">
             <UInput
               v-model="oldPassword"
               :type="showOldPassword ? 'text' : 'password'"
@@ -353,7 +353,7 @@ const changePassword = async () => {
             </UInput>
           </UFormField>
 
-          <UFormField :label="$t('password.newPassword')" name="newPassword">
+          <UFormField :label="String($t('password.newPassword'))" name="newPassword">
             <UInput
               v-model="newPassword"
               :type="showNewPassword ? 'text' : 'password'"
@@ -374,7 +374,7 @@ const changePassword = async () => {
             </UInput>
           </UFormField>
 
-          <UFormField :label="$t('password.confirmPassword')" name="confirmNewPassword">
+          <UFormField :label="String($t('password.confirmPassword'))" name="confirmNewPassword">
             <UInput
               v-model="confirmNewPassword"
               :type="showConfirmPassword ? 'text' : 'password'"

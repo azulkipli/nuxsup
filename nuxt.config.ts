@@ -4,14 +4,31 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
 
-  // ssr: false,
+  // Disable SSR for SPA mode (better performance for this use case)
+  ssr: false,
 
-  devtools: { enabled: true },
+  // Disable devtools in production
+  devtools: { enabled: process.env.NODE_ENV === 'development' },
 
   app: {
     head: {
       viewport: 'width=device-width, initial-scale=1',
       charset: 'utf-8',
+      // Performance: Preconnect to external domains
+      link: [
+        // Preconnect to Supabase
+        { rel: 'preconnect', href: 'https://*.supabase.co' },
+        { rel: 'dns-prefetch', href: 'https://*.supabase.co' },
+        // Preconnect to common CDN domains
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: 'anonymous' },
+      ],
+      // Performance: Add resource hints
+      meta: [
+        { name: 'theme-color', content: '#1e293b' },
+        { name: 'msapplication-TileColor', content: '#1e293b' },
+        { name: 'msapplication-config', content: '/browserconfig.xml' },
+      ],
     },
   },
 
@@ -22,6 +39,7 @@ export default defineNuxtConfig({
     'nuxt-i18n-micro',
     '@nuxt/eslint',
     '@nuxt/ui',
+    '@nuxt/image',
   ],
 
   eslint: {
@@ -51,15 +69,57 @@ export default defineNuxtConfig({
     fallbackLocale: 'id',
     localeCookie: 'user-locale',
   },
+
   css: ['./app/assets/css/main.css'],
 
+  // Performance optimizations
   experimental: {
-    payloadExtraction: false, // Disable payload.json for SPA builds
+    payloadExtraction: true, // Enable payload extraction for better caching
+    renderJsonPayloads: true,
+    typedPages: true,
+    viewTransition: true,
+    defaults: {
+      nuxtLink: {
+        // Performance: Prefetch on hover
+        prefetch: true,
+        prefetchOn: { interaction: true },
+      },
+    },
   },
 
+  // Nitro performance optimizations
   nitro: {
     prerender: {
       autoSubfolderIndex: false,
+      crawlLinks: true,
+      routes: ['/'],
+    },
+    // Enable compression
+    compressPublicAssets: {
+      brotli: true,
+      gzip: true,
+    },
+    // Performance headers
+    routeRules: {
+      // Cache static assets aggressively
+      '/_nuxt/**': {
+        headers: {
+          'Cache-Control': 'public, max-age=31536000, immutable',
+        },
+      },
+      // Cache images
+      '/images/**': {
+        headers: {
+          'Cache-Control': 'public, max-age=86400',
+        },
+      },
+      // Pre-rendered pages
+      '/': {
+        prerender: true,
+      },
+      '/about': {
+        prerender: true,
+      },
     },
   },
 
@@ -69,18 +129,64 @@ export default defineNuxtConfig({
     },
     build: {
       sourcemap: false,
+      // Enable CSS code splitting
+      cssCodeSplit: true,
+      // Minification options
+      minify: 'terser',
+      terserOptions: {
+        compress: {
+          drop_console: true,
+          drop_debugger: true,
+        },
+      },
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     plugins: [tailwindcss() as any],
+    // Optimize deps
+    optimizeDeps: {
+      include: ['vue', 'vue-router', '@vueuse/core'],
+    },
   },
+
+  // Supabase configuration
   supabase: {
-    types: false, // disable database types
+    types: false,
     redirect: false,
   },
 
+  // Image optimization
+  image: {
+    quality: 80,
+    format: ['webp', 'avif', 'jpg', 'png'],
+    screens: {
+      xs: 320,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+      xxl: 1536,
+    },
+    presets: {
+      avatar: {
+        modifiers: {
+          format: 'webp',
+          width: 100,
+          height: 100,
+        },
+      },
+    },
+    // Use ipx for local image optimization
+    ipx: {
+      maxAge: 60 * 60 * 24 * 30, // 30 days cache
+    },
+  },
+
+  // PWA configuration with performance optimizations
   pwa: {
     registerType: 'prompt',
     strategies: 'generateSW',
+    // Disable in dev to speed up HMR
+    disable: process.env.NODE_ENV === 'development',
 
     manifest: {
       name: 'Nuxsup',
@@ -113,9 +219,11 @@ export default defineNuxtConfig({
       globIgnores: ['**/node_modules/**/*', 'sw.js', 'workbox-*.js', '**/_payload.json'],
       navigateFallback: '/',
       navigateFallbackDenylist: [/^\/api/],
+      skipWaiting: true,
+      clientsClaim: true,
 
       runtimeCaching: [
-        // Supabase Auth - NetworkOnly (NEVER cache auth requests)
+        // Supabase Auth - NetworkOnly
         {
           urlPattern: /\/auth\/v1\/.*/,
           handler: 'NetworkOnly',
@@ -155,11 +263,23 @@ export default defineNuxtConfig({
           urlPattern: /\/realtime\/v1\/.*/,
           handler: 'NetworkOnly',
         },
+        // Images - CacheFirst with longer expiration
+        {
+          urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp|avif)$/,
+          handler: 'CacheFirst',
+          options: {
+            cacheName: 'images',
+            expiration: {
+              maxEntries: 100,
+              maxAgeSeconds: 2592000, // 30 days
+            },
+          },
+        },
       ],
     },
 
     devOptions: {
-      enabled: true,
+      enabled: false, // Disable in dev for faster builds
       type: 'module',
       suppressWarnings: true,
     },

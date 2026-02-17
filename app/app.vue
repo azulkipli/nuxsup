@@ -11,15 +11,9 @@ useHead({
   },
 })
 
-// useServerSeoMeta({
-//   title: "Internal Dashboard",
-//   keywords: "flik, internal, dashboard",
-//   ogTitle: "Internal Dashboard",
-//   description: desc,
-//   ogDescription: desc,
-//   ogImage: `/img/flik-og-img.jpeg`,
-//   twitterTitle: "Internal Dashboard",
-// });
+// Dynamic imports for non-critical PWA components
+const InstallPrompt = defineAsyncComponent(() => import('./components/InstallPrompt.vue'))
+const ReloadPrompt = defineAsyncComponent(() => import('./components/ReloadPrompt.vue'))
 </script>
 <template>
   <VitePwaManifest />
@@ -27,6 +21,7 @@ useHead({
     <NuxtPage />
   </NuxtLayout>
   <ClientOnly>
+    <!-- Lazy load non-critical PWA components -->
     <InstallPrompt />
     <ReloadPrompt />
   </ClientOnly>

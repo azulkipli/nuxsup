@@ -124,7 +124,7 @@ const resetPassword = async () => {
       </div>
 
       <UForm class="space-y-5" @submit="resetPassword">
-        <UFormField :label="$t('newPassword')" name="password">
+        <UFormField :label="String($t('newPassword'))" name="password">
           <UInput
             v-model="password"
             :type="showPassword ? 'text' : 'password'"
@@ -146,7 +146,7 @@ const resetPassword = async () => {
           </UInput>
         </UFormField>
 
-        <UFormField :label="$t('confirmPassword')" name="confirmPassword">
+        <UFormField :label="String($t('confirmPassword'))" name="confirmPassword">
           <UInput
             v-model="confirmPassword"
             :type="showConfirmPassword ? 'text' : 'password'"

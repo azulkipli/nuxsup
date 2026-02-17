@@ -73,7 +73,7 @@ const signUp = async () => {
 
     <template v-if="!success">
       <UForm class="space-y-5" @submit="signUp">
-        <UFormField :label="$t('auth.emailLabel')" name="email">
+        <UFormField :label="String($t('auth.emailLabel'))" name="email">
           <UInput
             v-model="email"
             type="email"
