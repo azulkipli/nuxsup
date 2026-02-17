@@ -1,7 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
   layout: 'default',
-  middleware: 'auth'
+  middleware: 'auth',
 })
 
 const { $t } = useI18n()
@@ -36,11 +36,15 @@ onMounted(() => {
 })
 
 // Watch for user changes
-watch(user, (newUser) => {
-  if (newUser?.user_metadata?.avatar_url) {
-    avatarUrl.value = newUser.user_metadata.avatar_url
-  }
-}, { immediate: true })
+watch(
+  user,
+  newUser => {
+    if (newUser?.user_metadata?.avatar_url) {
+      avatarUrl.value = newUser.user_metadata.avatar_url
+    }
+  },
+  { immediate: true }
+)
 
 const userEmail = computed(() => user.value?.email || '')
 
@@ -52,29 +56,29 @@ const userInitials = computed(() => {
 const handleFileSelect = (event: Event) => {
   const target = event.target as HTMLInputElement
   const file = target.files?.[0]
-  
+
   if (!file) return
-  
+
   // Validate file type
   const allowedTypes = ['image/jpeg', 'image/png']
   if (!allowedTypes.includes(file.type)) {
     uploadError.value = String($t('avatar.onlyJpgPng'))
     return
   }
-  
+
   // Validate file size (max 2MB)
   const maxSize = 2 * 1024 * 1024
   if (file.size > maxSize) {
     uploadError.value = String($t('avatar.maxSize'))
     return
   }
-  
+
   uploadError.value = ''
   avatarFile.value = file
-  
+
   // Create preview
   const reader = new FileReader()
-  reader.onload = (e) => {
+  reader.onload = e => {
     avatarPreview.value = e.target?.result as string
   }
   reader.readAsDataURL(file)
@@ -83,15 +87,15 @@ const handleFileSelect = (event: Event) => {
 // Upload avatar
 const uploadAvatar = async () => {
   if (!avatarFile.value || !user.value) return
-  
+
   uploadLoading.value = true
   uploadError.value = ''
   uploadSuccess.value = ''
-  
+
   try {
     const fileExt = avatarFile.value.name.split('.').pop()
     const filePath = `${user.value.sub}/avatar-${Date.now()}.${fileExt}`
-    
+
     // Delete old avatar if exists (ignore errors)
     if (avatarUrl.value) {
       const oldPath = avatarUrl.value.split('/avatars/').pop()
@@ -99,46 +103,45 @@ const uploadAvatar = async () => {
         await supabase.storage.from('avatars').remove([decodeURIComponent(oldPath)])
       }
     }
-    
+
     // Upload to Supabase Storage (user_id/filename)
     const { error: uploadErr } = await supabase.storage
       .from('avatars')
       .upload(filePath, avatarFile.value, {
         cacheControl: '3600',
-        upsert: true
+        upsert: true,
       })
-    
+
     if (uploadErr) {
       throw uploadErr
     }
-    
+
     // Get public URL
-    const { data: { publicUrl } } = supabase.storage
-      .from('avatars')
-      .getPublicUrl(filePath)
-    
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from('avatars').getPublicUrl(filePath)
+
     // Update user metadata
     const { error: updateErr } = await supabase.auth.updateUser({
-      data: { avatar_url: publicUrl }
+      data: { avatar_url: publicUrl },
     })
-    
+
     if (updateErr) {
       throw updateErr
     }
-    
+
     // Force refresh session to update useSupabaseUser() reactivity
     await supabase.auth.refreshSession()
-    
+
     avatarUrl.value = publicUrl
     avatarPreview.value = null
     avatarFile.value = null
     uploadSuccess.value = String($t('avatar.success'))
-    
+
     // Clear success message after 3 seconds
     setTimeout(() => {
       uploadSuccess.value = ''
     }, 3000)
-    
   } catch (e: any) {
     uploadError.value = e.message || $t('avatar.failedUpload')
   } finally {
@@ -150,56 +153,55 @@ const uploadAvatar = async () => {
 const changePassword = async () => {
   passwordError.value = ''
   passwordSuccess.value = ''
-  
+
   // Validation
   if (!oldPassword.value || !newPassword.value || !confirmNewPassword.value) {
     passwordError.value = String($t('password.fillAllFields'))
     return
   }
-  
+
   if (newPassword.value !== confirmNewPassword.value) {
     passwordError.value = String($t('password.noMatch'))
     return
   }
-  
+
   if (newPassword.value.length < 6) {
     passwordError.value = String($t('password.minLength'))
     return
   }
-  
+
   passwordLoading.value = true
-  
+
   try {
     // Verify old password by re-authenticating
     const { error: signInError } = await supabase.auth.signInWithPassword({
       email: userEmail.value,
-      password: oldPassword.value
+      password: oldPassword.value,
     })
-    
+
     if (signInError) {
       passwordError.value = String($t('password.oldInvalid'))
       return
     }
-    
+
     // Update to new password
     const { error: updateError } = await supabase.auth.updateUser({
-      password: newPassword.value
+      password: newPassword.value,
     })
-    
+
     if (updateError) {
       throw updateError
     }
-    
+
     passwordSuccess.value = String($t('password.success'))
     oldPassword.value = ''
     newPassword.value = ''
     confirmNewPassword.value = ''
-    
+
     // Clear success message after 3 seconds
     setTimeout(() => {
       passwordSuccess.value = ''
     }, 3000)
-    
   } catch (e: any) {
     passwordError.value = e.message || $t('password.failedChange')
   } finally {
@@ -220,11 +222,13 @@ const changePassword = async () => {
       <!-- Avatar Section -->
       <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mb-6">
         <h2 class="text-lg font-semibold text-slate-900 mb-4">{{ $t('avatar.title') }}</h2>
-        
+
         <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
           <!-- Current/Preview Avatar -->
           <div class="flex-shrink-0">
-            <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-slate-100 shadow-inner">
+            <div
+              class="w-24 h-24 rounded-full overflow-hidden border-4 border-slate-100 shadow-inner"
+            >
               <img
                 v-if="avatarPreview || avatarUrl"
                 :src="avatarPreview || avatarUrl || ''"
@@ -245,11 +249,18 @@ const changePassword = async () => {
             <p class="text-sm text-slate-600 mb-3">
               {{ $t('avatar.uploadHint') }}
             </p>
-            
+
             <div class="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
-              <label class="cursor-pointer flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-3 md:py-2 text-sm font-medium text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors">
+              <label
+                class="cursor-pointer flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-3 md:py-2 text-sm font-medium text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+              >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
                 </svg>
                 {{ $t('avatar.selectPhoto') }}
                 <input
@@ -259,16 +270,32 @@ const changePassword = async () => {
                   @change="handleFileSelect"
                 />
               </label>
-              
+
               <button
                 v-if="avatarFile"
-                @click="uploadAvatar"
                 :disabled="uploadLoading"
                 class="flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-3 md:py-2 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50"
+                @click="uploadAvatar"
               >
-                <svg v-if="uploadLoading" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                <svg
+                  v-if="uploadLoading"
+                  class="animate-spin w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    class="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    stroke-width="4"
+                  ></circle>
+                  <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
                 </svg>
                 {{ uploadLoading ? $t('avatar.uploading') : $t('avatar.savePhoto') }}
               </button>
@@ -284,9 +311,11 @@ const changePassword = async () => {
       <!-- Account Info Section -->
       <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mb-6">
         <h2 class="text-lg font-semibold text-slate-900 mb-4">{{ $t('account.title') }}</h2>
-        
+
         <div>
-          <label class="block text-sm font-medium text-slate-700 mb-1">{{ $t('account.emailLabel') }}</label>
+          <label class="block text-sm font-medium text-slate-700 mb-1">{{
+            $t('account.emailLabel')
+          }}</label>
           <div class="px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-600">
             {{ userEmail }}
           </div>
@@ -297,7 +326,7 @@ const changePassword = async () => {
       <!-- Password Change Section -->
       <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
         <h2 class="text-lg font-semibold text-slate-900 mb-4">{{ $t('password.title') }}</h2>
-        
+
         <!-- Messages -->
         <div v-if="passwordError" class="mb-4 p-3 bg-red-50 border border-red-100 rounded-lg">
           <p class="text-sm text-red-600">{{ passwordError }}</p>
@@ -306,25 +335,25 @@ const changePassword = async () => {
           <p class="text-sm text-green-600">{{ passwordSuccess }}</p>
         </div>
 
-        <form @submit.prevent="changePassword" class="space-y-4">
+        <form class="space-y-4" @submit.prevent="changePassword">
           <div>
             <label for="oldPassword" class="block text-sm font-medium text-slate-700 mb-1">
               {{ $t('password.oldPassword') }}
             </label>
             <div class="relative">
               <input
+                id="oldPassword"
                 v-model="oldPassword"
                 :type="showOldPassword ? 'text' : 'password'"
-                id="oldPassword"
                 class="w-full px-4 py-2.5 pr-11 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none"
                 :placeholder="String($t('password.oldPasswordPlaceholder'))"
                 :disabled="passwordLoading"
               />
               <button
                 type="button"
-                @click="showOldPassword = !showOldPassword"
                 class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
                 tabindex="-1"
+                @click="showOldPassword = !showOldPassword"
               >
                 <IconsEyeVisible v-if="showOldPassword" class="w-5 h-5" />
                 <IconsEyeHidden v-else class="w-5 h-5" />
@@ -338,9 +367,9 @@ const changePassword = async () => {
             </label>
             <div class="relative">
               <input
+                id="newPassword"
                 v-model="newPassword"
                 :type="showNewPassword ? 'text' : 'password'"
-                id="newPassword"
                 class="w-full px-4 py-2.5 pr-11 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none"
                 :placeholder="String($t('password.newPasswordPlaceholder'))"
                 :disabled="passwordLoading"
@@ -348,9 +377,9 @@ const changePassword = async () => {
               />
               <button
                 type="button"
-                @click="showNewPassword = !showNewPassword"
                 class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
                 tabindex="-1"
+                @click="showNewPassword = !showNewPassword"
               >
                 <IconsEyeVisible v-if="showNewPassword" class="w-5 h-5" />
                 <IconsEyeHidden v-else class="w-5 h-5" />
@@ -364,9 +393,9 @@ const changePassword = async () => {
             </label>
             <div class="relative">
               <input
+                id="confirmNewPassword"
                 v-model="confirmNewPassword"
                 :type="showConfirmPassword ? 'text' : 'password'"
-                id="confirmNewPassword"
                 class="w-full px-4 py-2.5 pr-11 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none"
                 :placeholder="String($t('password.confirmPasswordPlaceholder'))"
                 :disabled="passwordLoading"
@@ -374,9 +403,9 @@ const changePassword = async () => {
               />
               <button
                 type="button"
-                @click="showConfirmPassword = !showConfirmPassword"
                 class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
                 tabindex="-1"
+                @click="showConfirmPassword = !showConfirmPassword"
               >
                 <IconsEyeVisible v-if="showConfirmPassword" class="w-5 h-5" />
                 <IconsEyeHidden v-else class="w-5 h-5" />
@@ -390,9 +419,25 @@ const changePassword = async () => {
               :disabled="passwordLoading"
               class="flex w-full sm:w-auto justify-center items-center gap-2 px-6 py-3 md:py-2.5 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-all shadow-md shadow-indigo-200 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <svg v-if="passwordLoading" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              <svg
+                v-if="passwordLoading"
+                class="animate-spin w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                ></circle>
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
               </svg>
               {{ passwordLoading ? $t('password.saving') : $t('password.changePassword') }}
             </button>
@@ -407,7 +452,12 @@ const changePassword = async () => {
           class="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 transition-colors px-4 py-2 rounded-lg hover:bg-slate-100 md:hover:bg-transparent md:p-0"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 19l-7-7m0 0l7-7m-7 7h18"
+            />
           </svg>
           {{ $t('backToHome') }}
         </i18n-link>

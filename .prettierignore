@@ -1,0 +1,30 @@
+# Dependencies
+node_modules
+
+# Build output
+.nuxt
+.output
+dist
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.*
+
+# Lock files
+bun.lock
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Generated files
+*.generated.*
+
+# Coverage
+coverage
+
+# IDE
+.idea
+.vscode/settings.json

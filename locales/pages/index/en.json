@@ -40,7 +40,12 @@
       {
         "name": "Pro",
         "price": "$29",
-        "features": ["Unlimited Projects", "Advanced Analytics", "Priority Support", "Custom Domain"]
+        "features": [
+          "Unlimited Projects",
+          "Advanced Analytics",
+          "Priority Support",
+          "Custom Domain"
+        ]
       },
       {
         "name": "Enterprise",

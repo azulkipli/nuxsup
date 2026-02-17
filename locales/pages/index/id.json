@@ -40,7 +40,12 @@
       {
         "name": "Pro",
         "price": "$29",
-        "features": ["Proyek Tak Terbatas", "Analitik Lanjutan", "Dukungan Prioritas", "Domain Kustom"]
+        "features": [
+          "Proyek Tak Terbatas",
+          "Analitik Lanjutan",
+          "Dukungan Prioritas",
+          "Domain Kustom"
+        ]
       },
       {
         "name": "Enterprise",

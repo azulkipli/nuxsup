@@ -1,6 +1,6 @@
 <script setup lang="ts">
-const user = useSupabaseUser();
-console.log("user:", user.value);
+const user = useSupabaseUser()
+console.log('user:', user.value)
 </script>
 
 <template>
@@ -10,9 +10,7 @@ console.log("user:", user.value);
     <header
       class="sticky top-0 z-50 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/60 dark:border-slate-700/60 shadow-sm transition-all duration-300"
     >
-      <nav
-        class="container mx-auto px-4 md:px-6 h-16 flex items-center justify-between"
-      >
+      <nav class="container mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
         <!-- Logo -->
         <i18n-link to="/" class="flex items-center gap-2 group">
           <div
@@ -79,7 +77,9 @@ console.log("user:", user.value);
       <slot />
     </main>
 
-    <footer class="bg-slate-900 dark:bg-slate-950 text-slate-400 py-12 border-t border-slate-800 dark:border-slate-700">
+    <footer
+      class="bg-slate-900 dark:bg-slate-950 text-slate-400 py-12 border-t border-slate-800 dark:border-slate-700"
+    >
       <div class="container mx-auto px-4 md:px-6">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div class="col-span-1 md:col-span-2">
@@ -99,23 +99,19 @@ console.log("user:", user.value);
             <h4 class="font-semibold text-white mb-4">{{ $t('footer.product') }}</h4>
             <ul class="space-y-2 text-sm">
               <li>
-                <i18n-link
-                  to="/#features"
-                  class="hover:text-white transition-colors"
-                  >{{ $t('nav.features') }}</i18n-link
-                >
+                <i18n-link to="/#features" class="hover:text-white transition-colors">{{
+                  $t('nav.features')
+                }}</i18n-link>
               </li>
               <li>
-                <i18n-link
-                  to="/#pricing"
-                  class="hover:text-white transition-colors"
-                  >{{ $t('nav.pricing') }}</i18n-link
-                >
+                <i18n-link to="/#pricing" class="hover:text-white transition-colors">{{
+                  $t('nav.pricing')
+                }}</i18n-link>
               </li>
               <li>
-                <i18n-link to="/about" class="hover:text-white transition-colors"
-                  >{{ $t('footer.about') }}</i18n-link
-                >
+                <i18n-link to="/about" class="hover:text-white transition-colors">{{
+                  $t('footer.about')
+                }}</i18n-link>
               </li>
             </ul>
           </div>
@@ -123,16 +119,14 @@ console.log("user:", user.value);
             <h4 class="font-semibold text-white mb-4">{{ $t('footer.company') }}</h4>
             <ul class="space-y-2 text-sm">
               <li>
-                <i18n-link
-                  to="/#contact"
-                  class="hover:text-white transition-colors"
-                  >{{ $t('nav.contact') }}</i18n-link
-                >
+                <i18n-link to="/#contact" class="hover:text-white transition-colors">{{
+                  $t('nav.contact')
+                }}</i18n-link>
               </li>
               <li>
-                <a href="#" class="hover:text-white transition-colors"
-                  >{{ $t('footer.privacy') }}</a
-                >
+                <a href="#" class="hover:text-white transition-colors">{{
+                  $t('footer.privacy')
+                }}</a>
               </li>
               <li>
                 <a href="#" class="hover:text-white transition-colors">{{ $t('footer.terms') }}</a>

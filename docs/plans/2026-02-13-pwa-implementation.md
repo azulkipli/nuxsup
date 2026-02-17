@@ -261,9 +261,7 @@ Create `app/components/ReloadPrompt.vue`:
     <div class="reload-prompt-content">
       <span class="reload-prompt-text">Update tersedia! 🎉</span>
       <div class="reload-prompt-actions">
-        <button @click="updateServiceWorker()" class="reload-btn">
-          Reload
-        </button>
+        <button @click="updateServiceWorker()" class="reload-btn">Reload</button>
         <button @click="closePrompt()" class="dismiss-btn">Dismiss</button>
       </div>
     </div>
@@ -272,27 +270,27 @@ Create `app/components/ReloadPrompt.vue`:
 
 <script setup lang="ts">
 // Access $pwa from Nuxt app
-const { $pwa } = useNuxtApp();
+const { $pwa } = useNuxtApp()
 
 // Reactive refs from $pwa
-const needRefresh = computed(() => $pwa?.needRefresh ?? false);
-const offlineReady = computed(() => $pwa?.offlineReady ?? false);
+const needRefresh = computed(() => $pwa?.needRefresh ?? false)
+const offlineReady = computed(() => $pwa?.offlineReady ?? false)
 
 // Methods
 const updateServiceWorker = () => {
-  $pwa?.updateServiceWorker();
-};
+  $pwa?.updateServiceWorker()
+}
 
 const closePrompt = () => {
-  $pwa?.closePrompt();
-};
+  $pwa?.closePrompt()
+}
 
 // Show console message when offline ready
-watch(offlineReady, (ready) => {
+watch(offlineReady, ready => {
   if (ready) {
-    console.log("App ready to work offline");
+    console.log('App ready to work offline')
   }
-});
+})
 </script>
 
 <style scoped>
@@ -513,17 +511,17 @@ git commit -m "feat: add runtime config for VAPID keys"
 Create `server/api/push/subscribe.post.ts`:
 
 ```typescript
-export default defineEventHandler(async (event) => {
-  const subscription = await readBody(event);
+export default defineEventHandler(async event => {
+  const subscription = await readBody(event)
 
   // Store subscription using Nitro storage
-  const storage = useStorage("push-subscriptions");
-  const id = crypto.randomUUID();
+  const storage = useStorage('push-subscriptions')
+  const id = crypto.randomUUID()
 
-  await storage.setItem(id, subscription);
+  await storage.setItem(id, subscription)
 
-  return { success: true, id };
-});
+  return { success: true, id }
+})
 ```
 
 **Step 2: Verify file exists**
@@ -564,44 +562,44 @@ git commit -m "feat: add push notification subscribe endpoint"
 Create `server/api/push/send.post.ts`:
 
 ```typescript
-import webpush from "web-push";
+import webpush from 'web-push'
 
-export default defineEventHandler(async (event) => {
-  const { title, body, subscriptionId } = await readBody(event);
+export default defineEventHandler(async event => {
+  const { title, body, subscriptionId } = await readBody(event)
 
-  const config = useRuntimeConfig();
+  const config = useRuntimeConfig()
 
   // Configure web-push
   webpush.setVapidDetails(
-    "mailto:noreply@nuxsup.app",
+    'mailto:noreply@nuxsup.app',
     config.public.pushVapidPublicKey,
-    config.pushVapidPrivateKey,
-  );
+    config.pushVapidPrivateKey
+  )
 
   // Get subscription from storage
-  const storage = useStorage("push-subscriptions");
-  const subscription = await storage.getItem(subscriptionId);
+  const storage = useStorage('push-subscriptions')
+  const subscription = await storage.getItem(subscriptionId)
 
   if (!subscription) {
     throw createError({
       statusCode: 404,
-      message: "Subscription not found",
-    });
+      message: 'Subscription not found',
+    })
   }
 
   try {
     await webpush.sendNotification(
       subscription as webpush.PushSubscription,
-      JSON.stringify({ title, body }),
-    );
-    return { success: true };
+      JSON.stringify({ title, body })
+    )
+    return { success: true }
   } catch (error) {
     throw createError({
       statusCode: 500,
-      message: "Failed to send notification",
-    });
+      message: 'Failed to send notification',
+    })
   }
-});
+})
 ```
 
 **Step 2: Verify file exists**
@@ -635,107 +633,103 @@ Create `app/composables/usePushNotifications.ts`:
 
 ```typescript
 export const usePushNotifications = () => {
-  const config = useRuntimeConfig();
-  const isSubscribed = ref(false);
-  const subscriptionId = ref<string | null>(null);
+  const config = useRuntimeConfig()
+  const isSubscribed = ref(false)
+  const subscriptionId = ref<string | null>(null)
 
   // Helper to convert VAPID key
   const urlBase64ToUint8Array = (base64String: string): Uint8Array => {
-    const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-    const base64 = (base64String + padding)
-      .replace(/\-/g, "+")
-      .replace(/_/g, "/");
+    const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
+    const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/')
 
-    const rawData = window.atob(base64);
-    const outputArray = new Uint8Array(rawData.length);
+    const rawData = window.atob(base64)
+    const outputArray = new Uint8Array(rawData.length)
 
     for (let i = 0; i < rawData.length; ++i) {
-      outputArray[i] = rawData.charCodeAt(i);
+      outputArray[i] = rawData.charCodeAt(i)
     }
 
-    return outputArray;
-  };
+    return outputArray
+  }
 
   // Check if already subscribed
   const checkSubscription = async () => {
-    if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
-      return false;
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+      return false
     }
 
     try {
-      const registration = await navigator.serviceWorker.ready;
-      const subscription = await registration.pushManager.getSubscription();
+      const registration = await navigator.serviceWorker.ready
+      const subscription = await registration.pushManager.getSubscription()
 
       if (subscription) {
-        isSubscribed.value = true;
+        isSubscribed.value = true
         // Try to get ID from localStorage
-        subscriptionId.value = localStorage.getItem("push-subscription-id");
+        subscriptionId.value = localStorage.getItem('push-subscription-id')
       }
 
-      return !!subscription;
+      return !!subscription
     } catch (error) {
-      console.error("Error checking subscription:", error);
-      return false;
+      console.error('Error checking subscription:', error)
+      return false
     }
-  };
+  }
 
   // Subscribe to push notifications
   const subscribe = async () => {
     try {
-      const registration = await navigator.serviceWorker.ready;
+      const registration = await navigator.serviceWorker.ready
 
       const subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(
-          config.public.pushVapidPublicKey,
-        ),
-      });
+        applicationServerKey: urlBase64ToUint8Array(config.public.pushVapidPublicKey),
+      })
 
       // Send subscription to server
-      const response = await $fetch("/api/push/subscribe", {
-        method: "POST",
+      const response = await $fetch('/api/push/subscribe', {
+        method: 'POST',
         body: subscription,
-      });
+      })
 
       if (response.success && response.id) {
-        subscriptionId.value = response.id;
-        localStorage.setItem("push-subscription-id", response.id);
-        isSubscribed.value = true;
-        return true;
+        subscriptionId.value = response.id
+        localStorage.setItem('push-subscription-id', response.id)
+        isSubscribed.value = true
+        return true
       }
 
-      return false;
+      return false
     } catch (error) {
-      console.error("Failed to subscribe:", error);
-      return false;
+      console.error('Failed to subscribe:', error)
+      return false
     }
-  };
+  }
 
   // Unsubscribe
   const unsubscribe = async () => {
     try {
-      const registration = await navigator.serviceWorker.ready;
-      const subscription = await registration.pushManager.getSubscription();
+      const registration = await navigator.serviceWorker.ready
+      const subscription = await registration.pushManager.getSubscription()
 
       if (subscription) {
-        await subscription.unsubscribe();
-        localStorage.removeItem("push-subscription-id");
-        subscriptionId.value = null;
-        isSubscribed.value = false;
-        return true;
+        await subscription.unsubscribe()
+        localStorage.removeItem('push-subscription-id')
+        subscriptionId.value = null
+        isSubscribed.value = false
+        return true
       }
 
-      return false;
+      return false
     } catch (error) {
-      console.error("Failed to unsubscribe:", error);
-      return false;
+      console.error('Failed to unsubscribe:', error)
+      return false
     }
-  };
+  }
 
   // Initialize on mount
   onMounted(() => {
-    checkSubscription();
-  });
+    checkSubscription()
+  })
 
   return {
     isSubscribed,
@@ -743,8 +737,8 @@ export const usePushNotifications = () => {
     subscribe,
     unsubscribe,
     checkSubscription,
-  };
-};
+  }
+}
 ```
 
 **Step 2: Verify file exists**

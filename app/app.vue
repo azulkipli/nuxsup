@@ -1,18 +1,17 @@
 <script setup lang="ts">
 useHead({
   htmlAttrs: {
-    class: "no-scrollbar",
+    class: 'no-scrollbar',
   },
   bodyAttrs: {
-    class: import.meta.env.APP_DEBUG==='on' ? "debug-screens no-scrollbar" : "no-scrollbar",
+    class: import.meta.env.APP_DEBUG === 'on' ? 'debug-screens no-scrollbar' : 'no-scrollbar',
   },
   titleTemplate: (param: any) => {
-    return param ? `${param} - Nuxsup` : "";
+    return param ? `${param} - Nuxsup` : ''
   },
-});
+})
 
-const desc =
-  "Nuxt Supabase template";
+const desc = 'Nuxt Supabase template'
 
 // useServerSeoMeta({
 //   title: "Internal Dashboard",
@@ -23,7 +22,6 @@ const desc =
 //   ogImage: `/img/flik-og-img.jpeg`,
 //   twitterTitle: "Internal Dashboard",
 // });
-
 </script>
 <template>
   <VitePwaManifest />

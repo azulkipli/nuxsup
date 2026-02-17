@@ -83,7 +83,7 @@ Register type is `prompt` -- when a new service worker is detected, a `ReloadPro
 
 ```vue
 <script setup>
-const { isSubscribed, subscribe, unsubscribe } = usePushNotifications();
+const { isSubscribed, subscribe, unsubscribe } = usePushNotifications()
 </script>
 ```
 

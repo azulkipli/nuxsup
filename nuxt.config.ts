@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import tailwindcss from "@tailwindcss/vite";
+import tailwindcss from '@tailwindcss/vite'
 export default defineNuxtConfig({
-  compatibilityDate: "2025-07-15",
+  compatibilityDate: '2025-07-15',
 
   // ssr: false,
 
@@ -11,10 +11,23 @@ export default defineNuxtConfig({
     head: {
       viewport: 'width=device-width, initial-scale=1',
       charset: 'utf-8',
-    }
+    },
   },
 
-  modules: ["@nuxtjs/supabase", "@vite-pwa/nuxt", "@nuxtjs/color-mode", "nuxt-i18n-micro"],
+  modules: [
+    '@nuxtjs/supabase',
+    '@vite-pwa/nuxt',
+    '@nuxtjs/color-mode',
+    'nuxt-i18n-micro',
+    '@nuxt/eslint',
+  ],
+
+  eslint: {
+    config: {
+      stylistic: false, // disable stylistic rules, use prettier instead
+    },
+    checker: false, // disable dev server checker
+  },
 
   colorMode: {
     classSuffix: '',
@@ -25,7 +38,7 @@ export default defineNuxtConfig({
   i18n: {
     locales: [
       { code: 'id', iso: 'id-ID', dir: 'ltr' },
-      { code: 'en', iso: 'en-US', dir: 'ltr' }
+      { code: 'en', iso: 'en-US', dir: 'ltr' },
     ],
     defaultLocale: 'id',
     translationDir: 'locales',
@@ -34,17 +47,17 @@ export default defineNuxtConfig({
     autoDetectLanguage: false,
     disablePageLocales: false,
     fallbackLocale: 'id',
-    localeCookie: 'user-locale'
+    localeCookie: 'user-locale',
   },
-  css: ["./app/assets/css/main.css"],
+  css: ['./app/assets/css/main.css'],
 
   experimental: {
-    payloadExtraction: false // Disable payload.json for SPA builds
+    payloadExtraction: false, // Disable payload.json for SPA builds
   },
 
   vite: {
     server: {
-      allowedHosts: ["dev.nebengyu.web.id"]
+      allowedHosts: ['dev.nebengyu.web.id'],
     },
     build: {
       sourcemap: false,
@@ -74,26 +87,21 @@ export default defineNuxtConfig({
         {
           src: '/pwa-192x192.png',
           sizes: '192x192',
-          type: 'image/png'
+          type: 'image/png',
         },
         {
           src: '/pwa-512x512.png',
           sizes: '512x512',
           type: 'image/png',
-          purpose: 'any maskable'
-        }
-      ]
+          purpose: 'any maskable',
+        },
+      ],
     },
 
     workbox: {
       cleanupOutdatedCaches: true,
       globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
-      globIgnores: [
-        '**/node_modules/**/*',
-        'sw.js',
-        'workbox-*.js',
-        '**/_payload.json'
-      ],
+      globIgnores: ['**/node_modules/**/*', 'sw.js', 'workbox-*.js', '**/_payload.json'],
       navigateFallback: '/',
       navigateFallbackDenylist: [/^\/api/],
 
@@ -111,12 +119,12 @@ export default defineNuxtConfig({
             cacheName: 'sb-data',
             expiration: {
               maxEntries: 200,
-              maxAgeSeconds: 86400
+              maxAgeSeconds: 86400,
             },
             cacheableResponse: {
-              statuses: [0, 200]
-            }
-          }
+              statuses: [0, 200],
+            },
+          },
         },
         // Supabase Storage - CacheFirst
         {
@@ -126,33 +134,33 @@ export default defineNuxtConfig({
             cacheName: 'sb-storage',
             expiration: {
               maxEntries: 300,
-              maxAgeSeconds: 2592000
+              maxAgeSeconds: 2592000,
             },
             cacheableResponse: {
-              statuses: [0, 200]
-            }
-          }
+              statuses: [0, 200],
+            },
+          },
         },
         // Realtime - NetworkOnly
         {
           urlPattern: /\/realtime\/v1\/.*/,
-          handler: 'NetworkOnly'
-        }
-      ]
+          handler: 'NetworkOnly',
+        },
+      ],
     },
 
     devOptions: {
       enabled: true,
       type: 'module',
-      suppressWarnings: true
-    }
+      suppressWarnings: true,
+    },
   },
 
   runtimeConfig: {
     public: {
       appDebug: process.env.APP_DEBUG || 'off',
-      pushVapidPublicKey: process.env.NUXT_PUBLIC_PUSH_VAPID_PUBLIC_KEY || ''
+      pushVapidPublicKey: process.env.NUXT_PUBLIC_PUSH_VAPID_PUBLIC_KEY || '',
     },
-    pushVapidPrivateKey: process.env.NUXT_PUSH_VAPID_PRIVATE_KEY || ''
+    pushVapidPrivateKey: process.env.NUXT_PUSH_VAPID_PRIVATE_KEY || '',
   },
-});
+})

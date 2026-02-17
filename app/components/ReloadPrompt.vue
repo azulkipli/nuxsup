@@ -3,10 +3,10 @@
     <div class="reload-prompt-content">
       <span class="reload-prompt-text">{{ $t('pwa.updateAvailable') }}</span>
       <div class="reload-prompt-actions">
-        <button @click="updateServiceWorker()" class="reload-btn">
+        <button class="reload-btn" @click="updateServiceWorker()">
           {{ $t('pwa.reload') }}
         </button>
-        <button @click="closePrompt()" class="dismiss-btn">
+        <button class="dismiss-btn" @click="closePrompt()">
           {{ $t('pwa.dismiss') }}
         </button>
       </div>
@@ -38,14 +38,14 @@ const closePrompt = () => {
 }
 
 // Show console message when offline ready
-watch(offlineReady, (ready) => {
+watch(offlineReady, ready => {
   if (ready) {
     console.log('App ready to work offline')
   }
 })
 
 // Reset show state when new update is available
-watch(needRefresh, (refresh) => {
+watch(needRefresh, refresh => {
   if (refresh) {
     show.value = true
   }
