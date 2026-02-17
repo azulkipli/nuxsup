@@ -56,6 +56,12 @@ export default defineNuxtConfig({
     payloadExtraction: false, // Disable payload.json for SPA builds
   },
 
+  nitro: {
+    prerender: {
+      autoSubfolderIndex: false,
+    },
+  },
+
   vite: {
     server: {
       allowedHosts: ['dev.nebengyu.web.id'],
