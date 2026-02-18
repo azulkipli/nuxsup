@@ -37,6 +37,7 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     '@nuxt/ui',
     '@nuxt/image',
+    'nuxt-vitalizer',
   ],
 
   eslint: {
@@ -288,5 +289,16 @@ export default defineNuxtConfig({
       pushVapidPublicKey: process.env.NUXT_PUBLIC_PUSH_VAPID_PUBLIC_KEY || '',
     },
     pushVapidPrivateKey: process.env.NUXT_PUSH_VAPID_PRIVATE_KEY || '',
+  },
+
+  // Vitalizer configuration for LCP optimization
+  // Improves Google Lighthouse LCP scores by managing prefetch/preload links
+  vitalizer: {
+    // Remove prefetch links for dynamic imports (default: 'dynamicImports')
+    disablePrefetchLinks: 'dynamicImports',
+    // Keep preload links enabled (default: false)
+    disablePreloadLinks: false,
+    // Don't remove stylesheets by default - requires inlineStyles setup
+    disableStylesheets: false,
   },
 })
