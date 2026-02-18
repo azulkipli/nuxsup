@@ -38,6 +38,8 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@nuxt/image',
     'nuxt-vitalizer',
+    '@nuxtjs/fontaine',
+    '@nuxtjs/critters',
   ],
 
   eslint: {
@@ -300,5 +302,20 @@ export default defineNuxtConfig({
     disablePreloadLinks: false,
     // Don't remove stylesheets by default - requires inlineStyles setup
     disableStylesheets: false,
+  },
+
+  // Critters configuration for critical CSS inlining
+  // Improves First Contentful Paint (FCP) by inlining critical CSS
+  critters: {
+    config: {
+      // Use 'swap' for better CSS loading strategy
+      preload: 'swap',
+      // Inline critical CSS needed for initial render
+      inlineThreshold: 2048,
+      // Minimum size for external CSS file
+      minimumExternalSize: 1024,
+      // Don't prune unused selectors (let purgecss handle it)
+      pruneSource: false,
+    },
   },
 })
