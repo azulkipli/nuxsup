@@ -33,6 +33,7 @@
 | Push | web-push | ^3.6.7 |
 | Performance | nuxt-vitalizer | ^2.0.0 |
 | Fonts | @nuxtjs/fontaine | ^0.5.0 |
+| CSS Performance | @nuxtjs/critters | ^0.9.0 |
 | Runtime | Bun | - |
 | Package Manager | pnpm | - |
 
@@ -314,6 +315,41 @@ The `@nuxtjs/fontaine` module reduces Cumulative Layout Shift (CLS):
 |--------|--------|-------|
 | CLS | 0.34 | 0.013 |
 | Performance | 88 | 98 |
+
+### Critters (Critical CSS Inlining)
+
+The `@nuxtjs/critters` module improves First Contentful Paint (FCP):
+
+**How it works:**
+1. Extracts critical CSS needed for initial page render
+2. Inlines critical CSS directly in HTML `<head>`
+3. Lazy-loads non-critical CSS asynchronously
+
+**Configuration:**
+```ts
+critters: {
+  config: {
+    preload: 'swap',           // CSS loading strategy
+    inlineThreshold: 2048,     // Max bytes to inline
+    minimumExternalSize: 1024, // Min size for external CSS
+    pruneSource: false,        // Keep source CSS intact
+  },
+}
+```
+
+**Benefits:**
+- Faster First Contentful Paint (FCP)
+- Reduced render-blocking CSS
+- Automatic critical CSS extraction
+- Works with Nitro prerendering
+
+**Preload Options:**
+| Option | Behavior |
+|--------|----------|
+| `'media'` | Default - uses media query trick |
+| `'swap'` | Uses link rel="preload" with swap (recommended) |
+| `'inline'` | Inlines all CSS |
+| `'preload'` | Uses standard preload links |
 
 ### Vite Build
 
