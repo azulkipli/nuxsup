@@ -38,7 +38,15 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@nuxt/image',
     'nuxt-capo',
+    '@nuxt/fonts',
+    '@nuxtjs/fontaine',
   ],
+
+  // Font metric fallback configuration (Fontaine)
+  // Generates fallback fonts with correct metrics to reduce CLS
+  fontMetrics: {
+    fonts: ['Inter'],
+  },
 
   eslint: {
     config: {
