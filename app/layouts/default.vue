@@ -55,11 +55,15 @@ const footerLinks = computed(() => ({
 
         <!-- Action Buttons -->
         <div class="flex items-center gap-2">
-          <LanguageSwitcher />
-          <ColorModeToggle />
+          <ClientOnly>
+            <LanguageSwitcher />
+            <ColorModeToggle />
+          </ClientOnly>
           <!-- Show UserAvatar if logged in, otherwise show Login button -->
-          <UserAvatar v-if="user" />
-          <UButton v-else to="/login" color="primary" size="sm">
+          <ClientOnly>
+            <UserAvatar v-if="user" />
+          </ClientOnly>
+          <UButton v-if="!user" to="/login" color="primary" size="sm">
             {{ $t('auth.login') }}
           </UButton>
         </div>

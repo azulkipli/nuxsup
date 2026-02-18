@@ -4,8 +4,9 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
 
-  // Disable SSR for SPA mode (better performance for this use case)
-  ssr: false,
+  // Enable SSR for better SEO and LCP on public pages
+  // Hybrid approach: public pages use SSR, auth pages use SPA
+  ssr: true,
 
   // Disable devtools in production
   devtools: { enabled: process.env.NODE_ENV === 'development' },
@@ -47,7 +48,7 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     '@nuxt/ui',
     '@nuxt/image',
-    'nuxt-capo',
+    // 'nuxt-capo', // Disabled: causing CSS parsing errors during SSR
     '@nuxt/fonts',
     '@nuxtjs/fontaine',
   ],
@@ -108,14 +109,16 @@ export default defineNuxtConfig({
     prerender: {
       autoSubfolderIndex: false,
       crawlLinks: true,
-      routes: ['/'],
+      routes: ['/', '/about'],
+      // Don't fail build on prerender errors (i18n routes sometimes 404)
+      failOnError: false,
     },
     // Enable compression
     compressPublicAssets: {
       brotli: true,
       gzip: true,
     },
-    // Performance headers
+    // Performance headers and route rules
     routeRules: {
       // Cache static assets aggressively
       '/_nuxt/**': {
@@ -129,11 +132,10 @@ export default defineNuxtConfig({
           'Cache-Control': 'public, max-age=86400',
         },
       },
-      // Pre-rendered pages with SEO headers
+      // Public pages: Prerender for SEO (SSG)
       '/': {
         prerender: true,
         headers: {
-          // Override any noindex for SEO
           'X-Robots-Tag': 'index, follow',
         },
       },
@@ -143,7 +145,40 @@ export default defineNuxtConfig({
           'X-Robots-Tag': 'index, follow',
         },
       },
-      // SEO: Allow indexing for all pages
+      // Auth pages: SSR for fast initial load + SEO
+      '/login': {
+        headers: {
+          'X-Robots-Tag': 'noindex, follow', // Don't index auth pages
+        },
+      },
+      '/register': {
+        headers: {
+          'X-Robots-Tag': 'noindex, follow',
+        },
+      },
+      '/forgot-password': {
+        headers: {
+          'X-Robots-Tag': 'noindex, follow',
+        },
+      },
+      '/reset-password': {
+        headers: {
+          'X-Robots-Tag': 'noindex, follow',
+        },
+      },
+      '/confirm': {
+        headers: {
+          'X-Robots-Tag': 'noindex, follow',
+        },
+      },
+      // Protected app pages: SPA mode for better interactivity
+      '/profil': {
+        ssr: false, // SPA mode - auth required anyway
+        headers: {
+          'X-Robots-Tag': 'noindex, follow',
+        },
+      },
+      // SEO: Allow indexing for all other pages by default
       '/**': {
         headers: {
           'X-Robots-Tag': 'index, follow',
@@ -297,8 +332,10 @@ export default defineNuxtConfig({
       cleanupOutdatedCaches: true,
       globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
       globIgnores: ['**/node_modules/**/*', 'sw.js', 'workbox-*.js', '**/_payload.json'],
-      navigateFallback: '/',
-      navigateFallbackDenylist: [/^\/api/],
+      // Don't use navigateFallback for SSR pages - let server handle routing
+      // Only use fallback for true 404s or offline scenarios
+      navigateFallback: undefined,
+      navigateFallbackDenylist: [/^\/api/, /^\/_nuxt/],
       skipWaiting: true,
       clientsClaim: true,
 

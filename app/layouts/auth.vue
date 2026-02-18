@@ -23,8 +23,10 @@ const ColorModeToggle = defineAsyncComponent(() => import('~/components/ColorMod
 
     <!-- Top Right Controls -->
     <div class="absolute top-4 right-4 z-20 flex items-center gap-2">
-      <LanguageSwitcher />
-      <ColorModeToggle />
+      <ClientOnly>
+        <LanguageSwitcher />
+        <ColorModeToggle />
+      </ClientOnly>
     </div>
 
     <!-- Content Wrapper -->
