@@ -55,9 +55,10 @@ const signIn = async () => {
 <template>
   <UiAuthCard :title="String($t('title'))" :description="String($t('subtitle'))">
     <UForm class="space-y-5" @submit="signIn">
-      <UFormField :label="String($t('auth.emailLabel'))" name="email">
+      <UFormField class="w-full" :label="String($t('auth.emailLabel'))" name="email">
         <UInput
           v-model="email"
+          class="w-full"
           type="email"
           name="email"
           placeholder="you@example.com"
@@ -78,6 +79,7 @@ const signIn = async () => {
         </template>
         <UInput
           v-model="password"
+          class="w-full"
           :type="showPassword ? 'text' : 'password'"
           name="password"
           placeholder="••••••••"

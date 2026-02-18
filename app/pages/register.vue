@@ -76,6 +76,7 @@ const signUp = async () => {
         <UFormField :label="String($t('auth.emailLabel'))" name="email">
           <UInput
             v-model="email"
+            class="w-full"
             type="email"
             name="email"
             placeholder="you@example.com"
