@@ -19,9 +19,6 @@ export default defineNuxtConfig({
         // Preconnect to Supabase
         { rel: 'preconnect', href: 'https://*.supabase.co' },
         { rel: 'dns-prefetch', href: 'https://*.supabase.co' },
-        // Preconnect to common CDN domains
-        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: 'anonymous' },
       ],
       // Performance: Add resource hints
       meta: [

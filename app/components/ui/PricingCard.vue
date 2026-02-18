@@ -24,9 +24,9 @@ defineEmits<{
 <template>
   <UCard
     :class="[
-      'relative transition-all duration-300 bg-white dark:bg-slate-800 p-8',
+      'relative transition-all duration-300 bg-white dark:bg-slate-800 p-8 overflow-visible',
       highlight
-        ? 'scale-105 z-10 ring-2 ring-indigo-500 shadow-2xl shadow-indigo-200/50 dark:shadow-indigo-900/30'
+        ? 'scale-105 z-20 ring-2 ring-indigo-500 shadow-2xl shadow-indigo-200/50 dark:shadow-indigo-900/30'
         : 'hover:border-slate-300 dark:hover:border-slate-600 ring-1 ring-slate-100 dark:ring-slate-700 shadow-lg',
     ]"
   >
