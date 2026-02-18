@@ -14,6 +14,7 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
+    "@iconify-json/lucide": "^1.2.91",
     "@nuxt/eslint": "1.14.0",
     "@nuxt/hints": "1.0.0-alpha.6",
     "@nuxt/icon": "^2.2.1",

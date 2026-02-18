@@ -117,7 +117,10 @@ const onContactSubmit = () => {
     </section>
 
     <!-- Features Section -->
-    <section id="features" class="py-24 bg-white dark:bg-slate-900 relative">
+    <section
+      id="features"
+      class="py-24 bg-white dark:bg-slate-900 relative content-visibility-auto"
+    >
       <div class="container mx-auto px-4 md:px-6">
         <UiSectionHeader
           :title="String($t('features.title'))"
@@ -140,7 +143,7 @@ const onContactSubmit = () => {
     <!-- Pricing Section -->
     <section
       id="pricing"
-      class="py-24 bg-slate-50 dark:bg-slate-950 border-y border-slate-200 dark:border-slate-800"
+      class="py-24 bg-slate-50 dark:bg-slate-950 border-y border-slate-200 dark:border-slate-800 content-visibility-auto"
     >
       <div class="container mx-auto px-4 md:px-6">
         <UiSectionHeader
@@ -167,7 +170,7 @@ const onContactSubmit = () => {
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="py-24 bg-white dark:bg-slate-900">
+    <section id="contact" class="py-24 bg-white dark:bg-slate-900 content-visibility-auto">
       <div class="container mx-auto px-4 md:px-6">
         <UCard
           class="max-w-3xl mx-auto overflow-hidden bg-indigo-900 dark:bg-indigo-950 ring-0 shadow-2xl rounded-3xl [&>div]:relative [&>div]:px-8 [&>div]:py-16 [&>div]:md:p-16 [&>div]:text-center"

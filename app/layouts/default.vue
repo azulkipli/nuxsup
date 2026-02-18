@@ -2,6 +2,11 @@
 const user = useSupabaseUser()
 const { t } = useI18n()
 
+// Lazy load non-critical components to reduce initial bundle
+const UserAvatar = defineAsyncComponent(() => import('~/components/UserAvatar.vue'))
+const LanguageSwitcher = defineAsyncComponent(() => import('~/components/LanguageSwitcher.vue'))
+const ColorModeToggle = defineAsyncComponent(() => import('~/components/ColorModeToggle.vue'))
+
 const navLinks = computed(() => [
   { label: String(t('nav.home')), to: '/#hero' },
   { label: String(t('nav.features')), to: '/#features' },

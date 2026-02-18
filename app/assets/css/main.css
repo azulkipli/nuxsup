@@ -74,4 +74,10 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  /* Performance: Contain intrinsic size for content-visibility */
+  .content-visibility-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 500px;
+  }
 }

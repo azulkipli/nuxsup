@@ -135,6 +135,33 @@ export default defineNuxtConfig({
         compress: {
           drop_console: true,
           drop_debugger: true,
+          pure_funcs: ['console.log', 'console.info', 'console.debug'],
+        },
+      },
+      // Chunk splitting for better caching and lazy loading
+      rollupOptions: {
+        output: {
+          // Split vendor chunks for better caching
+          manualChunks: id => {
+            // Split Supabase into its own chunk
+            if (id.includes('@supabase')) {
+              return 'supabase'
+            }
+            // Split icon libraries
+            if (id.includes('@iconify-json')) {
+              return 'icons'
+            }
+            // Split Vue ecosystem (but exclude nuxt-related to avoid circular deps)
+            if (
+              (id.includes('vue/') || id.includes('vue-router/') || id.includes('@vueuse/')) &&
+              !id.includes('@nuxt')
+            ) {
+              return 'vue-vendor'
+            }
+            // Avoid circular dependency by not splitting nuxt modules
+            // They will be bundled together naturally
+            return undefined
+          },
         },
       },
     },
@@ -150,6 +177,13 @@ export default defineNuxtConfig({
   supabase: {
     types: false,
     redirect: false,
+  },
+
+  // Icon configuration - serve icons locally for better performance
+  icon: {
+    serverBundle: {
+      collections: ['lucide'], // Only bundle lucide icons we use
+    },
   },
 
   // Image optimization

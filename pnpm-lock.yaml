@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@iconify-json/lucide':
+        specifier: ^1.2.91
+        version: 1.2.91
       '@nuxt/eslint':
         specifier: 1.14.0
         version: 1.14.0(@typescript-eslint/utils@8.56.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(@vue/compiler-sfc@3.5.28)(eslint@9.39.2(jiti@2.6.1))(magicast@0.5.2)(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.3)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(yaml@2.8.2))
@@ -1118,6 +1121,9 @@ packages:
 
   '@i18n-micro/types@1.1.6':
     resolution: {integrity: sha512-bHtQw+81t9CZGFb1JReMReuMi03RFmhzI/3AmZBANXVZ2/Cr9Xk0h6Xv7eXNonbVZOXI0lciWWISDnGGrG+wnQ==}
+
+  '@iconify-json/lucide@1.2.91':
+    resolution: {integrity: sha512-8fuRiK+HiNRgCKMspn9UPsDpBw0TqVTIY0LOiDbMnFxOBwAulMXIl+SVOtp4LzxNvCXB5ofYffiiFIFDitqo7w==}
 
   '@iconify/collections@1.0.651':
     resolution: {integrity: sha512-ALGlYxNVOIylxNHjFaylqPTzgNaMHeoFA8ao/piPHjYGD526xEp847F7KePy9jvOLChy2bzQVwAV9Em3HiicjQ==}
@@ -8075,6 +8081,10 @@ snapshots:
   '@i18n-micro/types@1.1.5': {}
 
   '@i18n-micro/types@1.1.6': {}
+
+  '@iconify-json/lucide@1.2.91':
+    dependencies:
+      '@iconify/types': 2.0.0
 
   '@iconify/collections@1.0.651':
     dependencies:
