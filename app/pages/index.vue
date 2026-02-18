@@ -184,12 +184,12 @@ const onContactSubmit = () => {
             <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
               {{ $t('contact.title') }}
             </h2>
-            <p class="text-indigo-100 text-lg mb-10 max-w-2xl mx-auto">
+            <p class="text-white/90 text-lg mb-10 max-w-2xl mx-auto">
               {{ $t('contact.description') }}
             </p>
 
             <UCard
-              class="max-w-md mx-auto text-left bg-white/10 backdrop-blur-sm border-white/10 ring-1 ring-white/10 rounded-2xl [&>div]:p-6"
+              class="max-w-md mx-auto text-left bg-white/20 backdrop-blur-sm border-white/20 ring-1 ring-white/20 rounded-2xl [&>div]:p-6"
             >
               <UForm class="space-y-4">
                 <UFormField
@@ -206,7 +206,7 @@ const onContactSubmit = () => {
                 <UButton color="neutral" variant="solid" size="lg" block @click="onContactSubmit">
                   {{ $t('contact.cta') }}
                 </UButton>
-                <p class="text-center text-xs text-indigo-200/80 mt-4">
+                <p class="text-center text-xs text-white/90 mt-4">
                   {{ $t('contact.disclaimer') }}
                 </p>
               </UForm>
