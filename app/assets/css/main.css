@@ -31,6 +31,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    /* Ensure fonts don't block rendering for LCP */
+    font-display: swap;
   }
 
   body {

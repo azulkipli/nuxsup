@@ -19,12 +19,25 @@ export default defineNuxtConfig({
         // Preconnect to Supabase
         { rel: 'preconnect', href: 'https://*.supabase.co' },
         { rel: 'dns-prefetch', href: 'https://*.supabase.co' },
+        // Preconnect to Iconify API for faster icon loading
+        { rel: 'preconnect', href: 'https://api.iconify.design' },
+        { rel: 'dns-prefetch', href: 'https://api.iconify.design' },
+        // Preload critical font for LCP optimization
+        {
+          rel: 'preload',
+          href: '/_nuxt/fonts/inter.woff2',
+          as: 'font',
+          type: 'font/woff2',
+          crossorigin: 'anonymous',
+        },
       ],
       // Performance: Add resource hints
       meta: [
         { name: 'theme-color', content: '#1e293b' },
         { name: 'msapplication-TileColor', content: '#1e293b' },
         { name: 'msapplication-config', content: '/browserconfig.xml' },
+        // SEO: Ensure search engines can index
+        { name: 'robots', content: 'index, follow' },
       ],
     },
   },
@@ -119,12 +132,25 @@ export default defineNuxtConfig({
           'Cache-Control': 'public, max-age=86400',
         },
       },
-      // Pre-rendered pages
+      // Pre-rendered pages with SEO headers
       '/': {
         prerender: true,
+        headers: {
+          // Override any noindex for SEO
+          'X-Robots-Tag': 'index, follow',
+        },
       },
       '/about': {
         prerender: true,
+        headers: {
+          'X-Robots-Tag': 'index, follow',
+        },
+      },
+      // SEO: Allow indexing for all pages
+      '/**': {
+        headers: {
+          'X-Robots-Tag': 'index, follow',
+        },
       },
     },
   },
@@ -144,6 +170,15 @@ export default defineNuxtConfig({
           drop_console: true,
           drop_debugger: true,
           pure_funcs: ['console.log', 'console.info', 'console.debug'],
+          // Tree shake unused code
+          unused: true,
+          dead_code: true,
+        },
+        mangle: {
+          safari10: true,
+        },
+        format: {
+          comments: false,
         },
       },
       // Chunk splitting for better caching and lazy loading
@@ -166,6 +201,10 @@ export default defineNuxtConfig({
             ) {
               return 'vue-vendor'
             }
+            // Split UI components
+            if (id.includes('@nuxt/ui') || id.includes('@nuxt/icon')) {
+              return 'ui'
+            }
             // Avoid circular dependency by not splitting nuxt modules
             // They will be bundled together naturally
             return undefined
@@ -178,6 +217,7 @@ export default defineNuxtConfig({
     // Optimize deps
     optimizeDeps: {
       include: ['vue', 'vue-router', '@vueuse/core'],
+      exclude: ['@nuxt/ui'], // Exclude to reduce initial bundle
     },
   },
 
@@ -191,6 +231,9 @@ export default defineNuxtConfig({
   icon: {
     serverBundle: {
       collections: ['lucide'], // Only bundle lucide icons we use
+    },
+    clientBundle: {
+      scan: true, // Scan for used icons only
     },
   },
 

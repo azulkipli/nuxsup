@@ -15,6 +15,11 @@ useHead({
     { name: 'description', content: $t('meta.description') as string },
     { name: 'og:description', content: $t('meta.description') as string },
     { name: 'twitter:description', content: $t('meta.description') as string },
+    // SEO: Ensure search engines can index this page
+    {
+      name: 'robots',
+      content: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+    },
   ],
 })
 

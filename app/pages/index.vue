@@ -81,8 +81,9 @@ const onContactSubmit = () => {
           {{ $t('hero.badge') }}
         </UBadge>
 
+        <!-- LCP Optimization: Hero title rendered immediately without opacity:0 -->
         <h1
-          class="text-4xl md:text-6xl/tight font-extrabold text-slate-900 dark:text-white tracking-tight mb-6 animate-fade-in-up delay-100"
+          class="text-4xl md:text-6xl/tight font-extrabold text-slate-900 dark:text-white tracking-tight mb-6"
         >
           {{ $t('hero.title1') }} <br class="hidden md:block" />
           <span
@@ -92,14 +93,12 @@ const onContactSubmit = () => {
         </h1>
 
         <p
-          class="text-lg md:text-xl text-slate-600 dark:text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed animate-fade-in-up delay-200"
+          class="text-lg md:text-xl text-slate-600 dark:text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed"
         >
           {{ $t('hero.description') }}
         </p>
 
-        <div
-          class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up delay-300"
-        >
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
           <UButton to="/#pricing" color="primary" size="lg" class="w-full sm:w-auto">
             {{ $t('hero.getStarted') }}
           </UButton>
@@ -222,6 +221,7 @@ const onContactSubmit = () => {
 </template>
 
 <style scoped>
+/* Animations for non-LCP elements */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -234,17 +234,7 @@ const onContactSubmit = () => {
 }
 
 .animate-fade-in-up {
-  animation: fadeInUp 0.8s ease-out forwards;
+  animation: fadeInUp 0.6s ease-out forwards;
   opacity: 0;
-}
-
-.delay-100 {
-  animation-delay: 0.1s;
-}
-.delay-200 {
-  animation-delay: 0.2s;
-}
-.delay-300 {
-  animation-delay: 0.3s;
 }
 </style>

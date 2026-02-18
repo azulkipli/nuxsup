@@ -1,0 +1,42 @@
+[
+  {
+    "path": "/",
+    "score": 0.87,
+    "performance": 0.87,
+    "accessibility": 0.95,
+    "best-practices": 1,
+    "seo": 0.66
+  },
+  {
+    "path": "/about",
+    "score": 0.89,
+    "performance": 0.93,
+    "accessibility": 0.95,
+    "best-practices": 1,
+    "seo": 0.66
+  },
+  {
+    "path": "/forgot-password",
+    "score": 0.89,
+    "performance": 0.95,
+    "accessibility": 0.95,
+    "best-practices": 1,
+    "seo": 0.66
+  },
+  {
+    "path": "/login",
+    "score": 0.87,
+    "performance": 0.93,
+    "accessibility": 0.88,
+    "best-practices": 1,
+    "seo": 0.66
+  },
+  {
+    "path": "/register",
+    "score": 0.89,
+    "performance": 0.95,
+    "accessibility": 0.95,
+    "best-practices": 1,
+    "seo": 0.66
+  }
+]
