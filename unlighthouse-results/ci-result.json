@@ -2,7 +2,7 @@
   {
     "path": "/",
     "score": 0.87,
-    "performance": 0.87,
+    "performance": 0.85,
     "accessibility": 0.95,
     "best-practices": 1,
     "seo": 0.66
@@ -18,7 +18,7 @@
   {
     "path": "/forgot-password",
     "score": 0.89,
-    "performance": 0.95,
+    "performance": 0.94,
     "accessibility": 0.95,
     "best-practices": 1,
     "seo": 0.66
@@ -34,7 +34,7 @@
   {
     "path": "/register",
     "score": 0.89,
-    "performance": 0.95,
+    "performance": 0.93,
     "accessibility": 0.95,
     "best-practices": 1,
     "seo": 0.66

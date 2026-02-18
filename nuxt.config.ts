@@ -16,9 +16,6 @@ export default defineNuxtConfig({
       charset: 'utf-8',
       // Performance: Preconnect to external domains
       link: [
-        // Preconnect to Supabase
-        { rel: 'preconnect', href: 'https://*.supabase.co' },
-        { rel: 'dns-prefetch', href: 'https://*.supabase.co' },
         // Preconnect to Iconify API for faster icon loading
         { rel: 'preconnect', href: 'https://api.iconify.design' },
         { rel: 'dns-prefetch', href: 'https://api.iconify.design' },
