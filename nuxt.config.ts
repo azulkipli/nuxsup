@@ -40,6 +40,7 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     '@nuxt/ui',
     '@nuxt/image',
+    'nuxt-capo',
   ],
 
   eslint: {
