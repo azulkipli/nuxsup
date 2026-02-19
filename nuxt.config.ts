@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
 
   // Enable SSR for hybrid rendering (SSG + SSR)
-  // ssr: false,
+  ssr: false,
 
   // Disable devtools in production
   devtools: { enabled: process.env.NODE_ENV === 'development' },
