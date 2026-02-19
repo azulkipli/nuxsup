@@ -1,12 +1,22 @@
 <script setup lang="ts">
 const { $t } = useI18n()
 
+// Use reactive ref for body class to avoid hydration mismatch
+const bodyClass = ref('no-scrollbar')
+
+onMounted(() => {
+  // Set debug class only on client side
+  if (import.meta.env.APP_DEBUG === 'on') {
+    bodyClass.value = 'debug-screens no-scrollbar'
+  }
+})
+
 useHead({
   htmlAttrs: {
     class: 'no-scrollbar',
   },
   bodyAttrs: {
-    class: import.meta.env.APP_DEBUG === 'on' ? 'debug-screens no-scrollbar' : 'no-scrollbar',
+    class: bodyClass,
   },
   titleTemplate: (param?: string) => {
     return param ? `${param} - Nuxsup` : 'Nuxsup'
