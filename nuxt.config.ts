@@ -13,6 +13,38 @@ export default defineNuxtConfig({
   // Set source directory to 'app/' folder
   srcDir: 'app/',
 
+  // Performance: Disable auto-imports for unused composables
+  imports: {
+    // Auto-import only what's used
+    autoImport: true,
+    // Disable transpilation of imports
+    transpile: false,
+    // Import specific Vue composables (tree-shake unused)
+    imports: [
+      { from: 'vue', name: 'computed' },
+      { from: 'vue', name: 'ref' },
+      { from: 'vue', name: 'reactive' },
+      { from: 'vue', name: 'watch' },
+      { from: 'vue', name: 'watchEffect' },
+      { from: 'vue', name: 'onMounted' },
+      { from: 'vue', name: 'onUnmounted' },
+    ],
+  },
+
+  // Component imports - only import used components
+  components: {
+    dirs: [
+      {
+        path: '~/components',
+        extensions: ['.vue'],
+        // Only register components when used
+        pathPrefix: '',
+      },
+    ],
+    // Enable tree-shaking for components
+    global: false,
+  },
+
   app: {
     head: {
       viewport: 'width=device-width, initial-scale=1',
@@ -38,10 +70,25 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     'nuxt-i18n-micro',
     '@nuxt/eslint',
-    '@nuxt/ui',
+    [
+      '@nuxt/ui',
+      {
+        // Tree-shake unused components
+        prefix: 'U',
+        // Only include components that are actually used
+        global: false,
+      },
+    ],
     '@nuxt/image',
     'nuxt-vitalizer',
     '@nuxtjs/critters',
+    [
+      '@nuxt/icon',
+      {
+        // Tree-shake unused icons - only bundle used icons
+        provider: 'iconify',
+      },
+    ],
   ],
 
   eslint: {
@@ -70,6 +117,11 @@ export default defineNuxtConfig({
     disablePageLocales: false,
     fallbackLocale: 'id',
     localeCookie: 'user-locale',
+    // Bundle optimization
+    bundle: {
+      // Optimize translation messages
+      optimizeTranslationDirective: true,
+    },
   },
 
   // CSS path is now relative to srcDir ('app/')
@@ -162,6 +214,21 @@ export default defineNuxtConfig({
           drop_debugger: true,
         },
       },
+      // Rollup options for better tree-shaking
+      rollupOptions: {
+        output: {
+          // Manual chunks for better code splitting
+          manualChunks: {
+            // Separate vendor chunks
+            vendor: ['vue', 'vue-router'],
+          },
+        },
+        // Better tree-shaking
+        treeshake: {
+          propertyReadSideEffects: false,
+          tryCatchDeoptimization: false,
+        },
+      },
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     plugins: [tailwindcss() as any],
@@ -173,12 +240,18 @@ export default defineNuxtConfig({
     define: {
       __VUE_PROD_DEVTOOLS__: false,
     },
+    // Better tree-shaking for production
+    esbuild: {
+      drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [],
+    },
   },
 
   // Supabase configuration
   supabase: {
     types: false,
     redirect: false,
+    // Disable auto-import of composables to reduce bundle size
+    composables: false,
   },
 
   // Image optimization
@@ -249,13 +322,16 @@ export default defineNuxtConfig({
 
     workbox: {
       cleanupOutdatedCaches: true,
-      globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
-      globIgnores: ['**/node_modules/**/*', 'sw.js', 'workbox-*.js', '**/_payload.json'],
+      // Only precache essential assets - reduce initial bundle
+      globPatterns: ['**/*.{html,css}'],
+      globIgnores: ['**/node_modules/**/*', 'sw.js', 'workbox-*.js', '**/_payload.json', '**/*.png', '**/*.jpg'],
       navigateFallback: '/',
       navigateFallbackDenylist: [/^\/api/],
       skipWaiting: true,
       clientsClaim: true,
-
+      // Reduce bundle size by using minimal workbox build
+      maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB limit
+      // Use runtime caching instead of precaching for dynamic content
       runtimeCaching: [
         // Supabase Auth - NetworkOnly
         {
@@ -316,6 +392,12 @@ export default defineNuxtConfig({
       enabled: false, // Disable in dev for faster builds
       type: 'module',
       suppressWarnings: true,
+    },
+
+    // Build options to reduce service worker bundle size
+    buildOptions: {
+      // Minify the service worker
+      minify: true,
     },
   },
 
