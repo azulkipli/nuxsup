@@ -86,7 +86,7 @@ onUnmounted(() => {
           v-for="locale in $getLocales()"
           :key="locale.code"
           :class="[
-            'w-full flex items-center gap-3 px-4 py-2.5 text-sm text-left transition-colors',
+            'w-full flex items-center gap-3 px-4 py-2.5 text-sm text-left transition-colors rounded-lg',
             currentLocale === locale.code
               ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
               : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700',

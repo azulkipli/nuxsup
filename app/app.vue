@@ -1,14 +1,13 @@
 <script setup lang="ts">
 const { $t } = useI18n()
 
-// Use reactive ref for body class to avoid hydration mismatch
-const bodyClass = ref('no-scrollbar')
-
-onMounted(() => {
-  // Set debug class only on client side
-  if (import.meta.env.APP_DEBUG === 'on') {
-    bodyClass.value = 'debug-screens no-scrollbar'
+// Use computed property to avoid hydration mismatch
+// Only add debug class on client side after hydration
+const bodyClass = computed(() => {
+  if (import.meta.client && import.meta.env.APP_DEBUG === 'on') {
+    return 'debug-screens no-scrollbar'
   }
+  return 'no-scrollbar'
 })
 
 useHead({
@@ -36,9 +35,17 @@ useHead({
 // Dynamic imports for non-critical PWA components
 const InstallPrompt = defineAsyncComponent(() => import('./components/InstallPrompt.vue'))
 const ReloadPrompt = defineAsyncComponent(() => import('./components/ReloadPrompt.vue'))
+
+// Disable attribute inheritance for VitePwaManifest to prevent warning
+defineOptions({
+  inheritAttrs: false,
+})
 </script>
 <template>
-  <VitePwaManifest />
+  <!-- VitePwaManifest as web component - wrap to avoid attribute inheritance warning -->
+  <div style="display: contents">
+    <VitePwaManifest />
+  </div>
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>

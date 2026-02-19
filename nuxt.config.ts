@@ -4,11 +4,14 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
 
-  // Disable SSR for SPA mode (better performance for this use case)
-  ssr: false,
+  // Enable SSR for hybrid rendering (SSG + SSR)
+  // ssr: false,
 
   // Disable devtools in production
   devtools: { enabled: process.env.NODE_ENV === 'development' },
+
+  // Set source directory to 'app/' folder
+  srcDir: 'app/',
 
   app: {
     head: {
@@ -69,7 +72,8 @@ export default defineNuxtConfig({
     localeCookie: 'user-locale',
   },
 
-  css: ['./app/assets/css/main.css'],
+  // CSS path is now relative to srcDir ('app/')
+  css: ['./assets/css/main.css'],
 
   // Performance optimizations
   experimental: {
@@ -92,13 +96,15 @@ export default defineNuxtConfig({
       autoSubfolderIndex: false,
       crawlLinks: true,
       routes: ['/'],
+      // Exclude dev-sw.js from prerendering
+      failOnError: false,
     },
     // Enable compression
     compressPublicAssets: {
       brotli: true,
       gzip: true,
     },
-    // Performance headers
+    // Hybrid rendering configuration (SSG + SSR)
     routeRules: {
       // Cache static assets aggressively
       '/_nuxt/**': {
@@ -112,12 +118,30 @@ export default defineNuxtConfig({
           'Cache-Control': 'public, max-age=86400',
         },
       },
-      // Pre-rendered pages
+      // Pre-rendered pages (SSG) - generated at build time
       '/': {
         prerender: true,
       },
       '/about': {
         prerender: true,
+      },
+      // Dynamic routes use SSR with caching
+      '/profil/**': {
+        ssr: true,
+        swr: 300, // Cache for 5 minutes
+      },
+      // Auth pages are client-side only (no SSR needed)
+      '/login': {
+        ssr: false,
+      },
+      '/register': {
+        ssr: false,
+      },
+      // Exclude PWA dev-sw.js routes
+      '/dev-sw.js**': {
+        prerender: false,
+        ssr: false,
+        cache: false,
       },
     },
   },
@@ -144,6 +168,10 @@ export default defineNuxtConfig({
     // Optimize deps
     optimizeDeps: {
       include: ['vue', 'vue-router', '@vueuse/core'],
+    },
+    // Suppress Vue Router warnings for PWA dev-sw
+    define: {
+      __VUE_PROD_DEVTOOLS__: false,
     },
   },
 
@@ -186,6 +214,13 @@ export default defineNuxtConfig({
     strategies: 'generateSW',
     // Disable in dev to speed up HMR
     disable: process.env.NODE_ENV === 'development',
+
+    // Development options
+    devOptions: {
+      enabled: false, // Keep disabled for faster HMR
+      type: 'module',
+      suppressWarnings: true, // Suppress dev-sw.js warnings
+    },
 
     manifest: {
       name: 'Nuxsup',
