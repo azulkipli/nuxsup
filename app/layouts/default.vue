@@ -1,6 +1,8 @@
 <script setup lang="ts">
-const user = useSupabaseUser()
 const { t } = useI18n()
+
+// Use Supabase user composable - it's already optimized by the module
+const user = useSupabaseUser()
 
 const navLinks = computed(() => [
   { label: String(t('nav.home')), to: '/#hero' },
