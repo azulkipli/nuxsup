@@ -189,12 +189,6 @@ export default defineNuxtConfig({
       '/register': {
         ssr: false,
       },
-      // Exclude PWA dev-sw.js routes
-      '/dev-sw.js**': {
-        prerender: false,
-        ssr: false,
-        cache: false,
-      },
     },
   },
 

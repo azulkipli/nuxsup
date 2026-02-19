@@ -2,6 +2,7 @@
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
 const { t } = useI18n()
+const router = useRouter()
 
 // Get user avatar URL from user metadata or generate initials
 const avatarUrl = computed(() => {
@@ -17,13 +18,14 @@ const userEmail = computed(() => {
   return user.value?.email || ''
 })
 
-const goToProfile = () => {
-  navigateTo('/profil')
+const goToProfile = async () => {
+  console.log('goToProfile')
+  await router.push('/profil')
 }
 
 const logout = async () => {
   await supabase.auth.signOut()
-  await navigateTo('/')
+  await router.push('/profil')
 }
 
 const items = computed(() => [
