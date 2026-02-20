@@ -2,7 +2,7 @@
 const { $t } = useI18n()
 
 // Performance: Optimize LCP with fetchpriority on H1 (in template)
-// Font preload already configured globally in nuxt.config.ts
+// Fontaine handles font metrics for CLS reduction
 // Critical CSS inlined automatically by @nuxtjs/critters
 
 interface FeatureItem {
