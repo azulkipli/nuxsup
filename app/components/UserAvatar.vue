@@ -18,13 +18,17 @@ const userEmail = computed(() => {
   return user.value?.email || ''
 })
 
+const open = ref(false)
+
 const goToProfile = (e: Event) => {
   e.preventDefault()
+  open.value = false
   router.push('/profil')
 }
 
 const logout = async (e: Event) => {
   e.preventDefault()
+  open.value = false
   await supabase.auth.signOut()
   await router.push('/')
 }
@@ -56,7 +60,7 @@ const items = computed(() => [
 </script>
 
 <template>
-  <UDropdownMenu :items="items" :ui="{ content: 'w-56' }">
+  <UDropdownMenu v-model:open="open" :items="items" :ui="{ content: 'w-56' }">
     <UAvatar
       :src="avatarUrl"
       :alt="userEmail"
