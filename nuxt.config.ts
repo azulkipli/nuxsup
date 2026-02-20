@@ -233,8 +233,7 @@ export default defineNuxtConfig({
             // VueUse - utility composables (browser-compatible)
             'vue-use': ['@vueuse/core'],
           },
-          // Keep default entry file naming for proper Nuxt loading
-          chunkFileNames: 'assets/js/[name]-[hash].js',
+          // Use default chunk naming for proper Nuxt SSG compatibility
         },
         // Better tree-shaking
         treeshake: {
