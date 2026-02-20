@@ -318,7 +318,14 @@ export default defineNuxtConfig({
       cleanupOutdatedCaches: true,
       // Only precache essential assets - reduce initial bundle
       globPatterns: ['**/*.{html,css}'],
-      globIgnores: ['**/node_modules/**/*', 'sw.js', 'workbox-*.js', '**/_payload.json', '**/*.png', '**/*.jpg'],
+      globIgnores: [
+        '**/node_modules/**/*',
+        'sw.js',
+        'workbox-*.js',
+        '**/_payload.json',
+        '**/*.png',
+        '**/*.jpg',
+      ],
       navigateFallback: '/',
       navigateFallbackDenylist: [/^\/api/],
       skipWaiting: true,

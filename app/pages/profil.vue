@@ -23,6 +23,51 @@ const passwordLoading = ref(false)
 const showOldPassword = ref(false)
 const showNewPassword = ref(false)
 const showConfirmPassword = ref(false)
+const showNewPasswordFields = ref(false)
+
+// Password strength for new password
+function checkPasswordStrength(str: string) {
+  const requirements = [
+    { regex: /.{8,}/, textKey: 'password.requirements.minLength' },
+    { regex: /\d/, textKey: 'password.requirements.number' },
+    { regex: /[a-z]/, textKey: 'password.requirements.lowercase' },
+    { regex: /[A-Z]/, textKey: 'password.requirements.uppercase' },
+  ]
+
+  return requirements.map(req => ({ met: req.regex.test(str), textKey: req.textKey }))
+}
+
+const newPasswordStrength = computed(() => checkPasswordStrength(newPassword.value))
+const newPasswordScore = computed(() => newPasswordStrength.value.filter(req => req.met).length)
+
+const newPasswordColor = computed(() => {
+  if (newPasswordScore.value === 0) return 'neutral'
+  if (newPasswordScore.value <= 1) return 'error'
+  if (newPasswordScore.value <= 2) return 'warning'
+  if (newPasswordScore.value === 3) return 'warning'
+  return 'success'
+})
+
+const newPasswordStrengthText = computed(() => {
+  if (newPasswordScore.value === 0) return $t('password.strength.enterPassword')
+  if (newPasswordScore.value <= 2) return $t('password.strength.weak')
+  if (newPasswordScore.value === 3) return $t('password.strength.medium')
+  return $t('password.strength.strong')
+})
+
+// Watch old password to show/hide new password fields
+watch(
+  oldPassword,
+  val => {
+    showNewPasswordFields.value = val.length > 0
+    // Reset new password fields when old password is cleared
+    if (!val) {
+      newPassword.value = ''
+      confirmNewPassword.value = ''
+    }
+  },
+  { immediate: true }
+)
 
 // Template refs
 const fileInput = ref<HTMLInputElement | null>(null)
@@ -362,6 +407,7 @@ const changePassword = async () => {
               size="lg"
               class="w-full"
               :disabled="passwordLoading"
+              :color="newPasswordColor"
               autocomplete="new-password"
             >
               <template #trailing>
@@ -374,9 +420,51 @@ const changePassword = async () => {
                 />
               </template>
             </UInput>
+
+            <div v-if="newPassword.length > 0" class="mt-2 space-y-2">
+              <UProgress
+                :color="newPasswordColor"
+                :model-value="newPasswordScore"
+                :max="4"
+                size="sm"
+              />
+
+              <p class="text-sm font-medium">
+                {{ newPasswordStrengthText }}. {{ $t('password.strength.requirements') }}
+              </p>
+
+              <ul class="space-y-1">
+                <li
+                  v-for="(req, index) in newPasswordStrength"
+                  :key="index"
+                  class="flex items-center gap-0.5"
+                  :class="req.met ? 'text-success' : 'text-muted'"
+                >
+                  <UIcon
+                    :name="req.met ? 'i-lucide-circle-check' : 'i-lucide-circle-x'"
+                    class="size-4 shrink-0"
+                  />
+
+                  <span class="text-xs font-light">
+                    {{ $t(req.textKey) }}
+                    <span class="sr-only">
+                      {{
+                        req.met
+                          ? $t('password.strength.requirementMet')
+                          : $t('password.strength.requirementNotMet')
+                      }}
+                    </span>
+                  </span>
+                </li>
+              </ul>
+            </div>
           </UFormField>
 
-          <UFormField :label="String($t('password.confirmPassword'))" name="confirmNewPassword">
+          <UFormField
+            v-show="showNewPasswordFields"
+            :label="String($t('password.confirmPassword'))"
+            name="confirmNewPassword"
+          >
             <UInput
               v-model="confirmNewPassword"
               :type="showConfirmPassword ? 'text' : 'password'"
