@@ -18,14 +18,15 @@ const userEmail = computed(() => {
   return user.value?.email || ''
 })
 
-const goToProfile = async () => {
-  console.log('goToProfile')
-  await router.push('/profil')
+const goToProfile = (e: Event) => {
+  e.preventDefault()
+  router.push('/profil')
 }
 
-const logout = async () => {
+const logout = async (e: Event) => {
+  e.preventDefault()
   await supabase.auth.signOut()
-  await router.push('/profil')
+  await router.push('/')
 }
 
 const items = computed(() => [
@@ -40,7 +41,7 @@ const items = computed(() => [
     {
       label: t('auth.profile'),
       icon: 'i-lucide-user',
-      click: goToProfile,
+      onSelect: goToProfile,
     },
   ],
   [
@@ -48,7 +49,7 @@ const items = computed(() => [
       label: t('auth.logout'),
       icon: 'i-lucide-log-out',
       color: 'error' as const,
-      click: logout,
+      onSelect: logout,
     },
   ],
 ])
