@@ -352,6 +352,9 @@ export default defineNuxtConfig({
       clientsClaim: true,
       // Reduce bundle size by using minimal workbox build
       maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB limit
+      // Fix: Ignore all URL parameters to avoid conflicting cache entries
+      ignoreURLParametersMatching: [/.*/],
+      // Fix: Don't precache HTML with revisions - use runtime caching instead
       // Use runtime caching instead of precaching for dynamic content
       runtimeCaching: [
         // Supabase Auth - NetworkOnly
