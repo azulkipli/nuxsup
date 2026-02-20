@@ -61,7 +61,7 @@ const onContactSubmit = () => {
       class="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-slate-50 dark:bg-slate-900"
     >
       <!-- Background Decorative Elements -->
-      <div class="absolute inset-0 z-0 pointer-events-none">
+      <div v-once class="absolute inset-0 z-0 pointer-events-none">
         <div
           class="absolute top-0 left-1/4 w-96 h-96 bg-indigo-200/40 dark:bg-indigo-800/20 rounded-full blur-3xl -translate-y-1/2"
         />
@@ -172,13 +172,9 @@ const onContactSubmit = () => {
         <UCard
           class="max-w-3xl mx-auto overflow-hidden bg-indigo-900 dark:bg-indigo-950 ring-0 shadow-2xl rounded-3xl [&>div]:relative [&>div]:px-8 [&>div]:py-16 [&>div]:md:p-16 [&>div]:text-center"
         >
-          <!-- Abstract Shapes -->
-          <div
-            class="absolute top-0 right-0 w-64 h-64 bg-indigo-800 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-50 pointer-events-none"
-          />
-          <div
-            class="absolute bottom-0 left-0 w-64 h-64 bg-indigo-600 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 opacity-50 pointer-events-none"
-          />
+          <!-- Abstract Shapes - Static decorative elements -->
+          <div v-once class="absolute top-0 right-0 w-64 h-64 bg-indigo-800 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-50 pointer-events-none" />
+          <div v-once class="absolute bottom-0 left-0 w-64 h-64 bg-indigo-600 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 opacity-50 pointer-events-none" />
 
           <div class="relative z-10">
             <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
