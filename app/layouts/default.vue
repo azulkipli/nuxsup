@@ -30,13 +30,9 @@ const footerLinks = computed(() => ({
   <div
     class="flex flex-col min-h-screen text-slate-800 dark:text-slate-200 bg-white dark:bg-slate-900 selection:bg-indigo-100 selection:text-indigo-900 dark:selection:bg-indigo-900/50 dark:selection:text-indigo-200 transition-colors duration-300"
   >
-    <!-- Header - content-visibility improves initial render -->
-    <header
-      class="sticky top-0 z-50 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/60 dark:border-slate-700/60 shadow-sm"
-      style="content-visibility: auto; contain-intrinsic-size: 0 64px"
-    >
-      <div class="container mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
-        <!-- Logo -->
+    <!-- Header -->
+    <UHeader>
+      <template #title>
         <i18n-link to="/" class="flex items-center gap-2 group">
           <div v-once
             class="bg-indigo-600 text-white w-8 h-8 rounded-lg flex items-center justify-center font-bold text-lg shadow-md group-hover:scale-105 transition-transform duration-300"
@@ -48,22 +44,26 @@ const footerLinks = computed(() => ({
             >Nuxsup</span
           >
         </i18n-link>
+      </template>
 
-        <!-- Desktop Navigation -->
-        <UNavigationMenu :items="navLinks" variant="link" class="hidden md:flex" />
+      <!-- Desktop Navigation -->
+      <UNavigationMenu :items="navLinks" variant="link" class="hidden md:flex" />
 
-        <!-- Action Buttons -->
-        <div class="flex items-center gap-2">
-          <LanguageSwitcher />
-          <ColorModeToggle />
-          <!-- Show UserAvatar if logged in, otherwise show Login button -->
-          <UserAvatar v-if="user" />
-          <UButton v-else to="/login" color="primary" size="sm">
-            {{ $t('auth.login') }}
-          </UButton>
-        </div>
-      </div>
-    </header>
+      <template #right>
+        <LanguageSwitcher />
+        <ColorModeToggle />
+        <!-- Show UserAvatar if logged in, otherwise show Login button -->
+        <UserAvatar v-if="user" />
+        <UButton v-else to="/login" color="primary" size="sm">
+          {{ $t('auth.login') }}
+        </UButton>
+      </template>
+
+      <!-- Mobile Navigation -->
+      <template #body>
+        <UNavigationMenu :items="navLinks" orientation="vertical" class="-mx-2.5" />
+      </template>
+    </UHeader>
 
     <main class="flex-grow">
       <slot />
