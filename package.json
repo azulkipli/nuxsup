@@ -30,6 +30,7 @@
     "web-push": "^3.6.7"
   },
   "devDependencies": {
+    "@iconify-json/lucide": "^1.2.92",
     "@nuxtjs/critters": "^0.9.0",
     "@nuxtjs/fontaine": "^0.5.0",
     "@types/web-push": "^3.6.4",
