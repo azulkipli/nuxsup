@@ -315,16 +315,16 @@ const changePassword = async () => {
             :model-value="userEmail"
             disabled
             size="lg"
+            class="w-full"
             :ui="{ base: 'bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400' }"
+            icon="i-lucide-at-sign"
           />
-          <template #hint>
-            <p class="text-xs text-slate-400">{{ $t('account.emailReadonly') }}</p>
-          </template>
+          <p class="text-xs text-slate-400 mt-1">{{ $t('account.emailReadonly') }}</p>
         </UFormField>
       </UCard>
 
       <!-- Password Change Section -->
-      <UCard [&>div]:p-6>
+      <UCard>
         <template #header>
           <h2 class="text-lg font-semibold text-slate-900 dark:text-white">
             {{ $t('password.title') }}
@@ -338,6 +338,7 @@ const changePassword = async () => {
               :type="showOldPassword ? 'text' : 'password'"
               :placeholder="String($t('password.oldPasswordPlaceholder'))"
               size="lg"
+              class="w-full"
               :disabled="passwordLoading"
               autocomplete="current-password"
             >
@@ -359,6 +360,7 @@ const changePassword = async () => {
               :type="showNewPassword ? 'text' : 'password'"
               :placeholder="String($t('password.newPasswordPlaceholder'))"
               size="lg"
+              class="w-full"
               :disabled="passwordLoading"
               autocomplete="new-password"
             >
@@ -380,6 +382,7 @@ const changePassword = async () => {
               :type="showConfirmPassword ? 'text' : 'password'"
               :placeholder="String($t('password.confirmPasswordPlaceholder'))"
               size="lg"
+              class="w-full"
               :disabled="passwordLoading"
               autocomplete="new-password"
             >
