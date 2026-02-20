@@ -93,8 +93,23 @@ export default defineNuxtConfig({
     [
       '@nuxt/icon',
       {
-        // Tree-shake unused icons - only bundle used icons
-        provider: 'iconify',
+        // Performance: Use remote server bundle for on-demand icon loading
+        // Icons are loaded from CDN only when needed, reducing initial bundle
+        serverBundle: {
+          remote: 'jsdelivr', // Load icon collections from jsdelivr CDN
+          externalizeIconsJson: true, // Externalize icons JSON to reduce build memory
+        },
+        // Performance: Client-side bundle for frequently used icons
+        clientBundle: {
+          scan: true, // Auto-scan components for icon usage
+          sizeLimitKb: 256, // Fail build if client bundle exceeds 256KB
+          scan: {
+            globInclude: ['components/**/*.vue', 'pages/**/*.vue'],
+            globExclude: ['node_modules', 'dist', '.output'],
+          },
+        },
+        // Disable fallback to Iconify API for better performance
+        fallbackToApi: false,
       },
     ],
   ],

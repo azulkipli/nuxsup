@@ -21,6 +21,7 @@
         "web-push": "^3.6.7",
       },
       "devDependencies": {
+        "@iconify-json/lucide": "^1.2.92",
         "@nuxtjs/critters": "^0.9.0",
         "@nuxtjs/fontaine": "^0.5.0",
         "@types/web-push": "^3.6.4",
@@ -355,6 +356,8 @@
     "@i18n-micro/test-utils": ["@i18n-micro/test-utils@1.2.0", "", { "dependencies": { "@i18n-micro/core": "1.2.0" } }, "sha512-jKykFyIT1jfa7zTG0qLx+RKroDqqw/jVDUkipks/XBYcHirRhbMMXKetVueU36H7+LRaiRWM4gi0a9mANcBVvQ=="],
 
     "@i18n-micro/types": ["@i18n-micro/types@1.1.6", "", {}, "sha512-bHtQw+81t9CZGFb1JReMReuMi03RFmhzI/3AmZBANXVZ2/Cr9Xk0h6Xv7eXNonbVZOXI0lciWWISDnGGrG+wnQ=="],
+
+    "@iconify-json/lucide": ["@iconify-json/lucide@1.2.92", "", { "dependencies": { "@iconify/types": "*" } }, "sha512-+ghJelYoO/cfR6Kl/SKRJJZ+lONUUanC7w94Lh8gOZaSK92RBmLE+mojYrcVrLqjLnJO5KkryQxRcg3dLFPZww=="],
 
     "@iconify/collections": ["@iconify/collections@1.0.651", "", { "dependencies": { "@iconify/types": "*" } }, "sha512-ALGlYxNVOIylxNHjFaylqPTzgNaMHeoFA8ao/piPHjYGD526xEp847F7KePy9jvOLChy2bzQVwAV9Em3HiicjQ=="],
 
