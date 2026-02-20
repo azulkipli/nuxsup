@@ -1,8 +1,6 @@
 @import 'tailwindcss';
 @import '@nuxt/ui';
 
-@plugin "tailwindcss-debug-screens";
-
 :root {
   --ui-radius: 0.375rem;
   /* Fontaine: Add 'Inter fallback' for CLS reduction */
@@ -76,3 +74,5 @@
     scrollbar-width: none;
   }
 }
+
+@plugin "tailwindcss-debug-screens";
