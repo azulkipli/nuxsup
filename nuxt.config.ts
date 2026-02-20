@@ -54,6 +54,14 @@ export default defineNuxtConfig({
         // Preconnect to Supabase
         { rel: 'preconnect', href: 'https://*.supabase.co' },
         { rel: 'dns-prefetch', href: 'https://*.supabase.co' },
+        // Performance: Preload Inter font for faster LCP
+        {
+          rel: 'preload',
+          as: 'font',
+          href: 'https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hjp-Ek-_EeA.woff2',
+          type: 'font/woff2',
+          crossorigin: 'anonymous',
+        },
       ],
       // Performance: Add resource hints
       meta: [
