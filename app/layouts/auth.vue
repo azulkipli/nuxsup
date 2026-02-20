@@ -1,3 +1,7 @@
+<script setup lang="ts">
+const { t } = useI18n()
+</script>
+
 <template>
   <div
     class="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900 relative overflow-hidden transition-colors duration-300"
@@ -15,11 +19,13 @@
       />
     </div>
 
-    <!-- Top Right Controls -->
-    <div class="absolute top-4 right-4 z-20 flex items-center gap-2">
-      <LanguageSwitcher />
-      <ColorModeToggle />
-    </div>
+    <!-- Header -->
+    <UHeader class="absolute top-0 left-0 right-0" :toggle="false">
+      <template #right>
+        <LanguageSwitcher />
+        <ColorModeToggle />
+      </template>
+    </UHeader>
 
     <!-- Content Wrapper -->
     <div class="w-full max-w-md p-6 relative z-10">
