@@ -13,36 +13,6 @@ const password = ref('')
 const loading = ref(false)
 const showPassword = ref(false)
 
-// Password strength
-function checkPasswordStrength(str: string) {
-  const requirements = [
-    { regex: /.{8,}/, textKey: 'password.requirements.minLength' },
-    { regex: /\d/, textKey: 'password.requirements.number' },
-    { regex: /[a-z]/, textKey: 'password.requirements.lowercase' },
-    { regex: /[A-Z]/, textKey: 'password.requirements.uppercase' },
-  ]
-
-  return requirements.map(req => ({ met: req.regex.test(str), textKey: req.textKey }))
-}
-
-const passwordStrength = computed(() => checkPasswordStrength(password.value))
-const passwordScore = computed(() => passwordStrength.value.filter(req => req.met).length)
-
-const passwordColor = computed(() => {
-  if (passwordScore.value === 0) return 'neutral'
-  if (passwordScore.value <= 1) return 'error'
-  if (passwordScore.value <= 2) return 'warning'
-  if (passwordScore.value === 3) return 'warning'
-  return 'success'
-})
-
-const passwordStrengthText = computed(() => {
-  if (passwordScore.value === 0) return $t('password.strength.enterPassword')
-  if (passwordScore.value <= 2) return $t('password.strength.weak')
-  if (passwordScore.value === 3) return $t('password.strength.medium')
-  return $t('password.strength.strong')
-})
-
 const signIn = async () => {
   if (!email.value || !password.value) {
     toast.add({
@@ -115,7 +85,6 @@ const signIn = async () => {
           placeholder="••••••••"
           size="lg"
           :disabled="loading"
-          :color="passwordColor"
           autocomplete="current-password"
         >
           <template #trailing>
@@ -128,39 +97,6 @@ const signIn = async () => {
             />
           </template>
         </UInput>
-
-        <div v-if="password.length > 0" class="mt-2 space-y-2">
-          <UProgress :color="passwordColor" :model-value="passwordScore" :max="4" size="sm" />
-
-          <p class="text-sm font-medium">
-            {{ passwordStrengthText }}. {{ $t('password.strength.requirements') }}
-          </p>
-
-          <ul class="space-y-1">
-            <li
-              v-for="(req, index) in passwordStrength"
-              :key="index"
-              class="flex items-center gap-0.5"
-              :class="req.met ? 'text-success' : 'text-muted'"
-            >
-              <UIcon
-                :name="req.met ? 'i-lucide-circle-check' : 'i-lucide-circle-x'"
-                class="size-4 shrink-0"
-              />
-
-              <span class="text-xs font-light">
-                {{ $t(req.textKey) }}
-                <span class="sr-only">
-                  {{
-                    req.met
-                      ? $t('password.strength.requirementMet')
-                      : $t('password.strength.requirementNotMet')
-                  }}
-                </span>
-              </span>
-            </li>
-          </ul>
-        </div>
       </UFormField>
 
       <UButton type="submit" color="primary" size="lg" block :loading="loading" :disabled="loading">
