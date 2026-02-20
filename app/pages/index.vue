@@ -78,16 +78,10 @@ const onContactSubmit = () => {
       </div>
 
       <div class="container relative z-10 px-4 md:px-6 text-center max-w-4xl mx-auto">
-        <UBadge color="primary" variant="soft" size="md" class="mb-6 animate-fade-in-up">
-          <template #leading>
-            <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
-          </template>
-          {{ $t('hero.badge') }}
-        </UBadge>
-
+        <!-- Badge removed from LCP critical path - shown after main content -->
         <h1
-          class="text-4xl md:text-6xl/tight font-extrabold text-slate-900 dark:text-white tracking-tight mb-6 animate-fade-in-up delay-100"
-          :fetchpriority="'high'"
+          class="text-4xl md:text-6xl/tight font-extrabold text-slate-900 dark:text-white tracking-tight mb-6"
+          fetchpriority="high"
         >
           {{ $t('hero.title1') }} <br class="hidden md:block" />
           <span
@@ -97,13 +91,21 @@ const onContactSubmit = () => {
         </h1>
 
         <p
-          class="text-lg md:text-xl text-slate-600 dark:text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed animate-fade-in-up delay-200"
+          class="text-lg md:text-xl text-slate-600 dark:text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed"
         >
           {{ $t('hero.description') }}
         </p>
 
+        <!-- Badge shown after LCP with animation -->
+        <UBadge color="primary" variant="soft" size="md" class="mb-6 animate-fade-in-up">
+          <template #leading>
+            <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
+          </template>
+          {{ $t('hero.badge') }}
+        </UBadge>
+
         <div
-          class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up delay-300"
+          class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up delay-100"
         >
           <UButton to="/#pricing" color="primary" size="lg" class="w-full sm:w-auto">
             {{ $t('hero.getStarted') }}
@@ -244,5 +246,12 @@ const onContactSubmit = () => {
 }
 .delay-300 {
   animation-delay: 0.3s;
+}
+
+/* Performance: Ensure LCP element renders immediately without animation delay */
+h1 {
+  /* Remove animation from LCP element */
+  animation: none !important;
+  opacity: 1 !important;
 }
 </style>
