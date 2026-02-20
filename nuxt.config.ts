@@ -144,7 +144,9 @@ export default defineNuxtConfig({
 
   // Performance optimizations
   experimental: {
-    payloadExtraction: true, // Enable payload extraction for better caching
+    // Disable payload extraction for SSG to avoid 404 errors
+    // Payload extraction requires server-side rendering
+    payloadExtraction: false,
     renderJsonPayloads: true,
     typedPages: true,
     viewTransition: true,
