@@ -234,16 +234,12 @@ export default defineNuxtConfig({
       // Rollup options for better tree-shaking
       rollupOptions: {
         output: {
-          // Manual chunks for better code splitting - reduces initial bundle
+          // Manual chunks for better code splitting - only split pure browser libraries
           manualChunks: {
-            // Vue core - framework runtime
+            // Vue core - framework runtime (pure browser libraries only)
             'vue-core': ['vue', 'vue-router'],
-            // Nuxt UI - lazy loaded for better TTI
-            'nuxt-ui': ['@nuxt/ui'],
-            // Supabase - auth functionality
-            'auth-vendor': ['@nuxtjs/supabase'],
-            // Utilities - VueUse and helpers
-            'utils-vendor': ['@vueuse/core'],
+            // VueUse - utility composables (browser-compatible)
+            'vue-use': ['@vueuse/core'],
           },
           // Better asset naming for caching
           chunkFileNames: 'assets/js/[name]-[hash].js',
