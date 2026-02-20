@@ -1,6 +1,10 @@
 <script setup lang="ts">
 const { $t } = useI18n()
 
+// Performance: Optimize LCP with fetchpriority on H1 (in template)
+// Font preload already configured globally in nuxt.config.ts
+// Critical CSS inlined automatically by @nuxtjs/critters
+
 interface FeatureItem {
   title: string
   description: string
@@ -83,6 +87,7 @@ const onContactSubmit = () => {
 
         <h1
           class="text-4xl md:text-6xl/tight font-extrabold text-slate-900 dark:text-white tracking-tight mb-6 animate-fade-in-up delay-100"
+          :fetchpriority="'high'"
         >
           {{ $t('hero.title1') }} <br class="hidden md:block" />
           <span
