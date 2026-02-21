@@ -293,36 +293,28 @@ const changePassword = async () => {
       <UCard class="mb-6 [&>div]:p-6">
         <template #header>
           <h2 class="text-lg font-semibold text-slate-900 dark:text-white">
-            {{ $t('avatar.title') }}
+            {{ $t('account.title') }}
           </h2>
         </template>
 
-        <div class="flex flex-col items-center text-center">
+        <div class="flex flex-col gap-3">
           <!-- Current/Preview Avatar -->
-          <div class="flex-shrink-0 mb-4">
+          <div class="flex flex-col sm:flex-row gap-3 mb-4">
             <UAvatar
               :src="avatarPreview || avatarUrl || undefined"
               :alt="userEmail"
               :fallback="userInitials"
-              size="3xl"
-              class="border-4 border-slate-100 dark:border-slate-700"
+              class="border-2 border-slate-100 dark:border-slate-700"
             />
-          </div>
-
-          <!-- Email -->
-          <div class="mb-4">
-            <p class="text-sm font-medium text-slate-900 dark:text-white">{{ userEmail }}</p>
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
-              {{ $t('account.emailReadonly') }}
-            </p>
+            <!-- Email -->
+            <div class="mb-4 text-sm dark:text-white">
+              <span class="font-semibold text-slate-800">Email</span>
+              <p class="font-medium text-slate-600">{{ userEmail }}</p>
+            </div>
           </div>
 
           <!-- Upload Controls -->
-          <div class="w-full">
-            <p class="text-sm text-slate-600 dark:text-slate-400 mb-3">
-              {{ $t('avatar.uploadHint') }}
-            </p>
-
+          <div class="w-full text-center">
             <div class="flex flex-col sm:flex-row gap-3 justify-center">
               <UButton
                 color="neutral"
@@ -351,6 +343,9 @@ const changePassword = async () => {
                 {{ uploadLoading ? $t('avatar.uploading') : $t('avatar.savePhoto') }}
               </UButton>
             </div>
+            <p class="text-sm text-slate-500 dark:text-slate-400 my-3">
+              {{ $t('avatar.uploadHint') }}
+            </p>
           </div>
         </div>
       </UCard>
