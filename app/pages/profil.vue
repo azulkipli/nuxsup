@@ -9,6 +9,9 @@ const supabase = useSupabaseClient()
 const user = useSupabaseUser()
 const toast = useToast()
 
+// Session loading state - wait for session to be restored before rendering
+const sessionLoading = ref(true)
+
 // Avatar Upload State
 const avatarUrl = ref<string | null>(null)
 const avatarFile = ref<File | null>(null)
@@ -72,8 +75,22 @@ watch(
 // Template refs
 const fileInput = ref<HTMLInputElement | null>(null)
 
-// Load current avatar
-onMounted(() => {
+// Initialize page after session is restored
+onMounted(async () => {
+  // Wait for session to be restored from localStorage/cookie
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
+
+  if (!session) {
+    // Session not found, redirect to login
+    await navigateTo('/login')
+    return
+  }
+
+  sessionLoading.value = false
+
+  // Load current avatar
   if (user.value?.user_metadata?.avatar_url) {
     avatarUrl.value = user.value.user_metadata.avatar_url
   }
@@ -282,7 +299,13 @@ const changePassword = async () => {
 
 <template>
   <div class="min-h-screen bg-slate-50 py-12 dark:bg-slate-950">
-    <div class="container mx-auto px-4 md:px-6 max-w-2xl">
+    <!-- Loading State -->
+    <div v-if="sessionLoading" class="flex items-center justify-center min-h-screen">
+      <UProgress :indeterminate="true" size="md" class="w-64" />
+    </div>
+
+    <!-- Content -->
+    <div v-else class="container mx-auto px-4 md:px-6 max-w-2xl">
       <!-- Page Header -->
       <div class="mb-8">
         <h1 class="text-3xl font-bold text-slate-900 dark:text-white">{{ $t('title') }}</h1>
@@ -304,6 +327,7 @@ const changePassword = async () => {
               :src="avatarPreview || avatarUrl || undefined"
               :alt="userEmail"
               :fallback="userInitials"
+              size="3xl"
               class="border-2 border-slate-100 dark:border-slate-700"
             />
             <!-- Email -->
@@ -314,8 +338,8 @@ const changePassword = async () => {
           </div>
 
           <!-- Upload Controls -->
-          <div class="w-full text-center">
-            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+          <div class="w-full">
+            <div class="flex flex-col sm:flex-row gap-3">
               <UButton
                 color="neutral"
                 variant="outline"
