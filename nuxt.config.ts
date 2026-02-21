@@ -262,10 +262,27 @@ export default defineNuxtConfig({
 
   // Supabase configuration
   supabase: {
+    url: process.env.SUPABASE_URL,
+    key: process.env.SUPABASE_KEY,
     types: false,
     redirect: false,
     // Disable auto-import of composables to reduce bundle size
     composables: false,
+    // Cookie options for session persistence (works even in SPA mode)
+    cookieOptions: {
+      name: 'auth-token',
+      lifetime: 60 * 60 * 24 * 7, // 7 days
+      domain: process.env.NODE_ENV === 'production' ? 'nebengyu.web.id' : undefined,
+      path: '/',
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+    },
+    // Redirect options
+    redirectOptions: {
+      login: '/login',
+      callback: '/confirm',
+      exclude: ['**/confirm/**', '**/reset-password/**'],
+    },
   },
 
   // Image optimization
