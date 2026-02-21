@@ -281,7 +281,7 @@ const changePassword = async () => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-slate-50 py-12">
+  <div class="min-h-screen bg-slate-50 py-12 dark:bg-slate-950">
     <div class="container mx-auto px-4 md:px-6 max-w-2xl">
       <!-- Page Header -->
       <div class="mb-8">
@@ -297,9 +297,9 @@ const changePassword = async () => {
           </h2>
         </template>
 
-        <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+        <div class="flex flex-col items-center text-center">
           <!-- Current/Preview Avatar -->
-          <div class="flex-shrink-0">
+          <div class="flex-shrink-0 mb-4">
             <UAvatar
               :src="avatarPreview || avatarUrl || undefined"
               :alt="userEmail"
@@ -309,13 +309,21 @@ const changePassword = async () => {
             />
           </div>
 
+          <!-- Email -->
+          <div class="mb-4">
+            <p class="text-sm font-medium text-slate-900 dark:text-white">{{ userEmail }}</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              {{ $t('account.emailReadonly') }}
+            </p>
+          </div>
+
           <!-- Upload Controls -->
-          <div class="w-full md:flex-1 text-center md:text-left">
+          <div class="w-full">
             <p class="text-sm text-slate-600 dark:text-slate-400 mb-3">
               {{ $t('avatar.uploadHint') }}
             </p>
 
-            <div class="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
               <UButton
                 color="neutral"
                 variant="outline"
@@ -347,29 +355,8 @@ const changePassword = async () => {
         </div>
       </UCard>
 
-      <!-- Account Info Section -->
-      <UCard class="mb-6 [&>div]:p-6">
-        <template #header>
-          <h2 class="text-lg font-semibold text-slate-900 dark:text-white">
-            {{ $t('account.title') }}
-          </h2>
-        </template>
-
-        <UFormField :label="String($t('account.emailLabel'))" name="email">
-          <UInput
-            :model-value="userEmail"
-            disabled
-            size="lg"
-            class="w-full"
-            :ui="{ base: 'bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400' }"
-            icon="i-lucide-at-sign"
-          />
-          <p class="text-xs text-slate-400 mt-1">{{ $t('account.emailReadonly') }}</p>
-        </UFormField>
-      </UCard>
-
       <!-- Password Change Section -->
-      <UCard>
+      <UCard class="[&>div]:p-6">
         <template #header>
           <h2 class="text-lg font-semibold text-slate-900 dark:text-white">
             {{ $t('password.title') }}
@@ -438,7 +425,7 @@ const changePassword = async () => {
                   v-for="(req, index) in newPasswordStrength"
                   :key="index"
                   class="flex items-center gap-0.5"
-                  :class="req.met ? 'text-success' : 'text-muted'"
+                  :class="req.met ? 'text-success' : 'text-slate-400 dark:text-slate-500'"
                 >
                   <UIcon
                     :name="req.met ? 'i-lucide-circle-check' : 'i-lucide-circle-x'"
@@ -503,7 +490,7 @@ const changePassword = async () => {
       <div class="mt-8 text-center">
         <i18n-link
           to="/"
-          class="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 transition-colors"
+          class="inline-flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
         >
           <UIcon name="i-lucide-arrow-left" class="w-4 h-4" />
           {{ $t('backToHome') }}
