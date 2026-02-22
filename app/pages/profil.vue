@@ -61,6 +61,16 @@ const newPasswordStrengthText = computed(() => {
   return $t('password.strength.strong')
 })
 
+// Check if password form is valid and strong enough to enable submit button
+const isPasswordFormValid = computed(() => {
+  const hasOldPassword = oldPassword.value.length > 0
+  const hasNewPassword = newPassword.value.length >= 8
+  const hasConfirmPassword = confirmNewPassword.value === newPassword.value
+  const isPasswordStrong = newPasswordScore.value >= 3 // Medium or Strong
+
+  return hasOldPassword && hasNewPassword && hasConfirmPassword && isPasswordStrong
+})
+
 // Watch old password to reset new password fields when cleared
 watch(
   oldPassword,
@@ -341,7 +351,7 @@ const changePassword = async () => {
               :src="avatarPreview || avatarUrl || undefined"
               :alt="userEmail"
               :fallback="userInitials"
-              size="10xl"
+              size="15xl"
               class="border-2 border-slate-100 dark:border-slate-700"
             />
             <!-- Email -->
@@ -515,7 +525,7 @@ const changePassword = async () => {
               type="submit"
               color="primary"
               :loading="passwordLoading"
-              :disabled="passwordLoading"
+              :disabled="passwordLoading || !isPasswordFormValid"
             >
               {{ passwordLoading ? $t('password.saving') : $t('password.changePassword') }}
             </UButton>
