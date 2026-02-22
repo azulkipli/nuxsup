@@ -327,13 +327,13 @@ const changePassword = async () => {
               :src="avatarPreview || avatarUrl || undefined"
               :alt="userEmail"
               :fallback="userInitials"
-              size="3xl"
+              size="10xl"
               class="border-2 border-slate-100 dark:border-slate-700"
             />
             <!-- Email -->
-            <div class="mb-4 text-sm dark:text-white">
-              <span class="font-semibold text-slate-800">Email</span>
-              <p class="font-medium text-slate-600">{{ userEmail }}</p>
+            <div class="mb-4 text-sm">
+              <span class="font-semibold text-slate-800 dark:text-white">Email</span>
+              <p class="font-medium text-slate-600 dark:text-slate-400">{{ userEmail }}</p>
             </div>
           </div>
 

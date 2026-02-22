@@ -17,8 +17,6 @@ export default defineNuxtConfig({
   imports: {
     // Auto-import only what's used
     autoImport: true,
-    // Disable transpilation of imports
-    transpile: false,
     // Import specific Vue composables (tree-shake unused)
     imports: [
       { from: 'vue', name: 'computed' },
@@ -38,7 +36,7 @@ export default defineNuxtConfig({
         path: '~/components',
         extensions: ['.vue'],
         // Only register components when used
-        pathPrefix: '',
+        pathPrefix: false,
       },
     ],
     // Enable tree-shaking for components
@@ -93,7 +91,6 @@ export default defineNuxtConfig({
         },
         // Performance: Client-side bundle for frequently used icons
         clientBundle: {
-          scan: true, // Auto-scan components for icon usage
           sizeLimitKb: 256, // Fail build if client bundle exceeds 256KB
           scan: {
             globInclude: ['components/**/*.vue', 'pages/**/*.vue'],
@@ -132,11 +129,6 @@ export default defineNuxtConfig({
     disablePageLocales: false,
     fallbackLocale: 'id',
     localeCookie: 'user-locale',
-    // Bundle optimization
-    bundle: {
-      // Optimize translation messages
-      optimizeTranslationDirective: true,
-    },
   },
 
   // CSS path is now relative to srcDir ('app/')
@@ -266,12 +258,11 @@ export default defineNuxtConfig({
     key: process.env.SUPABASE_KEY,
     types: false,
     redirect: false,
-    // Disable auto-import of composables to reduce bundle size
-    composables: false,
+    // Cookie name for session storage
+    cookiePrefix: 'auth_nuxsup_',
     // Cookie options for session persistence (works even in SPA mode)
     cookieOptions: {
-      name: 'auth-token',
-      lifetime: 60 * 60 * 24 * 7, // 7 days
+      maxAge: 60 * 60 * 24 * 7, // 7 days
       domain: process.env.NODE_ENV === 'production' ? 'nebengyu.web.id' : undefined,
       path: '/',
       sameSite: 'lax',
@@ -282,6 +273,15 @@ export default defineNuxtConfig({
       login: '/login',
       callback: '/confirm',
       exclude: ['**/confirm/**', '**/reset-password/**'],
+    },
+    // Client options for auth persistence - CRITICAL for SPA mode
+    clientOptions: {
+      auth: {
+        autoRefreshToken: true, // Auto-refresh tokens before expiry
+        persistSession: true, // Persist session to localStorage/cookie
+        detectSessionInUrl: true, // Handle OAuth callback URLs
+        flowType: 'pkce', // More secure auth flow
+      },
     },
   },
 
@@ -427,18 +427,6 @@ export default defineNuxtConfig({
           },
         },
       ],
-    },
-
-    devOptions: {
-      enabled: false, // Disable in dev for faster builds
-      type: 'module',
-      suppressWarnings: true,
-    },
-
-    // Build options to reduce service worker bundle size
-    buildOptions: {
-      // Minify the service worker
-      minify: true,
     },
   },
 
