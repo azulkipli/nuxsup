@@ -58,7 +58,7 @@ const onContactSubmit = () => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-0">
+  <div class="flex flex-col">
     <!-- Hero Section -->
     <section
       id="hero"
@@ -124,7 +124,7 @@ const onContactSubmit = () => {
     </section>
 
     <!-- Features Section -->
-    <section id="features" class="py-24 bg-white dark:bg-slate-900 relative">
+    <section id="features" class="py-24 bg-white dark:bg-slate-900 relative z-10">
       <div class="container mx-auto px-4 md:px-6">
         <UiSectionHeader
           :title="String($t('features.title'))"
@@ -147,7 +147,7 @@ const onContactSubmit = () => {
     <!-- Pricing Section -->
     <section
       id="pricing"
-      class="py-24 bg-slate-50 dark:bg-slate-950 border-y border-slate-200 dark:border-slate-800"
+      class="py-24 bg-slate-50 dark:bg-slate-950 border-y border-slate-200 dark:border-slate-800 relative z-10"
     >
       <div class="container mx-auto px-4 md:px-6">
         <UiSectionHeader
