@@ -35,8 +35,8 @@ export default defineNuxtConfig({
       {
         path: '~/components',
         extensions: ['.vue'],
-        // Only register components when used
-        pathPrefix: false,
+        // Enable directory-based component prefixes (e.g. folder ui -> prefix Ui)
+        pathPrefix: true,
       },
     ],
     // Enable tree-shaking for components
