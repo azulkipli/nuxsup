@@ -26,7 +26,10 @@ const passwordLoading = ref(false)
 const showOldPassword = ref(false)
 const showNewPassword = ref(false)
 const showConfirmPassword = ref(false)
-const showNewPasswordFields = ref(false)
+
+// Computed properties for showing/hiding password fields progressively
+const showNewPasswordField = computed(() => oldPassword.value.length > 3)
+const showConfirmPasswordField = computed(() => newPassword.value.length > 3)
 
 // Password strength for new password
 function checkPasswordStrength(str: string) {
@@ -58,14 +61,25 @@ const newPasswordStrengthText = computed(() => {
   return $t('password.strength.strong')
 })
 
-// Watch old password to show/hide new password fields
+// Watch old password to reset new password fields when cleared
 watch(
   oldPassword,
   val => {
-    showNewPasswordFields.value = val.length > 0
     // Reset new password fields when old password is cleared
-    if (!val) {
+    if (!val || val.length <= 3) {
       newPassword.value = ''
+      confirmNewPassword.value = ''
+    }
+  },
+  { immediate: true }
+)
+
+// Watch new password to reset confirm field when cleared
+watch(
+  newPassword,
+  val => {
+    // Reset confirm field when new password is cleared or too short
+    if (!val || val.length <= 3) {
       confirmNewPassword.value = ''
     }
   },
@@ -405,7 +419,11 @@ const changePassword = async () => {
             </UInput>
           </UFormField>
 
-          <UFormField :label="String($t('password.newPassword'))" name="newPassword">
+          <UFormField
+            v-show="showNewPasswordField"
+            :label="String($t('password.newPassword'))"
+            name="newPassword"
+          >
             <UInput
               v-model="newPassword"
               :type="showNewPassword ? 'text' : 'password'"
@@ -467,7 +485,7 @@ const changePassword = async () => {
           </UFormField>
 
           <UFormField
-            v-show="showNewPasswordFields"
+            v-show="showConfirmPasswordField"
             :label="String($t('password.confirmPassword'))"
             name="confirmNewPassword"
           >
