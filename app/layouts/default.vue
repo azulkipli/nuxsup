@@ -34,7 +34,8 @@ const footerLinks = computed(() => ({
     <UHeader>
       <template #title>
         <i18n-link to="/" class="flex items-center gap-2 group">
-          <div v-once
+          <div
+            v-once
             class="bg-indigo-600 text-white w-8 h-8 rounded-lg flex items-center justify-center font-bold text-lg shadow-md group-hover:scale-105 transition-transform duration-300"
           >
             N
@@ -77,7 +78,8 @@ const footerLinks = computed(() => ({
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div class="col-span-1 md:col-span-2">
             <div class="flex items-center gap-2 mb-4">
-              <div v-once
+              <div
+                v-once
                 class="bg-indigo-500 text-white w-6 h-6 rounded flex items-center justify-center font-bold text-sm"
               >
                 N

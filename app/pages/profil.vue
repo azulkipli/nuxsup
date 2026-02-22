@@ -67,8 +67,19 @@ const isPasswordFormValid = computed(() => {
   const hasNewPassword = newPassword.value.length >= 8
   const hasConfirmPassword = confirmNewPassword.value === newPassword.value
   const isPasswordStrong = newPasswordScore.value >= 3 // Medium or Strong
-
+  
   return hasOldPassword && hasNewPassword && hasConfirmPassword && isPasswordStrong
+})
+
+// Check if passwords match and show error message
+const passwordsMatch = computed(() => {
+  if (!confirmNewPassword.value) return true
+  return newPassword.value === confirmNewPassword.value
+})
+
+const passwordMismatchError = computed(() => {
+  if (!confirmNewPassword.value) return ''
+  return passwordsMatch.value ? '' : String($t('password.noMatch'))
 })
 
 // Watch old password to reset new password fields when cleared
@@ -455,7 +466,7 @@ const changePassword = async () => {
               </template>
             </UInput>
 
-            <div v-if="newPassword.length > 0" class="mt-2 space-y-2">
+            <!-- <div v-if="newPassword.length > 0" class="mt-2 space-y-2">
               <UProgress
                 :color="newPasswordColor"
                 :model-value="newPasswordScore"
@@ -491,13 +502,14 @@ const changePassword = async () => {
                   </span>
                 </li>
               </ul>
-            </div>
+            </div> -->
           </UFormField>
 
           <UFormField
             v-show="showConfirmPasswordField"
             :label="String($t('password.confirmPassword'))"
             name="confirmNewPassword"
+            :error="passwordMismatchError"
           >
             <UInput
               v-model="confirmNewPassword"
@@ -506,10 +518,17 @@ const changePassword = async () => {
               size="lg"
               class="w-full"
               :disabled="passwordLoading"
+              :color="passwordsMatch ? undefined : 'error'"
               autocomplete="new-password"
             >
               <template #trailing>
+                <UIcon
+                  v-if="!passwordsMatch && confirmNewPassword.value"
+                  name="i-lucide-circle-x"
+                  class="w-5 h-5 text-error"
+                />
                 <UButton
+                  v-else
                   color="neutral"
                   variant="link"
                   size="sm"
@@ -519,6 +538,44 @@ const changePassword = async () => {
               </template>
             </UInput>
           </UFormField>
+
+          <div v-if="newPassword.length > 0" class="mt-2 space-y-2">
+            <UProgress
+              :color="newPasswordColor"
+              :model-value="newPasswordScore"
+              :max="4"
+              size="sm"
+            />
+
+            <p class="text-sm font-medium">
+              {{ newPasswordStrengthText }}. {{ $t('password.strength.requirements') }}
+            </p>
+
+            <ul class="space-y-1">
+              <li
+                v-for="(req, index) in newPasswordStrength"
+                :key="index"
+                class="flex items-center gap-0.5"
+                :class="req.met ? 'text-success' : 'text-slate-400 dark:text-slate-500'"
+              >
+                <UIcon
+                  :name="req.met ? 'i-lucide-circle-check' : 'i-lucide-circle-x'"
+                  class="size-4 shrink-0"
+                />
+
+                <span class="text-xs font-light">
+                  {{ $t(req.textKey) }}
+                  <span class="sr-only">
+                    {{
+                      req.met
+                        ? $t('password.strength.requirementMet')
+                        : $t('password.strength.requirementNotMet')
+                    }}
+                  </span>
+                </span>
+              </li>
+            </ul>
+          </div>
 
           <div class="pt-2">
             <UButton
