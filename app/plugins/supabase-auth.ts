@@ -8,26 +8,31 @@ export default defineNuxtPlugin({
     // Restore session immediately on plugin init
     // This ensures session is available before any middleware/page runs
     try {
-      const { data: { session } } = await supabase.auth.getSession()
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
       console.log('Plugin: Session restored:', !!session)
     } catch (error) {
       console.error('Plugin: Failed to restore session:', error)
     }
 
     // Listen to auth state changes and sync with Vue reactivity
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
       console.log('Auth event:', event, 'Session:', !!session)
 
       // Handle different auth events
       switch (event) {
         case 'SIGNED_IN':
-          console.log('User signed in')
+          console.log('User signed in - session stored')
+          // Session is automatically persisted by Supabase client
           break
         case 'SIGNED_OUT':
           console.log('User signed out')
           break
         case 'TOKEN_REFRESHED':
-          console.log('Token refreshed')
+          console.log('Token refreshed - session updated')
           break
         case 'USER_UPDATED':
           console.log('User updated')
