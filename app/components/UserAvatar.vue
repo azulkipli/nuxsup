@@ -34,13 +34,13 @@ const logout = async (e: Event) => {
 }
 
 const items = computed(() => [
-  // [
-  //   {
-  //     label: userEmail.value,
-  //     slot: 'account',
-  //     disabled: true,
-  //   },
-  // ],
+  [
+    {
+      label: userEmail.value,
+      slot: 'account',
+      disabled: true,
+    },
+  ],
   [
     {
       label: t('auth.profile'),

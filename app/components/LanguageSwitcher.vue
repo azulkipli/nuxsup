@@ -30,12 +30,7 @@ const items = computed(() => {
 
 <template>
   <UDropdownMenu :items="items" :ui="{ content: 'w-48' }">
-    <UButton
-      color="neutral"
-      variant="outline"
-      size="sm"
-      class="gap-2"
-    >
+    <UButton color="neutral" variant="outline" size="sm" class="gap-2">
       <span class="text-base">{{ currentLocaleInfo.flag }}</span>
       <span>{{ currentLocaleInfo.name }}</span>
       <template #trailing>

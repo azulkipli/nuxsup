@@ -67,7 +67,7 @@ const isPasswordFormValid = computed(() => {
   const hasNewPassword = newPassword.value.length >= 8
   const hasConfirmPassword = confirmNewPassword.value === newPassword.value
   const isPasswordStrong = newPasswordScore.value >= 3 // Medium or Strong
-  
+
   return hasOldPassword && hasNewPassword && hasConfirmPassword && isPasswordStrong
 })
 
@@ -523,7 +523,7 @@ const changePassword = async () => {
             >
               <template #trailing>
                 <UIcon
-                  v-if="!passwordsMatch && confirmNewPassword.value"
+                  v-if="!passwordsMatch && confirmNewPassword"
                   name="i-lucide-circle-x"
                   class="w-5 h-5 text-error"
                 />

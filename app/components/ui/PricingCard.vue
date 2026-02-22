@@ -13,6 +13,7 @@ interface Props {
 withDefaults(defineProps<Props>(), {
   highlight: false,
   popularLabel: 'Most Popular',
+  perMonthLabel: '/month',
   showPerMonth: true,
 })
 

@@ -5,7 +5,6 @@ definePageMeta({
 
 const { $t } = useI18n()
 const supabase = useSupabaseClient()
-const user = useSupabaseUser()
 const router = useRouter()
 const toast = useToast()
 
@@ -42,10 +41,10 @@ const signIn = async () => {
       // Session is automatically persisted by the module
       // Wait for user to be populated before redirecting
       console.log('Login successful, user:', data.user?.email)
-      
+
       // Small delay to ensure session is fully stored
       await new Promise(resolve => setTimeout(resolve, 100))
-      
+
       await router.push('/')
     }
   } catch (e: unknown) {

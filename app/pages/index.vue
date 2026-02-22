@@ -180,8 +180,14 @@ const onContactSubmit = () => {
           class="max-w-3xl mx-auto overflow-hidden bg-indigo-900 dark:bg-indigo-950 ring-0 shadow-2xl rounded-3xl [&>div]:relative [&>div]:px-8 [&>div]:py-16 [&>div]:md:p-16 [&>div]:text-center"
         >
           <!-- Abstract Shapes - Static decorative elements -->
-          <div v-once class="absolute top-0 right-0 w-64 h-64 bg-indigo-800 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-50 pointer-events-none" />
-          <div v-once class="absolute bottom-0 left-0 w-64 h-64 bg-indigo-600 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 opacity-50 pointer-events-none" />
+          <div
+            v-once
+            class="absolute top-0 right-0 w-64 h-64 bg-indigo-800 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-50 pointer-events-none"
+          />
+          <div
+            v-once
+            class="absolute bottom-0 left-0 w-64 h-64 bg-indigo-600 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 opacity-50 pointer-events-none"
+          />
 
           <div class="relative z-10">
             <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
