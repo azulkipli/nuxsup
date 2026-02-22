@@ -57,3 +57,5 @@ src/
 
 # SSL certificates
 .cert/
+
+.unlighthouse/
