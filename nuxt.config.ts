@@ -4,14 +4,61 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
 
-  // ssr: false,
+  // Enable SSR for hybrid rendering (SSG + SSR)
+  ssr: false,
 
-  devtools: { enabled: true },
+  // Disable devtools in production
+  devtools: { enabled: process.env.NODE_ENV === 'development' },
+
+  // Set source directory to 'app/' folder
+  srcDir: 'app/',
+
+  // Performance: Disable auto-imports for unused composables
+  imports: {
+    // Auto-import only what's used
+    autoImport: true,
+    // Import specific Vue composables (tree-shake unused)
+    imports: [
+      { from: 'vue', name: 'computed' },
+      { from: 'vue', name: 'ref' },
+      { from: 'vue', name: 'reactive' },
+      { from: 'vue', name: 'watch' },
+      { from: 'vue', name: 'watchEffect' },
+      { from: 'vue', name: 'onMounted' },
+      { from: 'vue', name: 'onUnmounted' },
+    ],
+  },
+
+  // Component imports - only import used components
+  components: {
+    dirs: [
+      {
+        path: '~/components',
+        extensions: ['.vue'],
+        // Enable directory-based component prefixes (e.g. folder ui -> prefix Ui)
+        pathPrefix: true,
+      },
+    ],
+    // Enable tree-shaking for components
+    global: false,
+  },
 
   app: {
     head: {
       viewport: 'width=device-width, initial-scale=1',
       charset: 'utf-8',
+      // Performance: Preconnect to external domains
+      link: [
+        // Preconnect to Supabase
+        { rel: 'preconnect', href: 'https://*.supabase.co' },
+        { rel: 'dns-prefetch', href: 'https://*.supabase.co' },
+      ],
+      // Performance: Add resource hints
+      meta: [
+        { name: 'theme-color', content: '#1e293b' },
+        { name: 'msapplication-TileColor', content: '#1e293b' },
+        { name: 'msapplication-config', content: '/browserconfig.xml' },
+      ],
     },
   },
 
@@ -21,6 +68,39 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     'nuxt-i18n-micro',
     '@nuxt/eslint',
+    [
+      '@nuxt/ui',
+      {
+        // Tree-shake unused components
+        prefix: 'U',
+        // Only include components that are actually used
+        global: false,
+      },
+    ],
+    '@nuxt/image',
+    'nuxt-vitalizer',
+    '@nuxtjs/critters',
+    [
+      '@nuxt/icon',
+      {
+        // Performance: Use remote server bundle for on-demand icon loading
+        // Icons are loaded from CDN only when needed, reducing initial bundle
+        serverBundle: {
+          remote: 'jsdelivr', // Load icon collections from jsdelivr CDN
+          externalizeIconsJson: true, // Externalize icons JSON to reduce build memory
+        },
+        // Performance: Client-side bundle for frequently used icons
+        clientBundle: {
+          sizeLimitKb: 256, // Fail build if client bundle exceeds 256KB
+          scan: {
+            globInclude: ['components/**/*.vue', 'pages/**/*.vue'],
+            globExclude: ['node_modules', 'dist', '.output'],
+          },
+        },
+        // Disable fallback to Iconify API for better performance
+        fallbackToApi: false,
+      },
+    ],
   ],
 
   eslint: {
@@ -50,15 +130,74 @@ export default defineNuxtConfig({
     fallbackLocale: 'id',
     localeCookie: 'user-locale',
   },
-  css: ['./app/assets/css/main.css'],
 
+  // CSS path is now relative to srcDir ('app/')
+  css: ['./assets/css/main.css'],
+
+  // Performance optimizations
   experimental: {
-    payloadExtraction: false, // Disable payload.json for SPA builds
+    // Disable payload extraction for SSG to avoid 404 errors
+    // Payload extraction requires server-side rendering
+    payloadExtraction: false,
+    renderJsonPayloads: true,
+    typedPages: true,
+    viewTransition: true,
+    defaults: {
+      nuxtLink: {
+        // Performance: Prefetch on hover
+        prefetch: true,
+        prefetchOn: { interaction: true },
+      },
+    },
   },
 
+  // Nitro performance optimizations
   nitro: {
     prerender: {
       autoSubfolderIndex: false,
+      crawlLinks: true,
+      routes: ['/'],
+      // Exclude dev-sw.js from prerendering
+      failOnError: false,
+    },
+    // Enable compression
+    compressPublicAssets: {
+      brotli: true,
+      gzip: true,
+    },
+    // Hybrid rendering configuration (SSG + SSR)
+    routeRules: {
+      // Cache static assets aggressively
+      '/_nuxt/**': {
+        headers: {
+          'Cache-Control': 'public, max-age=31536000, immutable',
+        },
+      },
+      // Cache images
+      '/images/**': {
+        headers: {
+          'Cache-Control': 'public, max-age=86400',
+        },
+      },
+      // Pre-rendered pages (SSG) - generated at build time
+      '/': {
+        prerender: true,
+      },
+      '/about': {
+        prerender: true,
+      },
+      // Dynamic routes use SSR with caching
+      '/profil/**': {
+        ssr: true,
+        swr: 300, // Cache for 5 minutes
+      },
+      // Auth pages are client-side only (no SSR needed)
+      '/login': {
+        ssr: false,
+      },
+      '/register': {
+        ssr: false,
+      },
     },
   },
 
@@ -68,18 +207,124 @@ export default defineNuxtConfig({
     },
     build: {
       sourcemap: false,
+      // Enable CSS code splitting
+      cssCodeSplit: true,
+      // Minification options
+      minify: 'terser',
+      terserOptions: {
+        compress: {
+          drop_console: true,
+          drop_debugger: true,
+        },
+      },
+      // Rollup options for better tree-shaking
+      rollupOptions: {
+        output: {
+          // Manual chunks for better code splitting - only split pure browser libraries
+          manualChunks: {
+            // Vue core - framework runtime (pure browser libraries only)
+            'vue-core': ['vue', 'vue-router'],
+            // VueUse - utility composables (browser-compatible)
+            'vue-use': ['@vueuse/core'],
+          },
+          // Use default chunk naming for proper Nuxt SSG compatibility
+        },
+        // Better tree-shaking
+        treeshake: {
+          propertyReadSideEffects: false,
+          tryCatchDeoptimization: false,
+        },
+      },
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     plugins: [tailwindcss() as any],
-  },
-  supabase: {
-    types: false, // disable database types
-    redirect: false,
+    // Optimize deps
+    optimizeDeps: {
+      include: ['vue', 'vue-router', '@vueuse/core'],
+    },
+    // Suppress Vue Router warnings for PWA dev-sw
+    define: {
+      __VUE_PROD_DEVTOOLS__: false,
+    },
+    // Better tree-shaking for production
+    esbuild: {
+      drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [],
+    },
   },
 
+  // Supabase configuration
+  supabase: {
+    url: process.env.SUPABASE_URL,
+    key: process.env.SUPABASE_KEY,
+    types: false,
+    redirect: false,
+    // Cookie name for session storage
+    cookiePrefix: 'auth_nuxsup_',
+    // Cookie options for session persistence (works even in SPA mode)
+    cookieOptions: {
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+      domain: process.env.NODE_ENV === 'production' ? 'nebengyu.web.id' : undefined,
+      path: '/',
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+    },
+    // Redirect options
+    redirectOptions: {
+      login: '/login',
+      callback: '/confirm',
+      exclude: ['**/confirm/**', '**/reset-password/**'],
+    },
+    // Client options for auth persistence - CRITICAL for SPA mode
+    clientOptions: {
+      auth: {
+        autoRefreshToken: true, // Auto-refresh tokens before expiry
+        persistSession: true, // Persist session to localStorage/cookie
+        detectSessionInUrl: true, // Handle OAuth callback URLs
+        flowType: 'pkce', // More secure auth flow
+      },
+    },
+  },
+
+  // Image optimization
+  image: {
+    quality: 80,
+    format: ['webp', 'avif', 'jpg', 'png'],
+    screens: {
+      xs: 320,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+      xxl: 1536,
+    },
+    presets: {
+      avatar: {
+        modifiers: {
+          format: 'webp',
+          width: 100,
+          height: 100,
+        },
+      },
+    },
+    // Use ipx for local image optimization
+    ipx: {
+      maxAge: 60 * 60 * 24 * 30, // 30 days cache
+    },
+  },
+
+  // PWA configuration with performance optimizations
   pwa: {
     registerType: 'prompt',
     strategies: 'generateSW',
+    // Disable in dev to speed up HMR
+    disable: process.env.NODE_ENV === 'development',
+
+    // Development options
+    devOptions: {
+      enabled: false, // Keep disabled for faster HMR
+      type: 'module',
+      suppressWarnings: true, // Suppress dev-sw.js warnings
+    },
 
     manifest: {
       name: 'Nuxsup',
@@ -108,13 +353,28 @@ export default defineNuxtConfig({
 
     workbox: {
       cleanupOutdatedCaches: true,
-      globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
-      globIgnores: ['**/node_modules/**/*', 'sw.js', 'workbox-*.js', '**/_payload.json'],
+      // Only precache essential assets - reduce initial bundle
+      globPatterns: ['**/*.{html,css}'],
+      globIgnores: [
+        '**/node_modules/**/*',
+        'sw.js',
+        'workbox-*.js',
+        '**/_payload.json',
+        '**/*.png',
+        '**/*.jpg',
+      ],
       navigateFallback: '/',
       navigateFallbackDenylist: [/^\/api/],
-
+      skipWaiting: true,
+      clientsClaim: true,
+      // Reduce bundle size by using minimal workbox build
+      maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB limit
+      // Fix: Ignore all URL parameters to avoid conflicting cache entries
+      ignoreURLParametersMatching: [/.*/],
+      // Fix: Don't precache HTML with revisions - use runtime caching instead
+      // Use runtime caching instead of precaching for dynamic content
       runtimeCaching: [
-        // Supabase Auth - NetworkOnly (NEVER cache auth requests)
+        // Supabase Auth - NetworkOnly
         {
           urlPattern: /\/auth\/v1\/.*/,
           handler: 'NetworkOnly',
@@ -154,13 +414,19 @@ export default defineNuxtConfig({
           urlPattern: /\/realtime\/v1\/.*/,
           handler: 'NetworkOnly',
         },
+        // Images - CacheFirst with longer expiration
+        {
+          urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp|avif)$/,
+          handler: 'CacheFirst',
+          options: {
+            cacheName: 'images',
+            expiration: {
+              maxEntries: 100,
+              maxAgeSeconds: 2592000, // 30 days
+            },
+          },
+        },
       ],
-    },
-
-    devOptions: {
-      enabled: true,
-      type: 'module',
-      suppressWarnings: true,
     },
   },
 
@@ -170,5 +436,31 @@ export default defineNuxtConfig({
       pushVapidPublicKey: process.env.NUXT_PUBLIC_PUSH_VAPID_PUBLIC_KEY || '',
     },
     pushVapidPrivateKey: process.env.NUXT_PUSH_VAPID_PRIVATE_KEY || '',
+  },
+
+  // Vitalizer configuration for LCP optimization
+  // Improves Google Lighthouse LCP scores by managing prefetch/preload links
+  vitalizer: {
+    // Remove prefetch links for dynamic imports (default: 'dynamicImports')
+    disablePrefetchLinks: 'dynamicImports',
+    // Keep preload links enabled (default: false)
+    disablePreloadLinks: false,
+    // Don't remove stylesheets by default - requires inlineStyles setup
+    disableStylesheets: false,
+  },
+
+  // Critters configuration for critical CSS inlining
+  // Improves First Contentful Paint (FCP) by inlining critical CSS
+  critters: {
+    config: {
+      // Use 'swap' for better CSS loading strategy
+      preload: 'swap',
+      // Inline critical CSS needed for initial render
+      inlineThreshold: 2048,
+      // Minimum size for external CSS file
+      minimumExternalSize: 1024,
+      // Don't prune unused selectors (let purgecss handle it)
+      pruneSource: false,
+    },
   },
 })

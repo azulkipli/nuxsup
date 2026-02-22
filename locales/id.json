@@ -42,5 +42,22 @@
     "updateAvailable": "Pembaruan tersedia! 🎉",
     "reload": "Segarkan",
     "dismiss": "Tutup"
+  },
+  "password": {
+    "strength": {
+      "enterPassword": "Masukkan kata sandi",
+      "weak": "Kata sandi lemah",
+      "medium": "Kata sandi sedang",
+      "strong": "Kata sandi kuat",
+      "requirements": "Harus berisi:",
+      "requirementMet": "- Persyaratan terpenuhi",
+      "requirementNotMet": "- Persyaratan tidak terpenuhi"
+    },
+    "requirements": {
+      "minLength": "Minimal 8 karakter",
+      "number": "Minimal 1 angka",
+      "lowercase": "Minimal 1 huruf kecil",
+      "uppercase": "Minimal 1 huruf besar"
+    }
   }
 }

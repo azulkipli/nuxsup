@@ -1,14 +1,17 @@
-<template>
-  <section id="pageAbout">
-    <h1 class="text-3xl font-bold underline">{{ $t('title') }}</h1>
-    <p>
-      {{ $t('description') }}
-    </p>
-  </section>
-</template>
-
 <script setup lang="ts">
 const { $t } = useI18n()
 </script>
 
-<style></style>
+<template>
+  <section id="pageAbout" class="py-12">
+    <div class="container mx-auto px-4 md:px-6 max-w-4xl">
+      <UCard class="[&>div]:p-8">
+        <UiSectionHeader
+          icon="i-lucide-info"
+          :title="String($t('title'))"
+          :description="String($t('description'))"
+        />
+      </UCard>
+    </div>
+  </section>
+</template>
