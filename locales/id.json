@@ -59,5 +59,17 @@
       "lowercase": "Minimal 1 huruf kecil",
       "uppercase": "Minimal 1 huruf besar"
     }
+  },
+  "mapbox": {
+    "title": "Peta Mapbox Sederhana",
+    "description": "Contoh implementasi Mapbox dengan Nuxt 3",
+    "controls": "Kontrol",
+    "locations": "Lokasi",
+    "reset": "Reset Tampilan",
+    "zoom": "Zoom",
+    "info": "Info",
+    "infoCenter": "Pusat: Jakarta, Indonesia",
+    "infoMarkers": "Penanda: 3 lokasi",
+    "infoInteract": "Klik dan geser peta untuk berinteraksi"
   }
 }

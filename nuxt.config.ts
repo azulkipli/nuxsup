@@ -101,6 +101,7 @@ export default defineNuxtConfig({
         fallbackToApi: false,
       },
     ],
+    'nuxt-mapbox',
   ],
 
   eslint: {
@@ -430,10 +431,16 @@ export default defineNuxtConfig({
     },
   },
 
+  // Mapbox configuration
+  mapbox: {
+    accessToken: process.env.NUXT_MAPBOX_ACCESS_TOKEN || '',
+  },
+
   runtimeConfig: {
     public: {
       appDebug: process.env.APP_DEBUG || 'off',
       pushVapidPublicKey: process.env.NUXT_PUBLIC_PUSH_VAPID_PUBLIC_KEY || '',
+      mapboxPublicKey: process.env.NUXT_MAPBOX_ACCESS_TOKEN || '',
     },
     pushVapidPrivateKey: process.env.NUXT_PUSH_VAPID_PRIVATE_KEY || '',
   },

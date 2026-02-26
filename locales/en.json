@@ -59,5 +59,17 @@
       "lowercase": "At least 1 lowercase letter",
       "uppercase": "At least 1 uppercase letter"
     }
+  },
+  "mapbox": {
+    "title": "Simple Mapbox Map",
+    "description": "Mapbox implementation example with Nuxt 3",
+    "controls": "Controls",
+    "locations": "Locations",
+    "reset": "Reset View",
+    "zoom": "Zoom",
+    "info": "Info",
+    "infoCenter": "Center: Jakarta, Indonesia",
+    "infoMarkers": "Markers: 3 locations",
+    "infoInteract": "Click and drag map to interact"
   }
 }
