@@ -33,7 +33,9 @@ const initMap = () => {
   mapboxgl.accessToken = config.public.mapboxPublicKey
 
   if (!mapboxgl.accessToken) {
-    console.warn('Mapbox access token not configured. Please set NUXT_MAPBOX_ACCESS_TOKEN environment variable.')
+    console.warn(
+      'Mapbox access token not configured. Please set NUXT_MAPBOX_ACCESS_TOKEN environment variable.'
+    )
     return
   }
 
@@ -55,7 +57,10 @@ const initMap = () => {
   })
 
   // Add navigation control
-  map.value.addControl(new mapboxgl.NavigationControl({ showCompass: true, showZoom: true }), 'top-left')
+  map.value.addControl(
+    new mapboxgl.NavigationControl({ showCompass: true, showZoom: true }),
+    'top-left'
+  )
 
   // Add scale control
   map.value.addControl(new mapboxgl.ScaleControl(), 'bottom-left')
@@ -70,11 +75,11 @@ const initMap = () => {
       trackUserLocation: true,
       showUserLocation: true,
     }),
-    'top-right',
+    'top-right'
   )
 
   // Add markers
-  markers.value.forEach((marker) => {
+  markers.value.forEach(marker => {
     // Create marker element
     const el = document.createElement('div')
     el.className = 'marker'
@@ -88,14 +93,11 @@ const initMap = () => {
 
     // Create popup content
     const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
-      `<div style="padding: 4px; font-weight: 500;">${marker.name}</div>`,
+      `<div style="padding: 4px; font-weight: 500;">${marker.name}</div>`
     )
 
     // Add marker to map
-    new mapboxgl.Marker(el)
-      .setLngLat([marker.lng, marker.lat])
-      .setPopup(popup)
-      .addTo(map.value!)
+    new mapboxgl.Marker(el).setLngLat([marker.lng, marker.lat]).setPopup(popup).addTo(map.value!)
   })
 
   // Listen to zoom events
@@ -158,7 +160,9 @@ onMounted(() => {
             <div class="space-y-3">
               <!-- Location Buttons -->
               <div>
-                <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <label
+                  class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                >
                   {{ $t('mapbox.locations', 'Lokasi') }}
                 </label>
                 <div class="mt-2 space-y-2">
@@ -225,10 +229,7 @@ onMounted(() => {
 
         <!-- Map -->
         <div class="lg:col-span-3">
-          <div
-            ref="mapContainer"
-            class="w-full h-[600px] rounded-lg overflow-hidden"
-          />
+          <div ref="mapContainer" class="w-full h-[600px] rounded-lg overflow-hidden" />
         </div>
       </div>
     </div>

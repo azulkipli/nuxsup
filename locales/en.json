@@ -71,5 +71,19 @@
     "infoCenter": "Center: Jakarta, Indonesia",
     "infoMarkers": "Markers: 3 locations",
     "infoInteract": "Click and drag map to interact"
+  },
+  "route": {
+    "title": "Route & Navigation",
+    "description": "Select origin and destination points to view route",
+    "origin": "Start Location",
+    "destination": "End Location",
+    "searchOrigin": "Type place name...",
+    "searchDestination": "Type place name...",
+    "selectedLocations": "Selected Locations",
+    "instructions": "How to Use:",
+    "instruction1": "Type place name in Start Location field",
+    "instruction2": "Select from autocomplete suggestions",
+    "instruction3": "Type place name in End Location field",
+    "instruction4": "Map will display both locations with markers"
   }
 }

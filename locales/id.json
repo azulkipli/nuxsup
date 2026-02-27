@@ -71,5 +71,19 @@
     "infoCenter": "Pusat: Jakarta, Indonesia",
     "infoMarkers": "Penanda: 3 lokasi",
     "infoInteract": "Klik dan geser peta untuk berinteraksi"
+  },
+  "route": {
+    "title": "Rute & Navigasi",
+    "description": "Pilih titik berangkat dan tujuan untuk melihat rute",
+    "origin": "Lokasi Awal",
+    "destination": "Lokasi Akhir",
+    "searchOrigin": "Ketik nama tempat...",
+    "searchDestination": "Ketik nama tempat...",
+    "selectedLocations": "Lokasi yang Dipilih",
+    "instructions": "Cara Menggunakan:",
+    "instruction1": "Ketik nama tempat di kolom Lokasi Awal",
+    "instruction2": "Pilih dari saran yang muncul",
+    "instruction3": "Ketik nama tempat di kolom Lokasi Akhir",
+    "instruction4": "Peta akan menampilkan kedua lokasi dengan penanda"
   }
 }
