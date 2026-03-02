@@ -72,6 +72,19 @@
     "infoMarkers": "Penanda: 3 lokasi",
     "infoInteract": "Klik dan geser peta untuk berinteraksi"
   },
+  "googleMaps": {
+    "title": "Peta Google Maps Sederhana",
+    "description": "Contoh implementasi Google Maps dengan Nuxt 3",
+    "controls": "Kontrol",
+    "locations": "Lokasi",
+    "reset": "Reset Tampilan",
+    "zoom": "Zoom",
+    "info": "Info",
+    "infoCenter": "Pusat: Jakarta, Indonesia",
+    "infoMarkers": "Penanda: 3 lokasi",
+    "infoInteract": "Klik dan geser peta untuk berinteraksi",
+    "loading": "Memuat peta..."
+  },
   "route": {
     "title": "Rute & Navigasi",
     "description": "Pilih titik berangkat dan tujuan untuk melihat rute",

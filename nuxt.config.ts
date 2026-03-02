@@ -441,6 +441,7 @@ export default defineNuxtConfig({
       appDebug: process.env.APP_DEBUG || 'off',
       pushVapidPublicKey: process.env.NUXT_PUBLIC_PUSH_VAPID_PUBLIC_KEY || '',
       mapboxPublicKey: process.env.NUXT_MAPBOX_ACCESS_TOKEN || '',
+      googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY || '',
     },
     pushVapidPrivateKey: process.env.NUXT_PUSH_VAPID_PRIVATE_KEY || '',
   },

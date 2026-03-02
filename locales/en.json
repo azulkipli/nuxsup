@@ -72,6 +72,19 @@
     "infoMarkers": "Markers: 3 locations",
     "infoInteract": "Click and drag map to interact"
   },
+  "googleMaps": {
+    "title": "Simple Google Maps Map",
+    "description": "Google Maps implementation example with Nuxt 3",
+    "controls": "Controls",
+    "locations": "Locations",
+    "reset": "Reset View",
+    "zoom": "Zoom",
+    "info": "Info",
+    "infoCenter": "Center: Jakarta, Indonesia",
+    "infoMarkers": "Markers: 3 locations",
+    "infoInteract": "Click and drag map to interact",
+    "loading": "Loading map..."
+  },
   "route": {
     "title": "Route & Navigation",
     "description": "Select origin and destination points to view route",
