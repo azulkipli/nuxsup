@@ -97,6 +97,7 @@
     "instruction1": "Ketik nama tempat di kolom Lokasi Awal",
     "instruction2": "Pilih dari saran yang muncul",
     "instruction3": "Ketik nama tempat di kolom Lokasi Akhir",
-    "instruction4": "Peta akan menampilkan kedua lokasi dengan penanda"
+    "instruction4": "Peta akan menampilkan kedua lokasi dengan penanda",
+    "instruction5": "Atau klik tombol 'Pin' lalu klik pada peta untuk menentukan lokasi"
   }
 }

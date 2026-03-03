@@ -20,6 +20,9 @@ const toast = useToast()
 const isGettingLocation = ref(false)
 const showPermissionReset = ref(false)
 
+// Pin mode state
+const isPinMode = ref<'none' | 'origin' | 'destination'>('none')
+
 // Map state
 let map: MapboxMap | null = null
 let originMarker: MapboxMarker | null = null
@@ -70,7 +73,149 @@ onMounted(async () => {
   })
 
   map.addControl(new mapboxgl.default.NavigationControl())
+
+  // Add click listener for drop pin
+  map.on('click', async (e: { lngLat: { lng: number; lat: number } }) => {
+    if (isPinMode.value !== 'none') {
+      const { lng, lat } = e.lngLat
+      await dropPin(lat, lng)
+    }
+  })
+
+  mapLoaded.value = true
 })
+
+// Map loaded state
+const mapLoaded = ref(false)
+
+// Drop pin at location
+const dropPin = async (lat: number, lng: number) => {
+  if (!map) return
+
+  const center: [number, number] = [lng, lat]
+
+  if (isPinMode.value === 'origin') {
+    // Reverse geocode to get address
+    try {
+      const response = await fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?` +
+          `access_token=${mapboxToken}&` +
+          `language=id`
+      )
+      const data = await response.json()
+
+      let locationName = 'Lokasi yang dipilih'
+      if (data.features && data.features.length > 0) {
+        locationName = data.features[0].place_name
+        originQuery.value = data.features[0].place_name
+      }
+
+      originLocation.value = {
+        name: locationName,
+        center,
+      }
+      isOriginSelected.value = true
+      isPinMode.value = 'none'
+
+      await updateMap()
+
+      toast.add({
+        title: 'Lokasi awal diatur',
+        description: locationName,
+        color: 'success',
+      })
+    } catch (error) {
+      console.error('Error reverse geocoding:', error)
+      originLocation.value = {
+        name: 'Lokasi yang dipilih',
+        center,
+      }
+      isOriginSelected.value = true
+      isPinMode.value = 'none'
+
+      await updateMap()
+
+      toast.add({
+        title: 'Lokasi awal diatur',
+        description: `Koordinat: ${lat.toFixed(4)}, ${lng.toFixed(4)}`,
+        color: 'success',
+      })
+    }
+  } else if (isPinMode.value === 'destination') {
+    try {
+      const response = await fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?` +
+          `access_token=${mapboxToken}&` +
+          `language=id`
+      )
+      const data = await response.json()
+
+      let locationName = 'Lokasi yang dipilih'
+      if (data.features && data.features.length > 0) {
+        locationName = data.features[0].place_name
+        destinationQuery.value = data.features[0].place_name
+      }
+
+      destinationLocation.value = {
+        name: locationName,
+        center,
+      }
+      isDestinationSelected.value = true
+      isPinMode.value = 'none'
+
+      await updateMap()
+
+      toast.add({
+        title: 'Lokasi akhir diatur',
+        description: locationName,
+        color: 'success',
+      })
+    } catch (error) {
+      console.error('Error reverse geocoding:', error)
+      destinationLocation.value = {
+        name: 'Lokasi yang dipilih',
+        center,
+      }
+      isDestinationSelected.value = true
+      isPinMode.value = 'none'
+
+      await updateMap()
+
+      toast.add({
+        title: 'Lokasi akhir diatur',
+        description: `Koordinat: ${lat.toFixed(4)}, ${lng.toFixed(4)}`,
+        color: 'success',
+      })
+    }
+  }
+}
+
+// Enable pin mode
+const enablePinMode = (type: 'origin' | 'destination') => {
+  isPinMode.value = type
+  toast.add({
+    title: 'Mode drop pin aktif',
+    description:
+      type === 'origin'
+        ? 'Klik pada peta untuk menentukan lokasi awal'
+        : 'Klik pada peta untuk menentukan lokasi akhir',
+    color: 'info',
+    duration: 5000,
+  })
+
+  // Close suggestions
+  showOriginSuggestions.value = false
+  showDestinationSuggestions.value = false
+}
+
+// Cancel pin mode
+const cancelPinMode = () => {
+  isPinMode.value = 'none'
+  toast.add({
+    title: 'Mode drop pin dibatalkan',
+    color: 'info',
+  })
+}
 
 // Search locations with geocoding
 const searchLocations = async (query: string, type: 'origin' | 'destination') => {
@@ -239,7 +384,7 @@ const updateMap = async () => {
     originMarkerEl.innerHTML = `
       <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2Z" fill="#3B82F6" stroke="white" stroke-width="2"/>
-        <circle cx="12" cy="9" r="3" fill="white"/>
+        <text x="12" y="14" text-anchor="middle" fill="white" font-size="12" font-weight="bold" font-family="Arial, sans-serif">A</text>
       </svg>
     `
     originMarkerEl.style.cursor = 'grab'
@@ -310,7 +455,7 @@ const updateMap = async () => {
     destinationMarkerEl.innerHTML = `
       <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2Z" fill="#EF4444" stroke="white" stroke-width="2"/>
-        <circle cx="12" cy="9" r="3" fill="white"/>
+        <text x="12" y="14" text-anchor="middle" fill="white" font-size="12" font-weight="bold" font-family="Arial, sans-serif">B</text>
       </svg>
     `
     destinationMarkerEl.style.cursor = 'grab'
@@ -586,6 +731,7 @@ onUnmounted(() => {
   }
   if (map) {
     map.remove()
+    map = null
   }
 })
 </script>
@@ -624,18 +770,37 @@ onUnmounted(() => {
                 </span>
               </label>
 
-              <UButton
-                size="xs"
-                color="primary"
-                variant="outline"
-                :loading="isGettingLocation"
-                @click="getCurrentLocation"
-              >
-                <template #leading>
-                  <Icon name="lucide:crosshair" class="w-4 h-4" />
-                </template>
-                Lokasi Saya
-              </UButton>
+              <div class="flex gap-1">
+                <UButton
+                  size="xs"
+                  :color="isPinMode === 'origin' ? 'warning' : 'primary'"
+                  variant="outline"
+                  :disabled="isPinMode !== 'none' && isPinMode !== 'origin'"
+                  @click="isPinMode === 'origin' ? cancelPinMode() : enablePinMode('origin')"
+                >
+                  <template #leading>
+                    <Icon
+                      :name="isPinMode === 'origin' ? 'lucide:x' : 'lucide:map-pin'"
+                      class="w-4 h-4"
+                    />
+                  </template>
+                  {{ isPinMode === 'origin' ? 'Batal' : 'Pin' }}
+                </UButton>
+
+                <UButton
+                  size="xs"
+                  color="primary"
+                  variant="outline"
+                  :loading="isGettingLocation"
+                  :disabled="isPinMode !== 'none'"
+                  @click="getCurrentLocation"
+                >
+                  <template #leading>
+                    <Icon name="lucide:crosshair" class="w-4 h-4" />
+                  </template>
+                  Lokasi
+                </UButton>
+              </div>
             </div>
 
             <div class="relative">
@@ -643,7 +808,8 @@ onUnmounted(() => {
                 v-model="originQuery"
                 type="text"
                 :placeholder="$t('route.searchOrigin')"
-                class="w-full px-4 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                class="w-full px-4 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white disabled:opacity-50"
+                :disabled="isPinMode !== 'none'"
                 @input="handleOriginInput"
                 @focus="showOriginSuggestions = originSuggestions.length > 0"
               />
@@ -656,6 +822,15 @@ onUnmounted(() => {
               >
                 <Icon name="lucide:x" class="w-5 h-5" />
               </button>
+            </div>
+
+            <!-- Pin Mode Info -->
+            <div
+              v-if="isPinMode === 'origin'"
+              class="mt-2 text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1"
+            >
+              <Icon name="lucide:info" class="w-3 h-3" />
+              Klik pada peta untuk menentukan lokasi awal
             </div>
 
             <!-- Suggestions Dropdown -->
@@ -699,12 +874,33 @@ onUnmounted(() => {
               </span>
             </label>
 
+            <div class="flex gap-2 mb-2">
+              <UButton
+                size="xs"
+                :color="isPinMode === 'destination' ? 'warning' : 'primary'"
+                variant="outline"
+                :disabled="isPinMode !== 'none' && isPinMode !== 'destination'"
+                @click="
+                  isPinMode === 'destination' ? cancelPinMode() : enablePinMode('destination')
+                "
+              >
+                <template #leading>
+                  <Icon
+                    :name="isPinMode === 'destination' ? 'lucide:x' : 'lucide:map-pin'"
+                    class="w-4 h-4"
+                  />
+                </template>
+                {{ isPinMode === 'destination' ? 'Batal' : 'Pin' }}
+              </UButton>
+            </div>
+
             <div class="relative">
               <input
                 v-model="destinationQuery"
                 type="text"
                 :placeholder="$t('route.searchDestination')"
-                class="w-full px-4 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                class="w-full px-4 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent dark:bg-gray-700 dark:text-white disabled:opacity-50"
+                :disabled="isPinMode !== 'none'"
                 @input="handleDestinationInput"
                 @focus="showDestinationSuggestions = destinationSuggestions.length > 0"
               />
@@ -717,6 +913,15 @@ onUnmounted(() => {
               >
                 <Icon name="lucide:x" class="w-5 h-5" />
               </button>
+            </div>
+
+            <!-- Pin Mode Info -->
+            <div
+              v-if="isPinMode === 'destination'"
+              class="mt-2 text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1"
+            >
+              <Icon name="lucide:info" class="w-3 h-3" />
+              Klik pada peta untuk menentukan lokasi akhir
             </div>
 
             <!-- Suggestions Dropdown -->
@@ -812,6 +1017,7 @@ onUnmounted(() => {
                   <li>{{ $t('route.instruction2') }}</li>
                   <li>{{ $t('route.instruction3') }}</li>
                   <li>{{ $t('route.instruction4') }}</li>
+                  <li>{{ $t('route.instruction5') }}</li>
                 </ul>
               </div>
             </div>

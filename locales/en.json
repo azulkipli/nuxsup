@@ -97,6 +97,7 @@
     "instruction1": "Type place name in Start Location field",
     "instruction2": "Select from autocomplete suggestions",
     "instruction3": "Type place name in End Location field",
-    "instruction4": "Map will display both locations with markers"
+    "instruction4": "Map will display both locations with markers",
+    "instruction5": "Or click 'Pin' button then click on map to set location"
   }
 }
